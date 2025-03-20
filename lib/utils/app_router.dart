@@ -1,5 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:yeogijeogi/utils/enums/app_routes.dart';
+import 'package:yeogijeogi/view_models/home_view_model.dart';
+import 'package:yeogijeogi/view_models/login_view_model.dart';
+import 'package:yeogijeogi/views/home_view.dart';
+import 'package:yeogijeogi/views/login_view.dart';
 
 class AppRouter {
   static GoRouter getRouter() {
@@ -20,7 +26,29 @@ class AppRouter {
           return null;
         }
       },
-      routes: [],
+      routes: [
+        // 로그인
+        GoRoute(
+          path: '/login',
+          name: AppRoute.login.name,
+          builder:
+              (context, state) => ChangeNotifierProvider(
+                create: (context) => LoginViewModel(context: context),
+                child: const LoginView(),
+              ),
+        ),
+        // 홈
+        GoRoute(
+          path: '/home',
+          name: AppRoute.home.name,
+          builder:
+              (context, state) => ChangeNotifierProvider(
+                create: (context) => HomeViewModel(context: context),
+                child: const HomeView(),
+              ),
+          routes: [],
+        ),
+      ],
     );
   }
 }
