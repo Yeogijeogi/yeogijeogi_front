@@ -31,16 +31,19 @@ class _SliderContainerState extends State<SliderContainer> {
       ),
       width: 353.w,
       height: 138.h,
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+      // padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 상단 제목
-          Text(
-            widget.title,
-            style: Palette.body.copyWith(
-              color: Palette.onSurface,
-              fontFamily: "Pretendard",
+          Padding(
+            padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
+            child: Text(
+              widget.title,
+              style: Palette.body.copyWith(
+                color: Palette.onSurface,
+                fontFamily: "Pretendard",
+              ),
             ),
           ),
           Spacer(),
@@ -54,8 +57,8 @@ class _SliderContainerState extends State<SliderContainer> {
               thumbColor: Palette.success,
               thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8.r),
             ),
-            child: SizedBox(
-              width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 0), // 패딩 줄이기
               child: Slider(
                 value: _value,
                 min: 0,
@@ -70,17 +73,20 @@ class _SliderContainerState extends State<SliderContainer> {
           ),
 
           // 라벨
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(widget.criterion.length, (index) {
-              return Text(
-                widget.criterion[index],
-                style: Palette.caption.copyWith(
-                  color: Palette.onSurfaceVariant,
-                  fontFamily: "Pretendard",
-                ),
-              );
-            }),
+          Padding(
+            padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(widget.criterion.length, (index) {
+                return Text(
+                  widget.criterion[index],
+                  style: Palette.caption.copyWith(
+                    color: Palette.onSurfaceVariant,
+                    fontFamily: "Pretendard",
+                  ),
+                );
+              }),
+            ),
           ),
         ],
       ),
