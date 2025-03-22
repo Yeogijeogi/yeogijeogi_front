@@ -7,9 +7,14 @@ import 'package:yeogijeogi/components/onboarding/slider_container.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 import 'package:yeogijeogi/view_models/home_view_model.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final HomeViewModel homeViewModel = context.watch<HomeViewModel>();
@@ -79,11 +84,23 @@ class HomeView extends StatelessWidget {
             SliderContainer(
               title: "어떤 풍경을 찾아볼까요?",
               criteria: ["자연", "상관없음", "도시"],
+              value: homeViewModel.sceneryLevel,
+              onChanged: (value) {
+                setState(() {
+                  homeViewModel.sceneryLevel = value;
+                });
+              },
             ),
             SizedBox(height: 24.h),
             SliderContainer(
               title: "산책 강도를 선택해 주세요.",
               criteria: ["가벼운", "상관없음", "운동되는"],
+              value: homeViewModel.walkingLevel,
+              onChanged: (value) {
+                setState(() {
+                  homeViewModel.walkingLevel = value;
+                });
+              },
             ),
             Spacer(),
             CustomButton(

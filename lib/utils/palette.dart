@@ -12,7 +12,6 @@ class Palette {
   static const Color onSurfaceVariant = Color(0xFFA2A4A6);
   static const Color error = Color(0xFFDC3545);
   static const Color success = Color(0xFF198754);
-  static const Color track = Color(0xFFF6F6F6);
   /* Typography */
   static TextStyle largeTitle = TextStyle(
     fontSize: 34.sp,

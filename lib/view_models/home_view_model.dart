@@ -11,6 +11,12 @@ class HomeViewModel with ChangeNotifier {
   /// 페이지 로딩 상태
   bool isLoading = false;
 
+  /// 풍경 슬라이더 값
+  double sceneryLevel = 0;
+
+  /// 산책 슬라이더 값
+  double walkingLevel = 0;
+
   /// 로그아웃 후 login 페이지로 이동
   void logout() async {
     await FirebaseAuth.instance.signOut();
