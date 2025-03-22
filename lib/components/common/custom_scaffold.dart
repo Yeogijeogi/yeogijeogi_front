@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yeogijeogi/components/common/loading_screen.dart';
 
@@ -59,7 +60,7 @@ class CustomScaffold extends StatelessWidget {
             children: [
               // body
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: body,
               ),
 
