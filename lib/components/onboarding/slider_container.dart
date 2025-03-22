@@ -7,12 +7,12 @@ class SliderContainer extends StatefulWidget {
   final String title;
 
   /// 척도 리스트
-  final List<String> criterion;
+  final List<String> criteria;
 
   const SliderContainer({
     super.key,
     required this.title,
-    required this.criterion,
+    required this.criteria,
   });
 
   @override
@@ -26,25 +26,18 @@ class _SliderContainerState extends State<SliderContainer> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Palette.container,
         borderRadius: BorderRadius.circular(20.r),
       ),
-      width: 353.w,
+      width: double.infinity,
       height: 138.h,
-      // padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 상단 제목
           Padding(
             padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
-            child: Text(
-              widget.title,
-              style: Palette.body.copyWith(
-                color: Palette.onSurface,
-                fontFamily: "Pretendard",
-              ),
-            ),
+            child: Text(widget.title, style: Palette.body),
           ),
           Spacer(),
 
@@ -62,7 +55,7 @@ class _SliderContainerState extends State<SliderContainer> {
               child: Slider(
                 value: _value,
                 min: 0,
-                max: (widget.criterion.length - 1).toDouble(),
+                max: (widget.criteria.length - 1).toDouble(),
                 onChanged: (value) {
                   setState(() {
                     _value = value;
@@ -77,9 +70,9 @@ class _SliderContainerState extends State<SliderContainer> {
             padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(widget.criterion.length, (index) {
+              children: List.generate(widget.criteria.length, (index) {
                 return Text(
-                  widget.criterion[index],
+                  widget.criteria[index],
                   style: Palette.caption.copyWith(
                     color: Palette.onSurfaceVariant,
                     fontFamily: "Pretendard",

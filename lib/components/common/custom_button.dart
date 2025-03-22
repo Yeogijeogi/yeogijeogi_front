@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(20.r),
       backgroundColor: background,
       child: Container(
-        width: 353.w,
+        width: double.infinity,
         height: 56.h,
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Row(
@@ -29,7 +29,7 @@ class CustomButton extends StatelessWidget {
           children: [
             Text(
               text,
-              style: Palette.headline.copyWith(color: Color(0xFFF8F9FA)),
+              style: Palette.headline.copyWith(color: Palette.surface),
             ),
           ],
         ),

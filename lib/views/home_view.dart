@@ -16,25 +16,12 @@ class HomeView extends StatelessWidget {
 
     return CustomScaffold(
       isLoading: homeViewModel.isLoading,
-      body:
-      // Center(
-      //   child: FilledButton(
-      //     onPressed: homeViewModel.logout,
-      //     child: Text('로그아웃'),
-      //   ),
-      // ),
-      Padding(
-        padding: EdgeInsets.only(top: 59.h, left: 20.w, right: 20.w),
+      body: Padding(
+        padding: EdgeInsets.only(top: 59.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "산책을 떠나 볼까요?",
-              style: Palette.title.copyWith(
-                color: Palette.onSurface,
-                fontFamily: "Pretendard",
-              ),
-            ),
+            Text("산책을 떠나 볼까요?", style: Palette.title),
             SizedBox(height: 8.h),
             Text(
               "코스 추천을 위해 몇가지 질문에 대답해 주세요.",
@@ -45,7 +32,7 @@ class HomeView extends StatelessWidget {
             ),
             SizedBox(height: 40.h),
             Container(
-              width: 353.w,
+              width: double.infinity,
               height: 64.h,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -67,7 +54,10 @@ class HomeView extends StatelessWidget {
                     Container(
                       width: 128.w,
                       height: 36.h,
-                      decoration: BoxDecoration(color: Color(0xFFF8F9FA)),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF8F9FA),
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: 26.w,
@@ -77,7 +67,6 @@ class HomeView extends StatelessWidget {
                           "1시간 30분",
                           style: Palette.body.copyWith(
                             color: Palette.onSurface,
-                            fontFamily: "Pretendard",
                           ),
                         ),
                       ),
@@ -89,20 +78,19 @@ class HomeView extends StatelessWidget {
             SizedBox(height: 24.h),
             SliderContainer(
               title: "어떤 풍경을 찾아볼까요?",
-              criterion: ["자연", "상관없음", "도시"],
+              criteria: ["자연", "상관없음", "도시"],
             ),
             SizedBox(height: 24.h),
             SliderContainer(
               title: "산책 강도를 선택해 주세요.",
-              criterion: ["가벼운", "상관없음", "운동되는"],
+              criteria: ["가벼운", "상관없음", "운동되는"],
             ),
             Spacer(),
             CustomButton(
               text: "코스 추천 받기",
-              background: Color(0xFF198754),
+              background: Palette.success,
               onTap: () {},
             ),
-            SizedBox(height: 34.h),
           ],
         ),
       ),
