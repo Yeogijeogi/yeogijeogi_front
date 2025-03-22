@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:yeogijeogi/components/common/custom_app_bar.dart';
 import 'package:yeogijeogi/components/common/loading_screen.dart';
 
 class CustomScaffold extends StatelessWidget {
-  /// 상단 제목
-  final String? title;
-
-  /// 앱바 뒤로가기 표시 여부
-  final bool showBackBtn;
+  final CustomAppBar? appBar;
 
   /// 하단 크기 자동 조절
   final bool? resizeToAvoidBottomInset;
@@ -25,8 +21,7 @@ class CustomScaffold extends StatelessWidget {
   /// ### Padding, margin 등 공통 설정 값이 적용된 Scaffold
   const CustomScaffold({
     super.key,
-    this.title,
-    this.showBackBtn = false,
+    this.appBar,
     this.resizeToAvoidBottomInset,
     this.isLoading = false,
     this.body,
@@ -41,19 +36,7 @@ class CustomScaffold extends StatelessWidget {
         onTap?.call();
       },
       child: Scaffold(
-        appBar:
-            title != null
-                ? AppBar(
-                  title: Text(title!),
-                  leading:
-                      showBackBtn
-                          ? GestureDetector(
-                            onTap: () => context.pop(),
-                            child: Icon(Icons.arrow_back_ios_new),
-                          )
-                          : null,
-                )
-                : null,
+        appBar: appBar,
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         body: SafeArea(
           child: Stack(
