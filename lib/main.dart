@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yeogijeogi/utils/app_router.dart';
 import 'package:yeogijeogi/utils/custom_theme_data.dart';
 
@@ -20,10 +21,17 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: _router,
-      theme: CustomThemeData.light,
-      debugShowCheckedModeBanner: false,
+    return ScreenUtilInit(
+      designSize: Size(393, 852), // 디자인 기준 사이즈 (iPhone 14 pro)
+      minTextAdapt: true, // 텍스트 크기 자동 조절
+      splitScreenMode: true, // 태블릿 지원
+      builder: (context, child) {
+        return MaterialApp.router(
+          routerConfig: _router, // 기존 라우터 유지
+          theme: CustomThemeData.light, // 기존 테마 유지
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }
