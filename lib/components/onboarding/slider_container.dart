@@ -13,7 +13,7 @@ class SliderContainer extends StatelessWidget {
   final double value;
 
   /// 값 변경 콜백
-  final ValueChanged<double> onChanged;
+  final Function(double) onChanged;
 
   const SliderContainer({
     super.key,
@@ -31,28 +31,25 @@ class SliderContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.r),
       ),
       width: double.infinity,
-      height: 138.h,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 상단 제목
-          Padding(
-            padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
-            child: Text(title, style: Palette.body),
-          ),
-          Spacer(),
-
-          // 슬라이더
-          SliderTheme(
-            data: SliderTheme.of(context).copyWith(
-              trackHeight: 8.h,
-              activeTrackColor: Palette.surfaceVariant,
-              inactiveTrackColor: Palette.surfaceVariant,
-              thumbColor: Palette.success,
-              thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8.r),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 0), // 패딩 줄이기
+      height: 133.h,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 상단 제목
+            Text(title, style: Palette.body),
+            SizedBox(height: 20.h),
+            // 슬라이더
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                trackHeight: 8.h,
+                activeTrackColor: Palette.surfaceVariant,
+                inactiveTrackColor: Palette.surfaceVariant,
+                thumbColor: Palette.primary,
+                thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8.r),
+                padding: EdgeInsets.zero,
+              ),
               child: Slider(
                 value: value,
                 min: 0,
@@ -60,25 +57,21 @@ class SliderContainer extends StatelessWidget {
                 onChanged: onChanged,
               ),
             ),
-          ),
-
-          // 라벨
-          Padding(
-            padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
-            child: Row(
+            SizedBox(height: 8.h),
+            // 라벨
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(criteria.length, (index) {
                 return Text(
                   criteria[index],
                   style: Palette.caption.copyWith(
                     color: Palette.onSurfaceVariant,
-                    fontFamily: "Pretendard",
                   ),
                 );
               }),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

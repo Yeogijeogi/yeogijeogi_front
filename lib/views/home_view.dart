@@ -21,95 +21,75 @@ class _HomeViewState extends State<HomeView> {
 
     return CustomScaffold(
       isLoading: homeViewModel.isLoading,
-      body: Padding(
-        padding: EdgeInsets.only(top: 59.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("산책을 떠나 볼까요?", style: Palette.title),
-            SizedBox(height: 8.h),
-            Text(
-              "코스 추천을 위해 몇가지 질문에 대답해 주세요.",
-              style: Palette.headline.copyWith(
-                color: Palette.onSurface,
-                fontFamily: "Pretendard",
-              ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("산책을 떠나 볼까요?", style: Palette.title),
+          SizedBox(height: 8.h),
+          Text("코스 추천을 위해 몇가지 질문에 대답해 주세요.", style: Palette.headline),
+          SizedBox(height: 40.h),
+          Container(
+            width: double.infinity,
+            height: 64.h,
+            decoration: BoxDecoration(
+              color: Palette.container,
+              borderRadius: BorderRadius.circular(20.r),
             ),
-            SizedBox(height: 40.h),
-            Container(
-              width: double.infinity,
-              height: 64.h,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20.r),
-              ),
 
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "얼마나 걸을까요?",
-                      style: Palette.body.copyWith(
-                        color: Palette.onSurface,
-                        fontFamily: "Pretendard",
-                      ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("얼마나 걸을까요?", style: Palette.body),
+                  Container(
+                    width: 128.w,
+                    height: 36.h,
+                    decoration: BoxDecoration(
+                      color: Palette.surface,
+                      borderRadius: BorderRadius.circular(10.r),
                     ),
-                    Container(
-                      width: 128.w,
-                      height: 36.h,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFF8F9FA),
-                        borderRadius: BorderRadius.circular(10.r),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 26.w,
+                        vertical: 6.h,
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 26.w,
-                          vertical: 6.h,
-                        ),
-                        child: Text(
-                          "1시간 30분",
-                          style: Palette.body.copyWith(
-                            color: Palette.onSurface,
-                          ),
-                        ),
-                      ),
+                      child: Text("1시간 30분", style: Palette.body),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 24.h),
-            SliderContainer(
-              title: "어떤 풍경을 찾아볼까요?",
-              criteria: ["자연", "상관없음", "도시"],
-              value: homeViewModel.sceneryLevel,
-              onChanged: (value) {
-                setState(() {
-                  homeViewModel.sceneryLevel = value;
-                });
-              },
-            ),
-            SizedBox(height: 24.h),
-            SliderContainer(
-              title: "산책 강도를 선택해 주세요.",
-              criteria: ["가벼운", "상관없음", "운동되는"],
-              value: homeViewModel.walkingLevel,
-              onChanged: (value) {
-                setState(() {
-                  homeViewModel.walkingLevel = value;
-                });
-              },
-            ),
-            Spacer(),
-            CustomButton(
-              text: "코스 추천 받기",
-              background: Palette.success,
-              onTap: () {},
-            ),
-          ],
-        ),
+          ),
+          SizedBox(height: 24.h),
+          SliderContainer(
+            title: "어떤 풍경을 찾아볼까요?",
+            criteria: ["자연", "상관없음", "도시"],
+            value: homeViewModel.sceneryLevel,
+            onChanged: (value) {
+              setState(() {
+                homeViewModel.sceneryLevel = value;
+              });
+            },
+          ),
+          SizedBox(height: 24.h),
+          SliderContainer(
+            title: "산책 강도를 선택해 주세요.",
+            criteria: ["가벼운", "상관없음", "운동되는"],
+            value: homeViewModel.walkingLevel,
+            onChanged: (value) {
+              setState(() {
+                homeViewModel.walkingLevel = value;
+              });
+            },
+          ),
+          Spacer(),
+          CustomButton(
+            text: "코스 추천 받기",
+            background: Palette.success,
+            onTap: () {},
+          ),
+        ],
       ),
     );
   }

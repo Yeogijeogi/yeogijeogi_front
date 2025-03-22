@@ -23,7 +23,7 @@ class CustomButton extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: 56.h,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
