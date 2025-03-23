@@ -10,6 +10,9 @@ class CustomScaffold extends StatelessWidget {
   /// 앱바 뒤로가기 표시 여부
   final bool showBackBtn;
 
+  /// 패딩 적용 여부
+  final bool hasPadding;
+
   /// 하단 크기 자동 조절
   final bool? resizeToAvoidBottomInset;
 
@@ -22,10 +25,10 @@ class CustomScaffold extends StatelessWidget {
   /// 화면 탭
   final Function()? onTap;
 
-  /// ### Padding, margin 등 공통 설정 값이 적용된 Scaffold
   const CustomScaffold({
     super.key,
     this.title,
+    this.hasPadding = true,
     this.showBackBtn = false,
     this.resizeToAvoidBottomInset,
     this.isLoading = false,
@@ -60,7 +63,10 @@ class CustomScaffold extends StatelessWidget {
             children: [
               // body
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                padding:
+                    hasPadding
+                        ? EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 0)
+                        : EdgeInsets.zero,
                 child: body,
               ),
 
