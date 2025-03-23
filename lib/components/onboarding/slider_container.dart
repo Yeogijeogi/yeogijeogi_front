@@ -12,7 +12,7 @@ class SliderContainer extends StatelessWidget {
   /// 현재 선택된 값
   final double value;
 
-  /// 값 변경 콜백
+  /// 슬라이더 값 변경 함수
   final Function(double) onChanged;
 
   const SliderContainer({
@@ -33,7 +33,7 @@ class SliderContainer extends StatelessWidget {
       width: double.infinity,
       height: 133.h,
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

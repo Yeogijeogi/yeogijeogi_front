@@ -7,14 +7,9 @@ import 'package:yeogijeogi/components/onboarding/slider_container.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 import 'package:yeogijeogi/view_models/home_view_model.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final HomeViewModel homeViewModel = context.watch<HomeViewModel>();
@@ -26,7 +21,7 @@ class _HomeViewState extends State<HomeView> {
         children: [
           Text("산책을 떠나 볼까요?", style: Palette.title),
           SizedBox(height: 8.h),
-          Text("코스 추천을 위해 몇가지 질문에 대답해 주세요.", style: Palette.headline),
+          Text("산책 코스 추천을 위해 몇가지 질문에 대답해 주세요.", style: Palette.headline),
           SizedBox(height: 40.h),
           Container(
             width: double.infinity,
@@ -35,7 +30,6 @@ class _HomeViewState extends State<HomeView> {
               color: Palette.container,
               borderRadius: BorderRadius.circular(20.r),
             ),
-
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
               child: Row(
@@ -67,9 +61,7 @@ class _HomeViewState extends State<HomeView> {
             criteria: ["자연", "상관없음", "도시"],
             value: homeViewModel.sceneryLevel,
             onChanged: (value) {
-              setState(() {
-                homeViewModel.sceneryLevel = value;
-              });
+              homeViewModel.updateSceneryLevel(value);
             },
           ),
           SizedBox(height: 24.h),
@@ -78,9 +70,7 @@ class _HomeViewState extends State<HomeView> {
             criteria: ["가벼운", "상관없음", "운동되는"],
             value: homeViewModel.walkingLevel,
             onChanged: (value) {
-              setState(() {
-                homeViewModel.walkingLevel = value;
-              });
+              homeViewModel.updateWalkingLevel(value);
             },
           ),
           Spacer(),
