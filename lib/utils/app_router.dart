@@ -5,9 +5,11 @@ import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:yeogijeogi/view_models/home_view_model.dart';
 import 'package:yeogijeogi/view_models/loading_view_model.dart';
 import 'package:yeogijeogi/view_models/login_view_model.dart';
+import 'package:yeogijeogi/view_models/walk/walk_start_view_model.dart';
 import 'package:yeogijeogi/views/home_view.dart';
 import 'package:yeogijeogi/views/loading_view.dart';
 import 'package:yeogijeogi/views/login_view.dart';
+import 'package:yeogijeogi/views/walk/walk_start_view.dart';
 
 class AppRouter {
   static GoRouter getRouter() {
@@ -56,6 +58,15 @@ class AppRouter {
                   (context, state) => ChangeNotifierProvider(
                     create: (context) => LoadingViewModel(context: context),
                     child: const LoadingView(),
+                  ),
+            ),
+            GoRoute(
+              path: 'walk-start',
+              name: AppRoute.walkStart.name,
+              builder:
+                  (context, state) => ChangeNotifierProvider(
+                    create: (context) => WalkStartViewModel(context: context),
+                    child: const WalkStartView(),
                   ),
             ),
           ],

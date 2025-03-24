@@ -1,1 +1,1 @@
-enum AppRoute { login, home, loading }
+enum AppRoute { login, home, loading, walkStart }
