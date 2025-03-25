@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:yeogijeogi/components/common/bottom_navbar.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
+import 'package:yeogijeogi/view_models/course_view_model.dart';
 import 'package:yeogijeogi/view_models/home_view_model.dart';
 import 'package:yeogijeogi/view_models/loading_view_model.dart';
 import 'package:yeogijeogi/view_models/login_view_model.dart';
@@ -10,12 +12,15 @@ import 'package:yeogijeogi/views/home_view.dart';
 import 'package:yeogijeogi/views/loading_view.dart';
 import 'package:yeogijeogi/views/login_view.dart';
 import 'package:yeogijeogi/views/walk/walk_start_view.dart';
+import 'package:yeogijeogi/view_models/my_page_view_model.dart';
+import 'package:yeogijeogi/views/course_view.dart';
+import 'package:yeogijeogi/views/my_page_view.dart';
 
 class AppRouter {
   static GoRouter getRouter() {
     return GoRouter(
       initialLocation: '/login',
-      redirect: (context, state) {
+      redirect: (_, state) {
         // 로그인된 사용자가 있는지 확인
         final User? user = FirebaseAuth.instance.currentUser;
 
@@ -36,38 +41,83 @@ class AppRouter {
           path: '/login',
           name: AppRoute.login.name,
           builder:
-              (context, state) => ChangeNotifierProvider(
+              (context, _) => ChangeNotifierProvider(
                 create: (context) => LoginViewModel(context: context),
                 child: const LoginView(),
               ),
         ),
-        // 홈
-        GoRoute(
-          path: '/home',
-          name: AppRoute.home.name,
+
+        StatefulShellRoute.indexedStack(
           builder:
-              (context, state) => ChangeNotifierProvider(
-                create: (context) => HomeViewModel(context: context),
-                child: const HomeView(),
-              ),
-          routes: [
-            GoRoute(
-              path: 'loading',
-              name: AppRoute.loading.name,
-              builder:
-                  (context, state) => ChangeNotifierProvider(
-                    create: (context) => LoadingViewModel(context: context),
-                    child: const LoadingView(),
-                  ),
+              (_, __, navigationShell) =>
+                  BottomNavbar(navigationShell: navigationShell),
+          branches: [
+            // 산책
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/home',
+                  name: AppRoute.home.name,
+                  builder:
+                      (context, _) => ChangeNotifierProvider(
+                        create: (context) => HomeViewModel(context: context),
+                        child: const HomeView(),
+                      ),
+                  routes: [
+                    GoRoute(
+                      path: 'loading',
+                      name: AppRoute.loading.name,
+                      builder:
+                          (context, _) => ChangeNotifierProvider(
+                            create:
+                                (context) => LoadingViewModel(context: context),
+                            child: const LoadingView(),
+                          ),
+                    ),
+                    GoRoute(
+                      path: 'walk-start',
+                      name: AppRoute.walkStart.name,
+                      builder:
+                          (context, state) => ChangeNotifierProvider(
+                            create:
+                                (context) =>
+                                    WalkStartViewModel(context: context),
+                            child: const WalkStartView(),
+                          ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            GoRoute(
-              path: 'walk-start',
-              name: AppRoute.walkStart.name,
-              builder:
-                  (context, state) => ChangeNotifierProvider(
-                    create: (context) => WalkStartViewModel(context: context),
-                    child: const WalkStartView(),
-                  ),
+
+            // 코스
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/course',
+                  name: AppRoute.course.name,
+                  builder:
+                      (context, _) => ChangeNotifierProvider(
+                        create: (context) => CourseViewModel(),
+                        child: const CourseView(),
+                      ),
+                ),
+              ],
+            ),
+
+            // 마이페이지
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/my',
+                  name: AppRoute.my.name,
+                  builder:
+                      (context, _) => ChangeNotifierProvider(
+                        create: (context) => MyPageViewModel(),
+                        child: const MyPageView(),
+                      ),
+                ),
+              ],
             ),
           ],
         ),
