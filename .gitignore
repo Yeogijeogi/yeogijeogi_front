@@ -126,3 +126,6 @@ app.*.symbols
 google-services.json
 GoogleService-Info.plist
 firebase.json
+
+# FVM Version Cache
+.fvm/

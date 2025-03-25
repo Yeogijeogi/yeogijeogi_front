@@ -26,33 +26,31 @@ class HomeView extends StatelessWidget {
           Container(
             width: double.infinity,
             height: 64.h,
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
             decoration: BoxDecoration(
               color: Palette.container,
               borderRadius: BorderRadius.circular(20.r),
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("얼마나 걸을까요?", style: Palette.body),
-                  Container(
-                    width: 128.w,
-                    height: 36.h,
-                    decoration: BoxDecoration(
-                      color: Palette.surface,
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 26.w,
-                        vertical: 6.h,
-                      ),
-                      child: Text("1시간 30분", style: Palette.body),
-                    ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("얼마나 걸을까요?", style: Palette.body),
+                Container(
+                  width: 128.w,
+                  height: 36.h,
+                  decoration: BoxDecoration(
+                    color: Palette.surface,
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
-                ],
-              ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 26.w,
+                      vertical: 6.h,
+                    ),
+                    child: Text("1시간 30분", style: Palette.body),
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(height: 24.h),
