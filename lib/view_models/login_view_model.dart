@@ -35,7 +35,7 @@ class LoginViewModel with ChangeNotifier {
       await _firebaseAuth.signInWithCredential(credential);
 
       // 홈 화면 이동
-      if (context.mounted) context.goNamed(AppRoute.home.name);
+      if (context.mounted) context.goNamed(AppRoute.onboarding.name);
     } on FirebaseAuthException catch (e) {
       // https://pub.dev/documentation/firebase_auth/latest/firebase_auth/FirebaseAuth/signInWithCredential.html
       debugPrint('FirebaseAuthException in _googleLogin: ${e.code}');
@@ -65,7 +65,7 @@ class LoginViewModel with ChangeNotifier {
       await _firebaseAuth.signInWithCredential(credential);
 
       // 홈 화면 이동
-      if (context.mounted) context.goNamed(AppRoute.home.name);
+      if (context.mounted) context.goNamed(AppRoute.onboarding.name);
     } on FirebaseAuthException catch (e) {
       debugPrint('FirebaseAuthException in _appleLogin: ${e.code}');
     } catch (e) {

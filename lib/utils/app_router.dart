@@ -4,12 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/bottom_navbar.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:yeogijeogi/view_models/course_view_model.dart';
-import 'package:yeogijeogi/view_models/home_view_model.dart';
+import 'package:yeogijeogi/view_models/onboarding_view_model.dart';
 import 'package:yeogijeogi/view_models/loading_view_model.dart';
 import 'package:yeogijeogi/view_models/login_view_model.dart';
 import 'package:yeogijeogi/view_models/my_page_view_model.dart';
 import 'package:yeogijeogi/views/course_view.dart';
-import 'package:yeogijeogi/views/home_view.dart';
+import 'package:yeogijeogi/views/onboarding_view.dart';
 import 'package:yeogijeogi/views/loading_view.dart';
 import 'package:yeogijeogi/views/login_view.dart';
 import 'package:yeogijeogi/views/my_page_view.dart';
@@ -27,7 +27,7 @@ class AppRouter {
           return '/login';
         } else if (state.fullPath == '/login') {
           // 로그인 화면에서 로그인 된 사용자가 있으면 홈 화면으로 이동
-          return '/home';
+          return '/onboarding';
         } else {
           // 그 외 상황은 요청한 페이지로 이동
           return null;
@@ -54,12 +54,13 @@ class AppRouter {
             StatefulShellBranch(
               routes: [
                 GoRoute(
-                  path: '/home',
-                  name: AppRoute.home.name,
+                  path: '/onboarding',
+                  name: AppRoute.onboarding.name,
                   builder:
                       (context, _) => ChangeNotifierProvider(
-                        create: (context) => HomeViewModel(context: context),
-                        child: const HomeView(),
+                        create:
+                            (context) => OnboardingViewModel(context: context),
+                        child: const OnboardingView(),
                       ),
                   routes: [
                     GoRoute(
