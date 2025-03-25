@@ -5,17 +5,18 @@ import 'package:yeogijeogi/components/common/custom_button.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
 import 'package:yeogijeogi/components/walk/slider_container.dart';
 import 'package:yeogijeogi/utils/palette.dart';
-import 'package:yeogijeogi/view_models/walk_view_model.dart';
+import 'package:yeogijeogi/view_models/onboarding_view_model.dart';
 
-class WalkView extends StatelessWidget {
-  const WalkView({super.key});
+class OnboardingView extends StatelessWidget {
+  const OnboardingView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final WalkViewModel walkViewModel = context.watch<WalkViewModel>();
+    final OnboardingViewModel onboardingViewModel =
+        context.watch<OnboardingViewModel>();
 
     return CustomScaffold(
-      isLoading: walkViewModel.isLoading,
+      isLoading: onboardingViewModel.isLoading,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -57,18 +58,18 @@ class WalkView extends StatelessWidget {
           SliderContainer(
             title: "어떤 풍경을 찾아볼까요?",
             criteria: ["자연", "상관없음", "도시"],
-            value: walkViewModel.sceneryLevel,
+            value: onboardingViewModel.sceneryLevel,
             onChanged: (value) {
-              walkViewModel.updateSceneryLevel(value);
+              onboardingViewModel.updateSceneryLevel(value);
             },
           ),
           SizedBox(height: 24.h),
           SliderContainer(
             title: "산책 강도를 선택해 주세요.",
             criteria: ["가벼운", "상관없음", "운동되는"],
-            value: walkViewModel.walkingLevel,
+            value: onboardingViewModel.walkingLevel,
             onChanged: (value) {
-              walkViewModel.updateWalkingLevel(value);
+              onboardingViewModel.updateWalkingLevel(value);
             },
           ),
           Spacer(),
