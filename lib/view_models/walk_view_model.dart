@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 
-class HomeViewModel with ChangeNotifier {
+class WalkViewModel with ChangeNotifier {
   BuildContext context;
 
-  HomeViewModel({required this.context});
+  WalkViewModel({required this.context});
 
   /// 페이지 로딩 상태
   bool isLoading = false;
