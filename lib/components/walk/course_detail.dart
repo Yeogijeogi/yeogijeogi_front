@@ -27,6 +27,12 @@ class CourseDetail extends StatelessWidget {
   /// 시간 레이블
   final String timeLabel;
 
+  /// Margin 표시 여부
+  final bool margin;
+
+  /// Shadow 표시 여부
+  final bool shadow;
+
   const CourseDetail({
     super.key,
     required this.name,
@@ -37,6 +43,8 @@ class CourseDetail extends StatelessWidget {
     required this.walkLabel,
     required this.time,
     required this.timeLabel,
+    this.margin = false,
+    this.shadow = false,
   });
 
   @override
@@ -45,13 +53,18 @@ class CourseDetail extends StatelessWidget {
       width: double.infinity,
       height: 113.h,
       padding: EdgeInsets.all(20.w),
-      margin: EdgeInsets.all(20.w),
+      margin: margin ? EdgeInsets.all(20.w) : null,
       decoration: BoxDecoration(
         color: Palette.container,
         borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(color: Palette.onSurfaceVariant.withValues(alpha: 0.25)),
-        ],
+        boxShadow:
+            shadow
+                ? [
+                  BoxShadow(
+                    color: Palette.onSurfaceVariant.withValues(alpha: 0.25),
+                  ),
+                ]
+                : null,
       ),
       child: Column(
         children: [
