@@ -13,6 +13,12 @@ class CustomScaffold extends StatelessWidget {
   /// 패딩 적용 여부
   final bool hasPadding;
 
+  /// SafeArea 적용 여부
+  final bool useSafeArea;
+
+  /// 스와이프로 뒤로가기 가능 여부
+  final bool canPop;
+
   /// 하단 크기 자동 조절
   final bool? resizeToAvoidBottomInset;
 
@@ -29,6 +35,8 @@ class CustomScaffold extends StatelessWidget {
     super.key,
     this.title,
     this.hasPadding = true,
+    this.useSafeArea = true,
+    this.canPop = true,
     this.showBackBtn = false,
     this.resizeToAvoidBottomInset,
     this.isLoading = false,
@@ -43,36 +51,46 @@ class CustomScaffold extends StatelessWidget {
         FocusScope.of(context).unfocus();
         onTap?.call();
       },
-      child: Scaffold(
-        appBar:
-            title != null
-                ? AppBar(
-                  title: Text(title!),
-                  leading:
-                      showBackBtn
-                          ? GestureDetector(
-                            onTap: () => context.pop(),
-                            child: Icon(Icons.arrow_back_ios_new),
+      child: PopScope(
+        canPop: canPop,
+        child: Scaffold(
+          appBar:
+              title != null
+                  ? AppBar(
+                    title: Text(title!),
+                    leading:
+                        showBackBtn
+                            ? GestureDetector(
+                              onTap: () => context.pop(),
+                              child: Icon(Icons.arrow_back_ios_new),
+                            )
+                            : null,
+                  )
+                  : null,
+          resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+          body: SafeArea(
+            left: useSafeArea,
+            top: useSafeArea,
+            right: useSafeArea,
+            bottom: useSafeArea,
+            child: Stack(
+              children: [
+                // body
+                Padding(
+                  padding:
+                      hasPadding
+                          ? EdgeInsets.symmetric(
+                            vertical: 20.h,
+                            horizontal: 20.w,
                           )
-                          : null,
-                )
-                : null,
-        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-        body: SafeArea(
-          child: Stack(
-            children: [
-              // body
-              Padding(
-                padding:
-                    hasPadding
-                        ? EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w)
-                        : EdgeInsets.zero,
-                child: body,
-              ),
+                          : EdgeInsets.zero,
+                  child: body,
+                ),
 
-              // 로딩
-              if (isLoading) const Center(child: LoadingScreen()),
-            ],
+                // 로딩
+                if (isLoading) const Center(child: LoadingScreen()),
+              ],
+            ),
           ),
         ),
       ),
