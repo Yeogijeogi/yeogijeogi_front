@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:yeogijeogi/components/common/custom_button.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
 import 'package:yeogijeogi/components/walk/course_overview.dart';
 import 'package:yeogijeogi/utils/palette.dart';
@@ -43,7 +44,7 @@ class WalkStartView extends StatelessWidget {
           ),
           SizedBox(height: 20.h),
 
-          SizedBox(width: double.infinity, height: 76.h),
+          CustomButton(text: '산책 시작하기', onTap: () {}),
         ],
       ),
     );
