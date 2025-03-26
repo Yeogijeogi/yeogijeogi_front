@@ -65,7 +65,7 @@ class CustomScaffold extends StatelessWidget {
               Padding(
                 padding:
                     hasPadding
-                        ? EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 0)
+                        ? EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w)
                         : EdgeInsets.zero,
                 child: body,
               ),
