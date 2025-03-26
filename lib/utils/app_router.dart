@@ -7,11 +7,13 @@ import 'package:yeogijeogi/view_models/course_view_model.dart';
 import 'package:yeogijeogi/view_models/onboarding_view_model.dart';
 import 'package:yeogijeogi/view_models/loading_view_model.dart';
 import 'package:yeogijeogi/view_models/login_view_model.dart';
+import 'package:yeogijeogi/view_models/walk/walk_start_view_model.dart';
 import 'package:yeogijeogi/view_models/my_page_view_model.dart';
 import 'package:yeogijeogi/views/course_view.dart';
 import 'package:yeogijeogi/views/onboarding_view.dart';
 import 'package:yeogijeogi/views/loading_view.dart';
 import 'package:yeogijeogi/views/login_view.dart';
+import 'package:yeogijeogi/views/walk/walk_start_view.dart';
 import 'package:yeogijeogi/views/my_page_view.dart';
 
 class AppRouter {
@@ -71,6 +73,17 @@ class AppRouter {
                             create:
                                 (context) => LoadingViewModel(context: context),
                             child: const LoadingView(),
+                          ),
+                    ),
+                    GoRoute(
+                      path: 'walk-start',
+                      name: AppRoute.walkStart.name,
+                      builder:
+                          (context, state) => ChangeNotifierProvider(
+                            create:
+                                (context) =>
+                                    WalkStartViewModel(context: context),
+                            child: const WalkStartView(),
                           ),
                     ),
                   ],
