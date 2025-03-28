@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/custom_button.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
-import 'package:yeogijeogi/components/walk/slider_container.dart';
+import 'package:yeogijeogi/components/onboarding/slider_container.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 import 'package:yeogijeogi/view_models/onboarding_view_model.dart';
 

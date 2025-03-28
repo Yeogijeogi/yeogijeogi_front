@@ -48,6 +48,7 @@ class CustomScaffold extends StatelessWidget {
             title != null
                 ? AppBar(
                   title: Text(title!),
+                  centerTitle: true,
                   leading:
                       showBackBtn
                           ? GestureDetector(
