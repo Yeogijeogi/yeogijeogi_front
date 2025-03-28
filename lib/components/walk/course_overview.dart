@@ -41,6 +41,8 @@ class CourseOverview extends StatelessWidget {
                   walkLabel: '걸음',
                   time: 20,
                   timeLabel: '시간',
+                  margin: true,
+                  shadow: true,
                 ),
               ],
             ),
