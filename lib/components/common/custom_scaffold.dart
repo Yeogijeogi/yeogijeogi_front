@@ -82,6 +82,7 @@ class CustomScaffold extends StatelessWidget {
                           ? EdgeInsets.symmetric(
                             vertical: 20.h,
                             horizontal: 20.w,
+
                           )
                           : EdgeInsets.zero,
                   child: body,
