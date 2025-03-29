@@ -147,7 +147,7 @@ class AppRouter {
                   name: AppRoute.my.name,
                   builder:
                       (context, _) => ChangeNotifierProvider(
-                        create: (context) => MyPageViewModel(),
+                        create: (context) => MyPageViewModel(context: context),
                         child: const MyPageView(),
                       ),
                 ),
