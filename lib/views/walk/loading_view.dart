@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
 import 'package:yeogijeogi/utils/palette.dart';
-import 'package:yeogijeogi/view_models/loading_view_model.dart';
+import 'package:yeogijeogi/view_models/walk/loading_view_model.dart';
 
 class LoadingView extends StatelessWidget {
   const LoadingView({super.key});

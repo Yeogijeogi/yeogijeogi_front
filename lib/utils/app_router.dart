@@ -5,19 +5,21 @@ import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/bottom_navbar.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:yeogijeogi/view_models/course_view_model.dart';
-import 'package:yeogijeogi/view_models/onboarding_view_model.dart';
-import 'package:yeogijeogi/view_models/loading_view_model.dart';
+import 'package:yeogijeogi/view_models/walk/onboarding_view_model.dart';
+import 'package:yeogijeogi/view_models/walk/loading_view_model.dart';
 import 'package:yeogijeogi/view_models/login_view_model.dart';
 import 'package:yeogijeogi/view_models/walk/save_view_model.dart';
 import 'package:yeogijeogi/view_models/walk/walk_start_view_model.dart';
 import 'package:yeogijeogi/view_models/my_page_view_model.dart';
+import 'package:yeogijeogi/view_models/walk/walk_view_model.dart';
 import 'package:yeogijeogi/views/course_view.dart';
-import 'package:yeogijeogi/views/onboarding_view.dart';
-import 'package:yeogijeogi/views/loading_view.dart';
+import 'package:yeogijeogi/views/walk/onboarding_view.dart';
+import 'package:yeogijeogi/views/walk/loading_view.dart';
 import 'package:yeogijeogi/views/login_view.dart';
 import 'package:yeogijeogi/views/walk/save_view.dart';
 import 'package:yeogijeogi/views/walk/walk_start_view.dart';
 import 'package:yeogijeogi/views/my_page_view.dart';
+import 'package:yeogijeogi/views/walk/walk_view.dart';
 
 class AppRouter {
   static final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
@@ -98,7 +100,6 @@ class AppRouter {
                     ),
                     GoRoute(
                       path: 'walk-start',
-
                       name: AppRoute.walkStart.name,
                       builder:
                           (context, state) => ChangeNotifierProvider(
@@ -107,6 +108,20 @@ class AppRouter {
                                     WalkStartViewModel(context: context),
                             child: const WalkStartView(),
                           ),
+                      routes: [
+                        GoRoute(
+                          path: 'walk',
+                          name: AppRoute.walk.name,
+                          parentNavigatorKey: _rootKey,
+                          builder:
+                              (context, state) => ChangeNotifierProvider(
+                                create:
+                                    (context) =>
+                                        WalkViewModel(context: context),
+                                child: const WalkView(),
+                              ),
+                        ),
+                      ],
                     ),
                     GoRoute(
                       path: 'save',
