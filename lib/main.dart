@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yeogijeogi/utils/app_router.dart';
 import 'package:yeogijeogi/utils/custom_theme_data.dart';
@@ -10,6 +11,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
   await Firebase.initializeApp();
+
+  // 네이버 지도 초기화
+  await NaverMapSdk.instance.initialize(
+    clientId: dotenv.env['NAVER_CLIENT_ID'],
+    onAuthFailed: (ex) => debugPrint('Error initializing Naver Map: $ex'),
+  );
 
   runApp(const MainApp());
 }

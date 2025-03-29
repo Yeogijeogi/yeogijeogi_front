@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/bottom_navbar.dart';
@@ -7,17 +8,24 @@ import 'package:yeogijeogi/view_models/course_view_model.dart';
 import 'package:yeogijeogi/view_models/onboarding_view_model.dart';
 import 'package:yeogijeogi/view_models/loading_view_model.dart';
 import 'package:yeogijeogi/view_models/login_view_model.dart';
+import 'package:yeogijeogi/view_models/walk/save_view_model.dart';
+import 'package:yeogijeogi/view_models/walk/walk_start_view_model.dart';
 import 'package:yeogijeogi/view_models/my_page_view_model.dart';
 import 'package:yeogijeogi/views/course_view.dart';
 import 'package:yeogijeogi/views/onboarding_view.dart';
 import 'package:yeogijeogi/views/loading_view.dart';
 import 'package:yeogijeogi/views/login_view.dart';
+import 'package:yeogijeogi/views/walk/save_view.dart';
+import 'package:yeogijeogi/views/walk/walk_start_view.dart';
 import 'package:yeogijeogi/views/my_page_view.dart';
 
 class AppRouter {
+  static final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
+
   static GoRouter getRouter() {
     return GoRouter(
       initialLocation: '/login',
+      navigatorKey: _rootKey,
       redirect: (_, state) {
         // 로그인된 사용자가 있는지 확인
         final User? user = FirebaseAuth.instance.currentUser;
@@ -50,6 +58,21 @@ class AppRouter {
               (_, __, navigationShell) =>
                   BottomNavbar(navigationShell: navigationShell),
           branches: [
+            // 코스
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/course',
+                  name: AppRoute.course.name,
+                  builder:
+                      (context, _) => ChangeNotifierProvider(
+                        create: (context) => CourseViewModel(),
+                        child: const CourseView(),
+                      ),
+                ),
+              ],
+            ),
+
             // 산책
             StatefulShellBranch(
               routes: [
@@ -73,22 +96,30 @@ class AppRouter {
                             child: const LoadingView(),
                           ),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                    GoRoute(
+                      path: 'walk-start',
 
-            // 코스
-            StatefulShellBranch(
-              routes: [
-                GoRoute(
-                  path: '/course',
-                  name: AppRoute.course.name,
-                  builder:
-                      (context, _) => ChangeNotifierProvider(
-                        create: (context) => CourseViewModel(),
-                        child: const CourseView(),
-                      ),
+                      name: AppRoute.walkStart.name,
+                      builder:
+                          (context, state) => ChangeNotifierProvider(
+                            create:
+                                (context) =>
+                                    WalkStartViewModel(context: context),
+                            child: const WalkStartView(),
+                          ),
+                    ),
+                    GoRoute(
+                      path: 'save',
+                      name: AppRoute.save.name,
+                      parentNavigatorKey: _rootKey,
+                      builder:
+                          (context, state) => ChangeNotifierProvider(
+                            create:
+                                (context) => SaveViewModel(context: context),
+                            child: const SaveView(),
+                          ),
+                    ),
+                  ],
                 ),
               ],
             ),

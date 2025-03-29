@@ -5,21 +5,15 @@ import 'package:yeogijeogi/utils/palette.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final Color background;
   final Function()? onTap;
-  const CustomButton({
-    super.key,
-    required this.text,
-    required this.background,
-    required this.onTap,
-  });
+  const CustomButton({super.key, required this.text, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return CustomInkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20.r),
-      backgroundColor: background,
+      backgroundColor: Palette.primary,
       child: Container(
         width: double.infinity,
         height: 56.h,
