@@ -17,6 +17,9 @@ class OnboardingViewModel with ChangeNotifier {
   /// 산책 슬라이더 값
   double walkingLevel = 0;
 
+  /// 코스 추천 버튼 클릭
+  void onTapCourse() {}
+
   /// 풍경 슬라이더 값 업데이트
   void updateSceneryLevel(double value) {
     sceneryLevel = value;

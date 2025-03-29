@@ -5,7 +5,7 @@ import 'package:yeogijeogi/components/common/custom_button.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
 import 'package:yeogijeogi/components/walk/slider_container.dart';
 import 'package:yeogijeogi/utils/palette.dart';
-import 'package:yeogijeogi/view_models/onboarding_view_model.dart';
+import 'package:yeogijeogi/view_models/walk/onboarding_view_model.dart';
 
 class OnboardingView extends StatelessWidget {
   const OnboardingView({super.key});
@@ -74,7 +74,10 @@ class OnboardingView extends StatelessWidget {
           ),
           Spacer(),
 
-          CustomButton(text: "코스 추천 받기", onTap: () {}),
+          CustomButton(
+            text: "코스 추천 받기",
+            onTap: onboardingViewModel.onTapCourse,
+          ),
         ],
       ),
     );
