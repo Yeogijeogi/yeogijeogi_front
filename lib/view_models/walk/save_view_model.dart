@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:yeogijeogi/components/common/custom_dialog.dart';
+import 'package:yeogijeogi/utils/enums/dialog_type.dart';
 
 class SaveViewModel with ChangeNotifier {
   BuildContext context;
@@ -37,5 +40,14 @@ class SaveViewModel with ChangeNotifier {
     } else {
       return newValue;
     }
+  }
+
+  /// 저장하지 않고 종료
+  void onTapNotSave() {
+    showCustomDialog(
+      type: DialogType.notSave,
+      context: context,
+      onTapAction: context.pop,
+    );
   }
 }

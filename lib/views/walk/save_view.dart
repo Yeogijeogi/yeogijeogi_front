@@ -110,7 +110,12 @@ class SaveView extends StatelessWidget {
             ),
             SizedBox(height: 40.h),
 
-            Center(child: CustomTextButton(text: '저장하지 않고 종료하기')),
+            Center(
+              child: CustomTextButton(
+                text: '저장하지 않고 종료하기',
+                onTap: saveViewModel.onTapNotSave,
+              ),
+            ),
             SizedBox(height: 20.h),
 
             CustomButton(text: '산책 코스 저장하기', onTap: () {}),
