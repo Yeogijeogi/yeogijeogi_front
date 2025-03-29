@@ -3,35 +3,78 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 
 class RecordContainer extends StatelessWidget {
-  final String title;
-  final int record;
-  final String unit;
-  const RecordContainer({
-    super.key,
-    required this.title,
-    required this.record,
-    required this.unit,
-  });
+  const RecordContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 18.w),
-      child: Column(
+      width: double.infinity,
+      height: 116.h,
+      decoration: BoxDecoration(
+        color: Palette.container,
+        borderRadius: BorderRadius.circular(20.r),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+      child: Row(
         children: [
-          Text(
-            title,
-            style: Palette.caption.copyWith(color: Palette.onSurfaceVariant),
-          ),
-          SizedBox(height: 24.h),
-          Text.rich(
-            TextSpan(
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 18.w),
+            child: Column(
               children: [
-                TextSpan(
-                  text: record.toString(),
-                  style: Palette.largeTitle.copyWith(color: Palette.primary),
+                Text(
+                  "지금까지 산책한 거리",
+                  style: Palette.caption.copyWith(
+                    color: Palette.onSurfaceVariant,
+                  ),
                 ),
-                TextSpan(text: unit, style: Palette.body),
+                SizedBox(height: 24.h),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "24",
+                        style: Palette.largeTitle.copyWith(
+                          color: Palette.primary,
+                        ),
+                      ),
+                      TextSpan(text: "km", style: Palette.body),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(width: 18.w),
+          VerticalDivider(
+            width: 0,
+            thickness: 1,
+            color: Palette.surfaceVariant,
+          ),
+          SizedBox(width: 18.w),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 18.w),
+            child: Column(
+              children: [
+                Text(
+                  "지금까지 산책한 시간",
+                  style: Palette.caption.copyWith(
+                    color: Palette.onSurfaceVariant,
+                  ),
+                ),
+                SizedBox(height: 24.h),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "452",
+                        style: Palette.largeTitle.copyWith(
+                          color: Palette.primary,
+                        ),
+                      ),
+                      TextSpan(text: "분", style: Palette.body),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
