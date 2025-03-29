@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Palette {
   /* Color */
-  static const Color primary = Color(0xFF198754);
-  static const Color secondary = Color(0xFFAE7560);
+  static const Color primary = Color(0xFF249D65);
+  static const Color secondary = Color(0xFF915944);
   static const Color container = Color(0xFFFFFFFF);
   static const Color surface = Color(0xFFF8F9FA);
   static const Color surfaceVariant = Color(0xFFF6F6F6);

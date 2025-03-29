@@ -91,6 +91,7 @@ class AppRouter {
                     GoRoute(
                       path: 'loading',
                       name: AppRoute.loading.name,
+                      parentNavigatorKey: _rootKey,
                       builder:
                           (context, _) => ChangeNotifierProvider(
                             create:

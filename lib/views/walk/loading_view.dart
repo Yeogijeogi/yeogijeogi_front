@@ -14,6 +14,7 @@ class LoadingView extends StatelessWidget {
     final LoadingViewModel loadingViewModel = context.watch<LoadingViewModel>();
 
     return CustomScaffold(
+      canPop: false,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
