@@ -4,7 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/bottom_navbar.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
-import 'package:yeogijeogi/view_models/course_view_model.dart';
+import 'package:yeogijeogi/view_models/course/course_detail_view_model.dart';
+import 'package:yeogijeogi/view_models/course/course_view_model.dart';
 import 'package:yeogijeogi/view_models/walk/onboarding_view_model.dart';
 import 'package:yeogijeogi/view_models/walk/loading_view_model.dart';
 import 'package:yeogijeogi/view_models/login_view_model.dart';
@@ -12,7 +13,8 @@ import 'package:yeogijeogi/view_models/walk/save_view_model.dart';
 import 'package:yeogijeogi/view_models/walk/walk_start_view_model.dart';
 import 'package:yeogijeogi/view_models/my_page_view_model.dart';
 import 'package:yeogijeogi/view_models/walk/walk_view_model.dart';
-import 'package:yeogijeogi/views/course_view.dart';
+import 'package:yeogijeogi/views/course/course_detail_view.dart';
+import 'package:yeogijeogi/views/course/course_view.dart';
 import 'package:yeogijeogi/views/walk/onboarding_view.dart';
 import 'package:yeogijeogi/views/walk/loading_view.dart';
 import 'package:yeogijeogi/views/login_view.dart';
@@ -71,6 +73,20 @@ class AppRouter {
                         create: (context) => CourseViewModel(),
                         child: const CourseView(),
                       ),
+                  routes: [
+                    GoRoute(
+                      path: 'detail',
+                      name: AppRoute.detail.name,
+                      parentNavigatorKey: _rootKey,
+                      builder:
+                          (context, state) => ChangeNotifierProvider(
+                            create:
+                                (context) =>
+                                    CourseDetailViewModel(context: context),
+                            child: const CourseDetailView(),
+                          ),
+                    ),
+                  ],
                 ),
               ],
             ),
