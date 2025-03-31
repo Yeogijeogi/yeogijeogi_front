@@ -9,7 +9,6 @@ class RecordContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 116.h,
       decoration: BoxDecoration(
         color: Palette.container,
         borderRadius: BorderRadius.circular(20.r),
@@ -17,61 +16,66 @@ class RecordContainer extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
       child: Row(
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 18.w),
+          Expanded(
             child: Column(
               children: [
                 Text(
-                  "지금까지 산책한 거리",
+                  '지금까지 산책한 거리',
                   style: Palette.caption.copyWith(
                     color: Palette.onSurfaceVariant,
                   ),
                 ),
                 SizedBox(height: 24.h),
+
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: "24",
+                        text: '24',
                         style: Palette.largeTitle.copyWith(
                           color: Palette.primary,
                         ),
                       ),
-                      TextSpan(text: "km", style: Palette.body),
+                      TextSpan(text: 'km', style: Palette.body),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(width: 18.w),
-          VerticalDivider(
-            width: 0,
-            thickness: 1,
-            color: Palette.surfaceVariant,
-          ),
-          SizedBox(width: 18.w),
+
+          SizedBox(width: 20.w),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 18.w),
+            width: 1,
+            height: 70.h,
+            decoration: BoxDecoration(
+              color: Palette.surfaceVariant,
+              borderRadius: BorderRadius.circular(1.r),
+            ),
+          ),
+          SizedBox(width: 20.w),
+
+          Expanded(
             child: Column(
               children: [
                 Text(
-                  "지금까지 산책한 시간",
+                  '지금까지 산책한 시간',
                   style: Palette.caption.copyWith(
                     color: Palette.onSurfaceVariant,
                   ),
                 ),
                 SizedBox(height: 24.h),
+
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: "452",
+                        text: '452',
                         style: Palette.largeTitle.copyWith(
                           color: Palette.primary,
                         ),
                       ),
-                      TextSpan(text: "분", style: Palette.body),
+                      TextSpan(text: '분', style: Palette.body),
                     ],
                   ),
                 ),
