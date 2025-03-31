@@ -43,20 +43,14 @@ class OnboardingView extends StatelessWidget {
                     color: Palette.surface,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 26.w,
-                      vertical: 6.h,
-                    ),
-                    child: Text("1시간 30분", style: Palette.body),
-                  ),
+                  child: Center(child: Text("1시간 30분", style: Palette.body)),
                 ),
               ],
             ),
           ),
           SizedBox(height: 24.h),
           SliderContainer(
-            title: "어떤 풍경을 찾아볼까요?",
+            title: "어떤 분위기를 원하시나요?",
             criteria: ["자연", "상관없음", "도시"],
             value: onboardingViewModel.sceneryLevel,
             onChanged: (value) {
