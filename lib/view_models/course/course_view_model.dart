@@ -17,16 +17,12 @@ class CourseViewModel with ChangeNotifier {
   /// 터치로 모달 열고 닫기
   void updateSheetHeight(double delta) {
     _sheetHeight -= delta / 400;
-    _sheetHeight = _sheetHeight.clamp(0.2, 1.0);
+    _sheetHeight = _sheetHeight.clamp(0.25, 1.0);
     notifyListeners();
   }
 
   void toggleSheet() {
-    if (_sheetHeight < 0.5) {
-      _sheetHeight = 1.0;
-    } else {
-      _sheetHeight = 0.2;
-    }
+    _sheetHeight = (_sheetHeight == 1.0) ? 0.25 : 1.0;
     notifyListeners();
   }
 }

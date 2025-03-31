@@ -21,6 +21,7 @@ class CourseDetailView extends StatelessWidget {
     return CustomScaffold(
       title: '산책 코스 상세 보기',
       showBackBtn: true,
+      hasPadding: false,
       body: SingleChildScrollView(
         child: Column(
           children: [

@@ -73,20 +73,6 @@ class AppRouter {
                         create: (context) => CourseViewModel(context: context),
                         child: const CourseView(),
                       ),
-                  routes: [
-                    GoRoute(
-                      path: 'detail',
-                      name: AppRoute.detail.name,
-                      parentNavigatorKey: _rootKey,
-                      builder:
-                          (context, state) => ChangeNotifierProvider(
-                            create:
-                                (context) =>
-                                    CourseDetailViewModel(context: context),
-                            child: const CourseDetailView(),
-                          ),
-                    ),
-                  ],
                 ),
               ],
             ),

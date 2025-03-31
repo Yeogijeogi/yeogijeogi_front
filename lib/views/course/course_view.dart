@@ -9,14 +9,9 @@ import 'package:yeogijeogi/view_models/course/course_detail_view_model.dart';
 import 'package:yeogijeogi/view_models/course/course_view_model.dart';
 import 'package:yeogijeogi/views/course/course_detail_view.dart';
 
-class CourseView extends StatefulWidget {
+class CourseView extends StatelessWidget {
   const CourseView({super.key});
 
-  @override
-  _CourseViewState createState() => _CourseViewState();
-}
-
-class _CourseViewState extends State<CourseView> {
   @override
   Widget build(BuildContext context) {
     final courseViewModel = context.watch<CourseViewModel>();
@@ -30,7 +25,7 @@ class _CourseViewState extends State<CourseView> {
           NaverMap(),
           GestureDetector(
             onVerticalDragUpdate: (details) {
-              courseViewModel.updateSheetHeight(details.primaryDelta!);
+              courseViewModel.toggleSheet();
             },
             onTap: () {
               courseViewModel.toggleSheet();
@@ -72,7 +67,7 @@ class _CourseViewState extends State<CourseView> {
                   ),
                   Expanded(
                     child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 200),
+                      duration: const Duration(milliseconds: 50),
                       child:
                           // 최대로 올라가면 상세 화면
                           courseViewModel.isExpanded
@@ -80,17 +75,23 @@ class _CourseViewState extends State<CourseView> {
                                 create:
                                     (_) =>
                                         CourseDetailViewModel(context: context),
-                                child: const CourseDetailView(),
+                                child: Container(
+                                  alignment: Alignment.topCenter,
+                                  child: const CourseDetailView(),
+                                ),
                               )
-                              : CourseDetail(
-                                name: '성북천',
-                                address: '서울 성북구 동선동2가',
-                                distance: 1.3,
-                                distanceLabel: '이동 거리',
-                                walk: '3km/h',
-                                walkLabel: '평균 속도',
-                                time: 24,
-                                timeLabel: '소요 시간',
+                              : Align(
+                                alignment: Alignment.topCenter,
+                                child: CourseDetail(
+                                  name: '성북천',
+                                  address: '서울 성북구 동선동2가',
+                                  distance: 1.3,
+                                  distanceLabel: '이동 거리',
+                                  walk: '3km/h',
+                                  walkLabel: '평균 속도',
+                                  time: 24,
+                                  timeLabel: '소요 시간',
+                                ),
                               ),
                     ),
                   ),
