@@ -70,7 +70,7 @@ class AppRouter {
                   name: AppRoute.course.name,
                   builder:
                       (context, _) => ChangeNotifierProvider(
-                        create: (context) => CourseViewModel(),
+                        create: (context) => CourseViewModel(context: context),
                         child: const CourseView(),
                       ),
                   routes: [
