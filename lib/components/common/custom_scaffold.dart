@@ -58,6 +58,7 @@ class CustomScaffold extends StatelessWidget {
               title != null
                   ? AppBar(
                     title: Text(title!),
+                    scrolledUnderElevation: 0,
                     leading:
                         showBackBtn
                             ? GestureDetector(
@@ -82,7 +83,6 @@ class CustomScaffold extends StatelessWidget {
                           ? EdgeInsets.symmetric(
                             vertical: 20.h,
                             horizontal: 20.w,
-
                           )
                           : EdgeInsets.zero,
                   child: body,
