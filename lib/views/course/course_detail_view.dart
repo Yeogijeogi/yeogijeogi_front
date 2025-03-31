@@ -5,6 +5,7 @@ import 'package:yeogijeogi/components/common/custom_button.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
 import 'package:yeogijeogi/components/common/custom_text_button.dart';
 import 'package:yeogijeogi/components/walk/course_detail.dart';
+import 'package:yeogijeogi/components/walk/memo_text_field.dart';
 import 'package:yeogijeogi/components/walk/slider_container.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 import 'package:yeogijeogi/view_models/course/course_detail_view_model.dart';
@@ -56,46 +57,9 @@ class CourseDetailView extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
 
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Palette.container,
-                borderRadius: BorderRadius.circular(20.r),
-              ),
-              child: TextField(
-                controller: courseDetailViewModel.controller,
-                style: Palette.body,
-                scrollPhysics: const NeverScrollableScrollPhysics(),
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(20.r),
-                  border: InputBorder.none,
-                  hintText: '메모',
-                  hintStyle: Palette.body.copyWith(
-                    color: Palette.onSurfaceVariant,
-                  ),
-                ),
-                maxLines: 6,
-                maxLength: 128,
-                keyboardType: TextInputType.multiline,
-                textInputAction: TextInputAction.done,
-                buildCounter: (
-                  context, {
-                  required currentLength,
-                  required isFocused,
-                  required maxLength,
-                }) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    child: Text(
-                      '$currentLength / $maxLength',
-                      style: Palette.caption.copyWith(
-                        color: Palette.onSurfaceVariant,
-                      ),
-                    ),
-                  );
-                },
-                onChanged: (_) {},
-              ),
+            MemoTextField(
+              controller: courseDetailViewModel.controller,
+              readOnly: true,
             ),
             SizedBox(height: 40.h),
 
