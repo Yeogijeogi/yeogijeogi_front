@@ -16,6 +16,7 @@ class LoginView extends StatelessWidget {
     final LoginViewModel loginViewModel = context.watch<LoginViewModel>();
 
     return CustomScaffold(
+      isLoading: loginViewModel.isLoading,
       body: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
