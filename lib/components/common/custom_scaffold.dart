@@ -31,6 +31,9 @@ class CustomScaffold extends StatelessWidget {
   /// 화면 탭
   final Function()? onTap;
 
+  /// 뒤로가기 버튼 함수
+  final Function()? onTapBack;
+
   const CustomScaffold({
     super.key,
     this.title,
@@ -42,6 +45,7 @@ class CustomScaffold extends StatelessWidget {
     this.isLoading = false,
     this.body,
     this.onTap,
+    this.onTapBack,
   });
 
   @override
@@ -61,10 +65,15 @@ class CustomScaffold extends StatelessWidget {
                     scrolledUnderElevation: 0,
                     leading:
                         showBackBtn
-                            ? GestureDetector(
-                              onTap: () => context.pop(),
-                              child: Icon(Icons.arrow_back_ios_new),
-                            )
+                            ? (onTapBack == null
+                                ? GestureDetector(
+                                  onTap: () => context.pop(),
+                                  child: Icon(Icons.arrow_back_ios_new),
+                                )
+                                : GestureDetector(
+                                  onTap: onTapBack?.call,
+                                  child: Icon(Icons.arrow_back_ios_new),
+                                ))
                             : null,
                   )
                   : null,
