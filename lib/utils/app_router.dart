@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/bottom_navbar.dart';
+import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:yeogijeogi/view_models/course/course_detail_view_model.dart';
 import 'package:yeogijeogi/view_models/course/course_view_model.dart';
@@ -26,7 +27,7 @@ import 'package:yeogijeogi/views/walk/walk_view.dart';
 class AppRouter {
   static final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
 
-  static GoRouter getRouter() {
+  static GoRouter getRouter(UserModel userModel) {
     return GoRouter(
       initialLocation: '/login',
       navigatorKey: _rootKey,
@@ -52,7 +53,9 @@ class AppRouter {
           name: AppRoute.login.name,
           builder:
               (context, _) => ChangeNotifierProvider(
-                create: (context) => LoginViewModel(context: context),
+                create:
+                    (context) =>
+                        LoginViewModel(userModel: userModel, context: context),
                 child: const LoginView(),
               ),
         ),
