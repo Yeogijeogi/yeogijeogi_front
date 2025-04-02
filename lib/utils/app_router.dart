@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -32,11 +31,9 @@ class AppRouter {
       initialLocation: '/login',
       navigatorKey: _rootKey,
       redirect: (_, state) {
-        // 로그인된 사용자가 있는지 확인
-        final User? user = FirebaseAuth.instance.currentUser;
-
-        if (user == null) {
-          // 로그인된 사용자가 없으면 로그인 화면으로 이동
+        if (userModel.uid == null) {
+          // 사용자 데이터가 있으면 firebase 로그인이 완료된 상태
+          // 사용자 데이터가 없으면 로그인 화면으로 이동, 있으면 홈 화면으로 이동
           return '/login';
         } else if (state.fullPath == '/login') {
           // 로그인 화면에서 로그인 된 사용자가 있으면 홈 화면으로 이동
