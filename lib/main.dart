@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/utils/app_router.dart';
 import 'package:yeogijeogi/utils/custom_theme_data.dart';
 
@@ -20,8 +21,10 @@ void main() async {
   runApp(const MainApp());
 }
 
+final CourseModel courseModel = CourseModel();
+
 // 라우터
-final _router = AppRouter.getRouter();
+final _router = AppRouter.getRouter(courseModel);
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
