@@ -9,7 +9,6 @@ import 'package:yeogijeogi/components/walk/memo_text_field.dart';
 import 'package:yeogijeogi/components/walk/slider_container.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 import 'package:yeogijeogi/view_models/course/course_detail_view_model.dart';
-import 'package:yeogijeogi/view_models/course/course_view_model.dart';
 
 class CourseDetailView extends StatelessWidget {
   const CourseDetailView({super.key});
@@ -22,8 +21,7 @@ class CourseDetailView extends StatelessWidget {
     return CustomScaffold(
       title: '산책 코스 상세 보기',
       onTapBack: () {
-        final courseViewModel = context.read<CourseViewModel>();
-        courseViewModel.toggleSheet();
+        courseDetailViewModel.toggleSheet();
       },
       showBackBtn: true,
       hasPadding: false,

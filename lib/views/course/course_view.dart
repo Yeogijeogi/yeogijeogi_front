@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
 import 'package:yeogijeogi/components/walk/course_detail.dart';
+import 'package:yeogijeogi/main.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 import 'package:yeogijeogi/view_models/course/course_detail_view_model.dart';
 import 'package:yeogijeogi/view_models/course/course_view_model.dart';
@@ -31,10 +32,10 @@ class CourseView extends StatelessWidget {
               courseViewModel.toggleSheet();
             },
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 500),
               height:
                   MediaQuery.of(context).size.height *
-                  courseViewModel.sheetHeight,
+                  courseViewModel.courseModel.sheetHeight,
               width: double.infinity,
               padding: EdgeInsets.only(
                 top: 16.h,
@@ -70,14 +71,16 @@ class CourseView extends StatelessWidget {
                       duration: const Duration(milliseconds: 50),
                       child:
                           // 최대로 올라가면 상세 화면
-                          courseViewModel.isSheetExpanded()
+                          courseViewModel.courseModel.isSheetExpanded()
                               ? ChangeNotifierProvider(
                                 create:
-                                    (_) =>
-                                        CourseDetailViewModel(context: context),
+                                    (_) => CourseDetailViewModel(
+                                      courseModel: courseModel,
+                                      context: context,
+                                    ),
                                 child: Container(
                                   alignment: Alignment.topCenter,
-                                  child: const CourseDetailView(),
+                                  child: CourseDetailView(),
                                 ),
                               )
                               : Align(

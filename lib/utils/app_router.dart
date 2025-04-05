@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/bottom_navbar.dart';
+import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
-import 'package:yeogijeogi/view_models/course/course_detail_view_model.dart';
 import 'package:yeogijeogi/view_models/course/course_view_model.dart';
 import 'package:yeogijeogi/view_models/walk/onboarding_view_model.dart';
 import 'package:yeogijeogi/view_models/walk/loading_view_model.dart';
@@ -13,7 +13,6 @@ import 'package:yeogijeogi/view_models/walk/save_view_model.dart';
 import 'package:yeogijeogi/view_models/walk/walk_start_view_model.dart';
 import 'package:yeogijeogi/view_models/my_page_view_model.dart';
 import 'package:yeogijeogi/view_models/walk/walk_view_model.dart';
-import 'package:yeogijeogi/views/course/course_detail_view.dart';
 import 'package:yeogijeogi/views/course/course_view.dart';
 import 'package:yeogijeogi/views/walk/onboarding_view.dart';
 import 'package:yeogijeogi/views/walk/loading_view.dart';
@@ -26,7 +25,7 @@ import 'package:yeogijeogi/views/walk/walk_view.dart';
 class AppRouter {
   static final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
 
-  static GoRouter getRouter() {
+  static GoRouter getRouter(CourseModel courseModel) {
     return GoRouter(
       initialLocation: '/login',
       navigatorKey: _rootKey,
@@ -70,7 +69,11 @@ class AppRouter {
                   name: AppRoute.course.name,
                   builder:
                       (context, _) => ChangeNotifierProvider(
-                        create: (context) => CourseViewModel(context: context),
+                        create:
+                            (context) => CourseViewModel(
+                              courseModel: courseModel,
+                              context: context,
+                            ),
                         child: const CourseView(),
                       ),
                 ),
