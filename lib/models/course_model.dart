@@ -10,6 +10,19 @@ class CourseModel with ChangeNotifier {
   /// 모달 확장/축소 토글
   void toggleSheet() {
     sheetHeight = (sheetHeight == 1.0) ? 0.25 : 1.0;
-    notifyListeners();
+  }
+
+  void updateSheetHeight(double newHeight) {
+    sheetHeight = newHeight.clamp(0.2, 1.0);
+  }
+
+  void finalizeSheetHeight(double velocity) {
+    if (velocity > 0) {
+      // 아래로 드래그하면 축소
+      sheetHeight = 0.25;
+    } else {
+      // 위로 드래그하면 확대
+      sheetHeight = 1.0;
+    }
   }
 }

@@ -25,14 +25,11 @@ class CourseView extends StatelessWidget {
         children: [
           NaverMap(),
           GestureDetector(
-            onVerticalDragUpdate: (details) {
-              courseViewModel.toggleSheet();
-            },
-            onTap: () {
-              courseViewModel.toggleSheet();
-            },
+            onVerticalDragUpdate: courseViewModel.onVerticalDragUpdate,
+            onVerticalDragEnd: courseViewModel.onVerticalDragEnd,
+            onTap: courseViewModel.toggleSheet,
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 50),
               height:
                   MediaQuery.of(context).size.height *
                   courseViewModel.courseModel.sheetHeight,

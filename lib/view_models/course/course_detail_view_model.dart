@@ -22,8 +22,4 @@ class CourseDetailViewModel with ChangeNotifier {
       onTapAction: context.pop,
     );
   }
-
-  void toggleSheet() {
-    courseModel.toggleSheet();
-  }
 }
