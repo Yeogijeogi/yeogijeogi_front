@@ -29,7 +29,7 @@ class CourseView extends StatelessWidget {
             onVerticalDragEnd: courseViewModel.onVerticalDragEnd,
             onTap: courseViewModel.toggleSheet,
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 50),
+              duration: const Duration(milliseconds: 150),
               height:
                   MediaQuery.of(context).size.height *
                   courseViewModel.courseModel.sheetHeight,
