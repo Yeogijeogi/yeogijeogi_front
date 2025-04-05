@@ -65,15 +65,10 @@ class CustomScaffold extends StatelessWidget {
                     scrolledUnderElevation: 0,
                     leading:
                         showBackBtn
-                            ? (onTapBack == null
-                                ? GestureDetector(
-                                  onTap: () => context.pop(),
-                                  child: Icon(Icons.arrow_back_ios_new),
-                                )
-                                : GestureDetector(
-                                  onTap: onTapBack?.call,
-                                  child: Icon(Icons.arrow_back_ios_new),
-                                ))
+                            ? GestureDetector(
+                              onTap: onTapBack ?? context.pop,
+                              child: Icon(Icons.arrow_back_ios_new),
+                            )
                             : null,
                   )
                   : null,

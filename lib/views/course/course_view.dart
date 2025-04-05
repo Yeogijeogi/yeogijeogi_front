@@ -70,7 +70,7 @@ class CourseView extends StatelessWidget {
                       duration: const Duration(milliseconds: 50),
                       child:
                           // 최대로 올라가면 상세 화면
-                          courseViewModel.isModalExpanded()
+                          courseViewModel.isSheetExpanded()
                               ? ChangeNotifierProvider(
                                 create:
                                     (_) =>

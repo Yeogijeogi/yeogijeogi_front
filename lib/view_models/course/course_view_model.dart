@@ -9,7 +9,7 @@ class CourseViewModel with ChangeNotifier {
   double sheetHeight = 0.2;
 
   /// 모달의 확장 여부 확인
-  bool isModalExpanded() => sheetHeight > 0.5;
+  bool isSheetExpanded() => sheetHeight > 0.5;
 
   /// 모달 확장/축소 토글
   void toggleSheet() {
