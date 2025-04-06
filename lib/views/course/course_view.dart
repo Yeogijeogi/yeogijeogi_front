@@ -91,30 +91,39 @@ class _CourseViewState extends State<CourseView> {
                         padding: EdgeInsets.zero,
                         controller: scrollController,
                         children: [
-                          _isExpanded
-                              ? ChangeNotifierProvider(
-                                create:
-                                    (_) => CourseDetailViewModel(
-                                      courseModel: courseViewModel.courseModel,
-                                      context: context,
-                                      draggableController:
-                                          _draggableController, // 추가
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: 20.h,
+                              left: 20.w,
+                              right: 20.w,
+                            ),
+                            child:
+                                _isExpanded
+                                    ? ChangeNotifierProvider(
+                                      create:
+                                          (_) => CourseDetailViewModel(
+                                            courseModel:
+                                                courseViewModel.courseModel,
+                                            context: context,
+                                            draggableController:
+                                                _draggableController,
+                                          ),
+                                      child: const CourseDetailView(),
+                                    )
+                                    : Align(
+                                      alignment: Alignment.topCenter,
+                                      child: CourseDetail(
+                                        name: '성북천',
+                                        address: '서울 성북구 동선동2가',
+                                        distance: 1.3,
+                                        distanceLabel: '이동 거리',
+                                        walk: '3km/h',
+                                        walkLabel: '평균 속도',
+                                        time: 24,
+                                        timeLabel: '소요 시간',
+                                      ),
                                     ),
-                                child: CourseDetailView(),
-                              )
-                              : Align(
-                                alignment: Alignment.topCenter,
-                                child: CourseDetail(
-                                  name: '성북천',
-                                  address: '서울 성북구 동선동2가',
-                                  distance: 1.3,
-                                  distanceLabel: '이동 거리',
-                                  walk: '3km/h',
-                                  walkLabel: '평균 속도',
-                                  time: 24,
-                                  timeLabel: '소요 시간',
-                                ),
-                              ),
+                          ),
                         ],
                       ),
                     ),

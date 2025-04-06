@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yeogijeogi/utils/palette.dart';
 
 class CustomModalAppBar extends StatelessWidget {
   final String title;
@@ -18,28 +19,22 @@ class CustomModalAppBar extends StatelessWidget {
     return Container(
       height: kToolbarHeight,
       padding: EdgeInsets.symmetric(horizontal: 16.w),
-      decoration: const BoxDecoration(
-        color: Colors.transparent, // 모달에서는 배경 투명
-      ),
-      child: Row(
+      child: Stack(
+        alignment: Alignment.center,
         children: [
+          // 가운데 타이틀
+          Center(child: Text(title, style: Palette.headline)),
+
+          // 왼쪽 뒤로가기 버튼
           if (showBackBtn)
-            GestureDetector(
-              onTap: onTapBack ?? () => Navigator.of(context).pop(),
-              behavior: HitTestBehavior.translucent,
-              child: const Icon(Icons.arrow_back_ios_new),
-            ),
-          if (showBackBtn) SizedBox(width: 12.w),
-          Expanded(
-            child: Text(
-              title,
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
+            Positioned(
+              left: 0,
+              child: GestureDetector(
+                onTap: onTapBack ?? () => Navigator.of(context).pop(),
+                behavior: HitTestBehavior.translucent,
+                child: const Icon(Icons.arrow_back_ios_new),
               ),
             ),
-          ),
         ],
       ),
     );

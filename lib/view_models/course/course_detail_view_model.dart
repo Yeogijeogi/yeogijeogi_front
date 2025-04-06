@@ -22,7 +22,7 @@ class CourseDetailViewModel with ChangeNotifier {
 
   void onTapBack() {
     draggableController.animateTo(
-      0.4,
+      0.204,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
