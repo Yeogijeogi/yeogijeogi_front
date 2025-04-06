@@ -5,9 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
 import 'package:yeogijeogi/components/walk/course_detail.dart';
 import 'package:yeogijeogi/utils/palette.dart';
-import 'package:yeogijeogi/view_models/course/course_detail_view_model.dart';
 import 'package:yeogijeogi/view_models/course/course_view_model.dart';
-import 'package:yeogijeogi/views/course/course_detail_view.dart';
+import 'package:yeogijeogi/components/course/course_detail_view.dart';
 
 class CourseView extends StatelessWidget {
   const CourseView({super.key});
@@ -22,15 +21,17 @@ class CourseView extends StatelessWidget {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
+          // 지도
           const NaverMap(),
+
+          // 모달
           DraggableScrollableSheet(
             controller: courseViewModel.draggableController,
             maxChildSize: 1.0,
-            initialChildSize: 0.204,
-            minChildSize: 0.204,
-            expand: false,
+            initialChildSize: 0.228,
+            minChildSize: 0.228,
             snap: true,
-            snapSizes: const [0.204, 1.0],
+            snapSizes: const [0.228, 1.0],
             builder: (context, scrollController) {
               return Container(
                 decoration: BoxDecoration(
@@ -42,15 +43,16 @@ class CourseView extends StatelessWidget {
                 child: Column(
                   children: [
                     // 핸들
-                    Container(
-                      width: 40.w,
-                      height: 4.h,
-                      margin: EdgeInsets.only(top: 16.h, bottom: 20.h),
-                      decoration: BoxDecoration(
-                        color: Palette.onSurfaceVariant,
-                        borderRadius: BorderRadius.circular(10.r),
+                    if (!courseViewModel.isExpanded)
+                      Container(
+                        width: 40.w,
+                        height: 4.h,
+                        margin: EdgeInsets.only(top: 16.h, bottom: 20.h),
+                        decoration: BoxDecoration(
+                          color: Palette.onSurfaceVariant,
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
                       ),
-                    ),
 
                     // 내용 영역
                     Expanded(
@@ -66,17 +68,10 @@ class CourseView extends StatelessWidget {
                             ),
                             child:
                                 courseViewModel.isExpanded
-                                    ? ChangeNotifierProvider(
-                                      create:
-                                          (_) => CourseDetailViewModel(
-                                            courseModel:
-                                                courseViewModel.courseModel,
-                                            context: context,
-                                            draggableController:
-                                                courseViewModel
-                                                    .draggableController,
-                                          ),
-                                      child: const CourseDetailView(),
+                                    ? CourseDetailView(
+                                      onTapDelete: courseViewModel.onTapDelete,
+                                      onTapBack: courseViewModel.onTapBack,
+                                      controller: courseViewModel.controller,
                                     )
                                     : Align(
                                       alignment: Alignment.topCenter,
