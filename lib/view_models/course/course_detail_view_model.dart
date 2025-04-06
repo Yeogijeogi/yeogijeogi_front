@@ -5,15 +5,28 @@ import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/utils/enums/dialog_type.dart';
 
 class CourseDetailViewModel with ChangeNotifier {
-  BuildContext context;
   CourseModel courseModel;
+  BuildContext context;
+  DraggableScrollableController draggableController;
 
-  CourseDetailViewModel({required this.courseModel, required this.context});
+  CourseDetailViewModel({
+    required this.courseModel,
+    required this.context,
+    required this.draggableController,
+  });
 
   double moodLevel = 6;
   double walkingLevel = 2;
 
   TextEditingController controller = TextEditingController();
+
+  void onTapBack() {
+    draggableController.animateTo(
+      0.4,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
 
   void onTapDelete() {
     showCustomDialog(

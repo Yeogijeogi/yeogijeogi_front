@@ -10,8 +10,40 @@ import 'package:yeogijeogi/view_models/course/course_detail_view_model.dart';
 import 'package:yeogijeogi/view_models/course/course_view_model.dart';
 import 'package:yeogijeogi/views/course/course_detail_view.dart';
 
-class CourseView extends StatelessWidget {
+class CourseView extends StatefulWidget {
   const CourseView({super.key});
+
+  @override
+  State<CourseView> createState() => _CourseViewState();
+}
+
+class _CourseViewState extends State<CourseView> {
+  final DraggableScrollableController _draggableController =
+      DraggableScrollableController();
+  bool _isExpanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _draggableController.addListener(_onDrag);
+  }
+
+  void _onDrag() {
+    // 확장 상태 판단 기준 (1.0에 가까우면 확장된 것으로 판단)
+    final isNowExpanded = _draggableController.size >= 0.95;
+    if (isNowExpanded != _isExpanded) {
+      setState(() {
+        _isExpanded = isNowExpanded;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _draggableController.removeListener(_onDrag);
+    _draggableController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,62 +55,52 @@ class CourseView extends StatelessWidget {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          NaverMap(),
-          GestureDetector(
-            onVerticalDragUpdate: courseViewModel.onVerticalDragUpdate,
-            onVerticalDragEnd: courseViewModel.onVerticalDragEnd,
-            onTap: courseViewModel.toggleSheet,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 150),
-              height:
-                  MediaQuery.of(context).size.height *
-                  courseViewModel.courseModel.sheetHeight,
-              width: double.infinity,
-              padding: EdgeInsets.only(
-                top: 16.h,
-                left: 20.w,
-                right: 20.w,
-                bottom: 20.h,
-              ),
-              decoration: BoxDecoration(
-                color: Palette.surface,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Palette.onSurfaceVariant.withAlpha(25),
-                    blurRadius: 16,
-                    spreadRadius: 0,
+          const NaverMap(),
+          DraggableScrollableSheet(
+            controller: _draggableController,
+            maxChildSize: 1.0,
+            initialChildSize: 0.204,
+            minChildSize: 0.204,
+            expand: false,
+            snap: true,
+            snapSizes: const [0.204, 1.0],
+            builder: (context, scrollController) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Palette.surface,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20.r),
                   ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 40.w,
-                    height: 4.h,
-                    margin: EdgeInsets.only(bottom: 20.h),
-                    decoration: BoxDecoration(
-                      color: Palette.onSurfaceVariant,
-                      borderRadius: BorderRadius.circular(10.r),
+                ),
+                child: Column(
+                  children: [
+                    // 핸들
+                    Container(
+                      width: 40.w,
+                      height: 4.h,
+                      margin: EdgeInsets.only(top: 16.h, bottom: 20.h),
+                      decoration: BoxDecoration(
+                        color: Palette.onSurfaceVariant,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 50),
-                      child:
-                          // 최대로 올라가면 상세 화면
-                          courseViewModel.courseModel.isSheetExpanded()
+
+                    // 내용 영역
+                    Expanded(
+                      child: ListView(
+                        padding: EdgeInsets.zero,
+                        controller: scrollController,
+                        children: [
+                          _isExpanded
                               ? ChangeNotifierProvider(
                                 create:
                                     (_) => CourseDetailViewModel(
-                                      courseModel: courseModel,
+                                      courseModel: courseViewModel.courseModel,
                                       context: context,
+                                      draggableController:
+                                          _draggableController, // 추가
                                     ),
-                                child: Container(
-                                  alignment: Alignment.topCenter,
-                                  child: CourseDetailView(),
-                                ),
+                                child: CourseDetailView(),
                               )
                               : Align(
                                 alignment: Alignment.topCenter,
@@ -93,11 +115,13 @@ class CourseView extends StatelessWidget {
                                   timeLabel: '소요 시간',
                                 ),
                               ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
+                  ],
+                ),
+              );
+            },
           ),
         ],
       ),
