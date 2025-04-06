@@ -1,41 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 
 class CustomModalAppBar extends StatelessWidget {
   final String title;
-  final VoidCallback? onTapBack;
-  final bool showBackBtn;
+  final Function() onTapBack;
 
   const CustomModalAppBar({
     super.key,
     required this.title,
-    this.onTapBack,
-    this.showBackBtn = true,
+    required this.onTapBack,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: kToolbarHeight,
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // 가운데 타이틀
-          Center(child: Text(title, style: Palette.headline)),
-
-          // 왼쪽 뒤로가기 버튼
-          if (showBackBtn)
-            Positioned(
-              left: 0,
-              child: GestureDetector(
-                onTap: onTapBack ?? () => Navigator.of(context).pop(),
+    return SafeArea(
+      child: SizedBox(
+        height: kToolbarHeight,
+        width: double.infinity,
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // 왼쪽 뒤로가기 버튼
+              GestureDetector(
+                onTap: onTapBack,
                 behavior: HitTestBehavior.translucent,
                 child: const Icon(Icons.arrow_back_ios_new),
               ),
-            ),
-        ],
+
+              // 타이틀
+              Text(title, style: Palette.headline),
+
+              const SizedBox(width: 24),
+            ],
+          ),
+        ),
       ),
     );
   }
