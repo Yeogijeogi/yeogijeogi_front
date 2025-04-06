@@ -1,33 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-import 'package:yeogijeogi/components/common/custom_button.dart';
 import 'package:yeogijeogi/components/common/custom_modal_appbar.dart';
 import 'package:yeogijeogi/components/common/custom_text_button.dart';
 import 'package:yeogijeogi/components/walk/course_detail.dart';
 import 'package:yeogijeogi/components/walk/memo_text_field.dart';
 import 'package:yeogijeogi/components/walk/slider_container.dart';
 import 'package:yeogijeogi/utils/palette.dart';
-import 'package:yeogijeogi/view_models/course/course_detail_view_model.dart';
 
 class CourseDetailView extends StatelessWidget {
-  const CourseDetailView({super.key});
+  final Function() onTapBack;
+  final TextEditingController controller;
+  final Function() onTapDelete;
+  const CourseDetailView({
+    super.key,
+    required this.onTapBack,
+    required this.controller,
+    required this.onTapDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final CourseDetailViewModel courseDetailViewModel =
-        context.watch<CourseDetailViewModel>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // 앱바
-        CustomModalAppBar(
-          title: '산책 코스 상세 보기',
-          onTapBack: () {
-            courseDetailViewModel.onTapBack();
-          },
-        ),
-        SizedBox(
+        CustomModalAppBar(title: '산책 코스 상세 보기', onTapBack: onTapBack),
+        SizedBox(height: 20.h),
+
+        Container(
+          color: Palette.primary,
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.width,
         ),
@@ -45,36 +46,26 @@ class CourseDetailView extends StatelessWidget {
         ),
         SizedBox(height: 24.h),
 
-        SliderContainer(
-          title: '분위기가 어땠나요?',
-          criteria: ['자연', '도시'],
-          value: courseDetailViewModel.moodLevel,
-        ),
+        SliderContainer(title: '분위기가 어땠나요?', criteria: ['자연', '도시'], value: 6),
         SizedBox(height: 24.h),
 
         SliderContainer(
           title: '산책 강도는 어땠나요?',
           criteria: ['쉬움', '적당함', '어려움'],
-          value: courseDetailViewModel.walkingLevel,
+          value: 2,
         ),
         SizedBox(height: 24.h),
 
-        MemoTextField(
-          controller: courseDetailViewModel.controller,
-          readOnly: true,
-        ),
+        MemoTextField(controller: controller, readOnly: true),
         SizedBox(height: 40.h),
 
         Center(
           child: CustomTextButton(
             text: '코스 삭제하기',
             style: Palette.caption.copyWith(color: Palette.error),
-            onTap: courseDetailViewModel.onTapDelete,
+            onTap: onTapDelete,
           ),
         ),
-        SizedBox(height: 20.h),
-
-        CustomButton(text: '이 코스로 산책하기', onTap: () {}),
       ],
     );
   }
