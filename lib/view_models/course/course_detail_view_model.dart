@@ -20,6 +20,7 @@ class CourseDetailViewModel with ChangeNotifier {
 
   TextEditingController controller = TextEditingController();
 
+  /// 앱바 뒤로가기 버튼
   void onTapBack() {
     draggableController.animateTo(
       0.204,
