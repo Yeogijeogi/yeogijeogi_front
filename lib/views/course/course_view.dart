@@ -4,46 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
 import 'package:yeogijeogi/components/walk/course_detail.dart';
-import 'package:yeogijeogi/main.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 import 'package:yeogijeogi/view_models/course/course_detail_view_model.dart';
 import 'package:yeogijeogi/view_models/course/course_view_model.dart';
 import 'package:yeogijeogi/views/course/course_detail_view.dart';
 
-class CourseView extends StatefulWidget {
+class CourseView extends StatelessWidget {
   const CourseView({super.key});
-
-  @override
-  State<CourseView> createState() => _CourseViewState();
-}
-
-class _CourseViewState extends State<CourseView> {
-  final DraggableScrollableController _draggableController =
-      DraggableScrollableController();
-  bool _isExpanded = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _draggableController.addListener(_onDrag);
-  }
-
-  void _onDrag() {
-    // 확장 상태 판단 기준 (1.0에 가까우면 확장된 것으로 판단)
-    final isNowExpanded = _draggableController.size >= 0.95;
-    if (isNowExpanded != _isExpanded) {
-      setState(() {
-        _isExpanded = isNowExpanded;
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    _draggableController.removeListener(_onDrag);
-    _draggableController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +24,7 @@ class _CourseViewState extends State<CourseView> {
         children: [
           const NaverMap(),
           DraggableScrollableSheet(
-            controller: _draggableController,
+            controller: courseViewModel.draggableController,
             maxChildSize: 1.0,
             initialChildSize: 0.204,
             minChildSize: 0.204,
@@ -98,7 +65,7 @@ class _CourseViewState extends State<CourseView> {
                               right: 20.w,
                             ),
                             child:
-                                _isExpanded
+                                courseViewModel.isExpanded
                                     ? ChangeNotifierProvider(
                                       create:
                                           (_) => CourseDetailViewModel(
@@ -106,7 +73,8 @@ class _CourseViewState extends State<CourseView> {
                                                 courseViewModel.courseModel,
                                             context: context,
                                             draggableController:
-                                                _draggableController,
+                                                courseViewModel
+                                                    .draggableController,
                                           ),
                                       child: const CourseDetailView(),
                                     )
