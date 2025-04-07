@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/bottom_navbar.dart';
+import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:yeogijeogi/view_models/course/course_view_model.dart';
@@ -25,16 +25,14 @@ import 'package:yeogijeogi/views/walk/walk_view.dart';
 class AppRouter {
   static final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
 
-  static GoRouter getRouter(CourseModel courseModel) {
+  static GoRouter getRouter(UserModel userModel, CourseModel courseModel) {
     return GoRouter(
       initialLocation: '/login',
       navigatorKey: _rootKey,
       redirect: (_, state) {
-        // 로그인된 사용자가 있는지 확인
-        final User? user = FirebaseAuth.instance.currentUser;
-
-        if (user == null) {
-          // 로그인된 사용자가 없으면 로그인 화면으로 이동
+        if (userModel.uid == null) {
+          // 사용자 데이터가 있으면 firebase 로그인이 완료된 상태
+          // 사용자 데이터가 없으면 로그인 화면으로 이동, 있으면 홈 화면으로 이동
           return '/login';
         } else if (state.fullPath == '/login') {
           // 로그인 화면에서 로그인 된 사용자가 있으면 홈 화면으로 이동
@@ -51,7 +49,9 @@ class AppRouter {
           name: AppRoute.login.name,
           builder:
               (context, _) => ChangeNotifierProvider(
-                create: (context) => LoginViewModel(context: context),
+                create:
+                    (context) =>
+                        LoginViewModel(userModel: userModel, context: context),
                 child: const LoginView(),
               ),
         ),
