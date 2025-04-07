@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yeogijeogi/models/user_model.dart';
+import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/utils/app_router.dart';
 import 'package:yeogijeogi/utils/custom_theme_data.dart';
 
@@ -42,9 +43,10 @@ Future<void> autoLogin() async {
 
 // 모델
 final UserModel userModel = UserModel();
+final CourseModel courseModel = CourseModel();
 
 // 라우터
-final _router = AppRouter.getRouter(userModel);
+final _router = AppRouter.getRouter(userModel, courseModel);
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
