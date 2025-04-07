@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/custom_button.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
-import 'package:yeogijeogi/components/common/custom_text_button.dart';
 import 'package:yeogijeogi/components/walk/course_detail.dart';
 import 'package:yeogijeogi/components/walk/memo_text_field.dart';
 import 'package:yeogijeogi/components/walk/slider_container.dart';
@@ -66,14 +65,6 @@ class SaveView extends StatelessWidget {
 
             MemoTextField(controller: saveViewModel.controller),
             SizedBox(height: 40.h),
-
-            Center(
-              child: CustomTextButton(
-                text: '저장하지 않고 종료하기',
-                onTap: saveViewModel.onTapNotSave,
-              ),
-            ),
-            SizedBox(height: 20.h),
 
             CustomButton(text: '산책 코스 저장하기', onTap: () {}),
           ],
