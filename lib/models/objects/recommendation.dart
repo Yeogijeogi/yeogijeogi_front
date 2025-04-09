@@ -36,4 +36,17 @@ class Recommendation {
     required this.img,
     required this.routes,
   });
+
+  factory Recommendation.fromJson(Map<String, dynamic> json) {
+    return Recommendation(
+      location: json['location'],
+      name: json['name'],
+      address: json['address'],
+      distance: json['distance'],
+      walks: json['walks'],
+      time: json['time'],
+      img: json['img'],
+      routes: json['routes'],
+    );
+  }
 }

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/objects/recommendation.dart';
+import 'package:yeogijeogi/models/objects/walk_point.dart';
 
 class WalkModel with ChangeNotifier {
+  /// 산책 id
+  String? id;
+
   /// 시작 주소
   String? startName;
 
@@ -27,14 +31,18 @@ class WalkModel with ChangeNotifier {
   /// 메모
   String? memo;
 
+  /// 경로 좌표 리스트
+  List<Coordinate>? routes;
+
+  /// 최근 1분동안 지나온 경로
+  List<WalkPoint>? walkPointList;
+
   /// 추천 목적지 리스트
   List<Recommendation>? recommendationList;
 
-  /// 경로 좌표 리스트
-  List<Coordinate>? courseList;
-
   /// 모델 초기화
   void reset() {
+    id = null;
     startName = null;
     endName = null;
     time = null;
@@ -44,6 +52,13 @@ class WalkModel with ChangeNotifier {
     difficulty = null;
     memo = null;
     recommendationList = null;
-    courseList = null;
+    routes = null;
+    walkPointList = null;
+  }
+
+  void getAvgSpeed() {
+    if (time != null && time != 0 && distance != null) {
+      averageSpeed = distance! / time!;
+    }
   }
 }
