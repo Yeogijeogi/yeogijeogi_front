@@ -34,8 +34,8 @@ class UserModel with ChangeNotifier {
   }
 
   void fromJson(Map<String, dynamic> json) {
-    walkDistance = json['walkDistance'];
-    walkTime = json['walkTime'];
+    walkDistance = json['walk_distance'];
+    walkTime = json['walk_time'];
   }
 
   @override
