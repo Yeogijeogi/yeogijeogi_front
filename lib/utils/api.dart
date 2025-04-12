@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:yeogijeogi/utils/custom_interceptor.dart';
 
@@ -83,5 +86,36 @@ class API {
     dio.interceptors.clear();
     dio.interceptors.add(CustomInterceptor(tokenRequired: tokenRequired));
     return await dio.delete(endPoint, data: jsonData);
+  }
+
+  /* USER API */
+
+  /// user 생성 POST 요청
+  /// token 반환
+  static Future<void> postCreateUser() async {
+    try {
+      final response = await _postApi('/user', tokenRequired: true);
+
+      return response;
+    } catch (e) {
+      debugPrint('Error in postCreateUser: $e');
+      throw Error();
+    }
+  }
+
+  /// user 정보 GET 요청
+  /// walk_distance와 walk_time 반환
+  static Future<Map<String, dynamic>> getUserInfo() async {
+    try {
+      final response = await _getApi('/user', tokenRequired: true);
+
+      if (response.data != null) {
+        final data = response.data as Map<String, dynamic>;
+        return data;
+      }
+    } catch (e) {
+      debugPrint('Error in getUserInfo: $e');
+    }
+    return {};
   }
 }
