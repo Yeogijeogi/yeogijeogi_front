@@ -45,19 +45,15 @@ class LoginViewModel with ChangeNotifier {
           .signInWithCredential(credential);
       final User? user = userCredential.user;
 
-      await API.postCreateUser();
+      if (userCredential.additionalUserInfo!.isNewUser) {
+        await API.postCreateUser();
+      }
 
       if (user != null) {
         userModel.fromFirebaseUser(user);
 
         final userInfo = await API.getUserInfo();
-
-        if (userInfo != null) {
-          userModel.fromJson(userInfo);
-        }
-        debugPrint(
-          "userModel : ${userModel.walkDistance} ${userModel.walkTime}",
-        );
+        userModel.fromJson(userInfo);
 
         isLoading = false;
         notifyListeners();
@@ -102,8 +98,15 @@ class LoginViewModel with ChangeNotifier {
           .signInWithCredential(credential);
       final User? user = userCredential.user;
 
+      if (userCredential.additionalUserInfo!.isNewUser) {
+        await API.postCreateUser();
+      }
+
       if (user != null) {
         userModel.fromFirebaseUser(user);
+        final userInfo = await API.getUserInfo();
+
+        userModel.fromJson(userInfo);
 
         isLoading = false;
         notifyListeners();

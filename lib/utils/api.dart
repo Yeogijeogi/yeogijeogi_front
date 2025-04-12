@@ -94,9 +94,7 @@ class API {
   /// token 반환
   static Future<void> postCreateUser() async {
     try {
-      final response = await _postApi('/user', tokenRequired: true);
-
-      return response;
+      await _postApi('/user', tokenRequired: true);
     } catch (e) {
       debugPrint('Error in postCreateUser: $e');
       throw Error();
@@ -107,15 +105,17 @@ class API {
   /// walk_distance와 walk_time 반환
   static Future<Map<String, dynamic>> getUserInfo() async {
     try {
-      final response = await _getApi('/user', tokenRequired: true);
+      final response = await _getApi('/user');
 
       if (response.data != null) {
         final data = response.data as Map<String, dynamic>;
         return data;
+      } else {
+        throw Error();
       }
     } catch (e) {
       debugPrint('Error in getUserInfo: $e');
+      throw Error();
     }
-    return {};
   }
 }
