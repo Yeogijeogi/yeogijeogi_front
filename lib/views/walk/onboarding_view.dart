@@ -20,10 +20,13 @@ class OnboardingView extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("산책을 떠나 볼까요?", style: Palette.title),
+          Text('산책을 떠나 볼까요?', style: Palette.title),
           SizedBox(height: 8.h),
-          Text("산책 코스 추천을 위해 몇가지 질문에 대답해 주세요.", style: Palette.headline),
+
+          Text('산책 코스 추천을 위해 몇가지 질문에 대답해 주세요.', style: Palette.headline),
           SizedBox(height: 40.h),
+
+          // 시간
           Container(
             width: double.infinity,
             height: 64.h,
@@ -35,7 +38,8 @@ class OnboardingView extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("얼마나 걸을까요?", style: Palette.body),
+                Text('얼마나 걸을까요?', style: Palette.body),
+
                 Container(
                   width: 128.w,
                   height: 36.h,
@@ -43,24 +47,28 @@ class OnboardingView extends StatelessWidget {
                     color: Palette.surface,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
-                  child: Center(child: Text("1시간 30분", style: Palette.body)),
+                  child: Center(child: Text('1시간 30분', style: Palette.body)),
                 ),
               ],
             ),
           ),
           SizedBox(height: 24.h),
+
+          // 분위기
           SliderContainer(
-            title: "어떤 분위기를 원하시나요?",
-            criteria: ["자연", "상관없음", "도시"],
+            title: '어떤 분위기를 원하시나요?',
+            criteria: ['자연', '상관없음', '도시'],
             value: onboardingViewModel.sceneryLevel,
             onChanged: (value) {
               onboardingViewModel.updateSceneryLevel(value);
             },
           ),
           SizedBox(height: 24.h),
+
+          // 강도
           SliderContainer(
-            title: "산책 강도를 선택해 주세요.",
-            criteria: ["가벼운", "상관없음", "운동되는"],
+            title: '산책 강도를 선택해 주세요.',
+            criteria: ['가벼운', '상관없음', '운동되는'],
             value: onboardingViewModel.walkingLevel,
             onChanged: (value) {
               onboardingViewModel.updateWalkingLevel(value);
@@ -69,7 +77,7 @@ class OnboardingView extends StatelessWidget {
           Spacer(),
 
           CustomButton(
-            text: "코스 추천 받기",
+            text: '코스 추천 받기',
             onTap: onboardingViewModel.onTapCourse,
           ),
         ],

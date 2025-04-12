@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:yeogijeogi/components/common/custom_dialog.dart';
-import 'package:yeogijeogi/utils/enums/dialog_type.dart';
+import 'package:yeogijeogi/utils/enums/app_routes.dart';
 
 class SaveViewModel with ChangeNotifier {
   BuildContext context;
@@ -42,12 +41,8 @@ class SaveViewModel with ChangeNotifier {
     }
   }
 
-  /// 저장하지 않고 종료
-  void onTapNotSave() {
-    showCustomDialog(
-      type: DialogType.notSave,
-      context: context,
-      onTapAction: context.pop,
-    );
+  /// 저장
+  void onTapSave() {
+    context.goNamed(AppRoute.course.name);
   }
 }

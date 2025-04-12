@@ -49,7 +49,7 @@ class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
 
   /// 코스 추천 버튼 클릭
   void onTapCourse() {
-    context.goNamed(AppRoute.loading.name);
+    context.goNamed(AppRoute.walkStart.name);
   }
 
   /// 풍경 슬라이더 값 업데이트
