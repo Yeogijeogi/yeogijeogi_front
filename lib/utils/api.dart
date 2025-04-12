@@ -94,7 +94,7 @@ class API {
   /// token 반환
   static Future<void> postCreateUser() async {
     try {
-      await _postApi('/user', tokenRequired: true);
+      await _postApi('/user');
     } catch (e) {
       debugPrint('Error in postCreateUser: $e');
       throw Error();
