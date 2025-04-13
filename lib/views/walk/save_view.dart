@@ -66,7 +66,7 @@ class SaveView extends StatelessWidget {
             MemoTextField(controller: saveViewModel.controller),
             SizedBox(height: 40.h),
 
-            CustomButton(text: '산책 코스 저장하기', onTap: () {}),
+            CustomButton(text: '산책 코스 저장하기', onTap: saveViewModel.onTapSave),
           ],
         ),
       ),

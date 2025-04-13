@@ -6,9 +6,15 @@ import 'package:yeogijeogi/utils/enums/dialog_type.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 
 Future<void> showCustomDialog({
+  /// 다이얼로그 타입
   required DialogType type,
+
   required BuildContext context,
+
+  /// action 버튼 클릭시 호출 함수
   required Function() onTapAction,
+
+  bool showCancel = true,
 }) async {
   await showDialog(
     context: context,
@@ -42,14 +48,15 @@ Future<void> showCustomDialog({
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // 저장 안하기 버튼
-                    CustomTextButton(
-                      text: '취소',
-                      style: Palette.callout.copyWith(
-                        color: Palette.onSurfaceVariant,
+                    if (showCancel)
+                      // 저장 안하기 버튼
+                      CustomTextButton(
+                        text: '취소',
+                        style: Palette.callout.copyWith(
+                          color: Palette.onSurfaceVariant,
+                        ),
+                        onTap: context.pop,
                       ),
-                      onTap: context.pop,
-                    ),
                     SizedBox(width: 24.w),
 
                     // 액션 버튼

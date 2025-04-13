@@ -44,7 +44,7 @@ class WalkStartView extends StatelessWidget {
           ),
           SizedBox(height: 20.h),
 
-          CustomButton(text: '산책 시작하기', onTap: () {}),
+          CustomButton(text: '산책 시작하기', onTap: walkStartViewModel.onTapStart),
         ],
       ),
     );

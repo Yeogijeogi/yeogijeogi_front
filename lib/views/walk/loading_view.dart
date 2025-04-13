@@ -11,7 +11,7 @@ class LoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LoadingViewModel loadingViewModel = context.watch<LoadingViewModel>();
+    context.watch<LoadingViewModel>();
 
     return CustomScaffold(
       canPop: false,
