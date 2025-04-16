@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/objects/recommendation.dart';
@@ -21,7 +21,38 @@ class API {
     ),
   );
 
-  /* Walk */
+  /* USER API */
+
+  /// user 생성 POST 요청
+  /// token 반환
+  static Future<void> postCreateUser() async {
+    try {
+      await _postApi('/user');
+    } catch (e) {
+      debugPrint('Error in postCreateUser: $e');
+      throw Error();
+    }
+  }
+
+  /// user 정보 GET 요청
+  /// walk_distance와 walk_time 반환
+  static Future<Map<String, dynamic>> getUserInfo() async {
+    try {
+      final response = await _getApi('/user');
+
+      if (response.data != null) {
+        final data = response.data as Map<String, dynamic>;
+        return data;
+      } else {
+        throw Error();
+      }
+    } catch (e) {
+      debugPrint('Error in getUserInfo: $e');
+      throw Error();
+    }
+  }
+
+  /* WALK API */
 
   /// 산책 코스 추천 api
   // static Future<List<Recommendation>> getRecommendadtion({
@@ -79,12 +110,6 @@ class API {
     required String walkId,
     required List<WalkPoint> walkPoints,
   }) async {
-    print(
-      jsonEncode({
-        'walk_id': walkId,
-        'routes': walkPoints.map((point) => point.toJson()).toList(),
-      }),
-    );
     try {
       await _postApi(
         '/walk/location',
