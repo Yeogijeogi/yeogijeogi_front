@@ -24,7 +24,10 @@ class WalkStartView extends StatelessWidget {
           SizedBox(height: 40.h),
 
           // 지도
-          CourseOverview(controller: walkStartViewModel.controller),
+          CourseOverview(
+            recommendations: walkStartViewModel.walkModel.recommendationList,
+            controller: walkStartViewModel.controller,
+          ),
           SizedBox(height: 8.h),
 
           // 지도 Page indicator
