@@ -36,6 +36,9 @@ Future<void> autoLogin() async {
     // 사용자가 존재한다면 모델에 데이터 저장
     userModel.fromFirebaseUser(user);
     debugPrint('Auto login to user ${userModel.name}');
+
+    // Course 정보 불러오기
+    courseModel.getCourses();
   } else {
     // 사용자가 존재하지 않는다면 모델 리셋 (혹시 모를 상황 대비)
     userModel.reset();
