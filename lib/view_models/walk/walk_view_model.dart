@@ -36,7 +36,11 @@ class WalkViewModel with ChangeNotifier {
     );
 
     walkModel.walkPointList.add(
-      WalkPoint(coordinate: currentLocation, createdAt: DateTime.now()),
+      WalkPoint(
+        walkId: walkModel.id!,
+        coordinate: currentLocation,
+        createdAt: DateTime.now(),
+      ),
     );
     debugPrint('WalkPoint added: $currentLocation');
 
@@ -66,7 +70,11 @@ class WalkViewModel with ChangeNotifier {
       await _location.getLocation(),
     );
     walkModel.walkPointList.add(
-      WalkPoint(coordinate: currentLocation, createdAt: DateTime.now()),
+      WalkPoint(
+        walkId: walkModel.id!,
+        coordinate: currentLocation,
+        createdAt: DateTime.now(),
+      ),
     );
     walkModel.uploadWalkPoints();
 
