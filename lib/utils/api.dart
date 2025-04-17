@@ -170,6 +170,7 @@ class API {
 
   /* COURSE API */
 
+  /// 전체 코스 정보 가져오기
   static Future<List<Course>> getCourse() async {
     try {
       final response = await _getApi('/course');
@@ -183,6 +184,27 @@ class API {
       }
     } catch (e) {
       debugPrint('Error in getCourse: $e');
+      throw Error();
+    }
+  }
+
+  /// 코스 상세 정보 가져오기
+  static Future<Map<String, dynamic>> getCourseDetail({
+    required String walkId,
+  }) async {
+    try {
+      final response = await _getApi(
+        '/course/detail',
+        queryParameters: {'walk_id': walkId},
+      );
+
+      if (response != null) {
+        return response.data;
+      } else {
+        throw Error();
+      }
+    } catch (e) {
+      debugPrint('Error in getCourseDetail: $e');
       throw Error();
     }
   }
