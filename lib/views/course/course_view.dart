@@ -59,6 +59,10 @@ class CourseView extends StatelessWidget {
                       child: ListView(
                         padding: EdgeInsets.zero,
                         controller: scrollController,
+                        physics:
+                            courseViewModel.isExpanded
+                                ? null
+                                : ClampingScrollPhysics(),
                         children: [
                           Padding(
                             padding: EdgeInsets.only(
@@ -76,13 +80,30 @@ class CourseView extends StatelessWidget {
                                     : Align(
                                       alignment: Alignment.topCenter,
                                       child: CourseDetail(
-                                        name: '성북천',
-                                        address: '서울 성북구 동선동2가',
-                                        distance: 1.3,
+                                        name:
+                                            courseViewModel
+                                                .courseModel
+                                                .course!
+                                                .name,
+                                        address:
+                                            courseViewModel
+                                                .courseModel
+                                                .course!
+                                                .address,
+                                        distance:
+                                            courseViewModel
+                                                .courseModel
+                                                .course!
+                                                .distance,
                                         distanceLabel: '이동 거리',
-                                        walk: '3km/h',
+                                        walk:
+                                            '${courseViewModel.courseModel.course!.speed}km/h',
                                         walkLabel: '평균 속도',
-                                        time: 24,
+                                        time:
+                                            courseViewModel
+                                                .courseModel
+                                                .course!
+                                                .time,
                                         timeLabel: '소요 시간',
                                       ),
                                     ),

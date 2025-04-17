@@ -5,8 +5,12 @@ import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/utils/enums/dialog_type.dart';
 
 class CourseViewModel with ChangeNotifier {
-  final BuildContext context;
   final CourseModel courseModel;
+  final BuildContext context;
+
+  CourseViewModel({required this.courseModel, required this.context}) {
+    draggableController.addListener(_onDrag);
+  }
 
   // 메모 텍스트 컨트롤러
   TextEditingController controller = TextEditingController();
@@ -17,10 +21,6 @@ class CourseViewModel with ChangeNotifier {
 
   // 모달 확장 여부 상태
   bool isExpanded = false;
-
-  CourseViewModel({required this.courseModel, required this.context}) {
-    draggableController.addListener(_onDrag);
-  }
 
   // 드래그 이벤트 핸들러
   void _onDrag() {
