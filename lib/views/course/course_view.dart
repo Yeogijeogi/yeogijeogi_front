@@ -18,6 +18,7 @@ class CourseView extends StatelessWidget {
     return CustomScaffold(
       useSafeArea: false,
       hasPadding: false,
+      isLoading: courseViewModel.isLoading,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -73,9 +74,11 @@ class CourseView extends StatelessWidget {
                             child:
                                 courseViewModel.isExpanded
                                     ? CourseDetailView(
-                                      onTapDelete: courseViewModel.onTapDelete,
-                                      onTapBack: courseViewModel.onTapBack,
+                                      course:
+                                          courseViewModel.courseModel.course!,
                                       controller: courseViewModel.controller,
+                                      onTapBack: courseViewModel.onTapBack,
+                                      onTapDelete: courseViewModel.onTapDelete,
                                     )
                                     : Align(
                                       alignment: Alignment.topCenter,
