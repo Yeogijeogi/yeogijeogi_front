@@ -27,10 +27,10 @@ class Course {
   String? imgUrl;
 
   /// 산책 분위기
-  int? mood;
+  double? mood;
 
   /// 산책 난이도
-  int? difficulty;
+  double? difficulty;
 
   /// 메모
   String? memo;
@@ -64,9 +64,24 @@ class Course {
 
   /// 코스 상세 정보 저장
   void fromCourseDetailJson(Map<String, dynamic> json) {
-    imgUrl = json['imgUrl'];
-    mood = json['mood'];
-    difficulty = json['difficulty'];
+    imgUrl = json['img_url'];
+    mood = json['mood'].toDouble();
+    difficulty = json['difficulty'].toDouble();
     memo = json['memo'];
+  }
+
+  @override
+  String toString() {
+    return 'id: $id, '
+        'location: $location, '
+        'name: $name, '
+        'address: $address, '
+        'distance: $distance, '
+        'time: $time, '
+        'speed: $speed, '
+        'imgUrl: $imgUrl, '
+        'mood: $mood, '
+        'difficulty: $difficulty, '
+        'memo: $memo';
   }
 }
