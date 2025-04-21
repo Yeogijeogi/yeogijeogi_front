@@ -209,6 +209,19 @@ class API {
     }
   }
 
+  /// 코스 삭ㅔ
+  static Future<void> deleteCourse({required String walkId}) async {
+    try {
+      await _deleteApi(
+        '/course/delete',
+        jsonData: jsonEncode({'walk_id': walkId}),
+      );
+    } catch (e) {
+      debugPrint('Error in deleteCourse: $e');
+      throw Error();
+    }
+  }
+
   /* BASE API (GET, POST, PATCH, DELETE) */
 
   /// ### API GET
