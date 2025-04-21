@@ -42,11 +42,7 @@ class CourseViewModel with ChangeNotifier {
 
   /// 앱바 뒤로가기 버튼
   void onTapBack() {
-    draggableController.animateTo(
-      0.228,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    draggableController.reset();
   }
 
   /// 모달 열렸을 때 상세 정보 가져오기
@@ -63,11 +59,23 @@ class CourseViewModel with ChangeNotifier {
     }
   }
 
+  /// 코스 삭제
   void onTapDelete() {
     showCustomDialog(
       type: DialogType.deleteCourse,
       context: context,
-      onTapAction: context.pop,
+      onTapAction: () async {
+        isLoading = true;
+        notifyListeners();
+
+        await courseModel.deleteSelectedCourse();
+        draggableController.reset();
+
+        isLoading = false;
+        notifyListeners();
+
+        if (context.mounted) context.pop();
+      },
     );
   }
 
