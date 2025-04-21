@@ -15,6 +15,7 @@ class CourseModel with ChangeNotifier {
     course = null;
   }
 
+  /// 전체 코스 불러오기
   void getCourses() async {
     // 코스 불러오기
     courses = await API.getCourse();
@@ -22,6 +23,22 @@ class CourseModel with ChangeNotifier {
     // 첫 코스 선택
     if (courses.isNotEmpty) {
       course = courses[0];
+    }
+  }
+
+  /// 선택된 코스 삭제
+  Future<void> deleteSelectedCourse() async {
+    if (course != null) {
+      // 서버에서 삭제
+      await API.deleteCourse(walkId: course!.id);
+
+      // 모델에서 삭제 후 선택된 코스 업데이트
+      courses.removeAt(0);
+      if (courses.isNotEmpty) {
+        course = courses[0];
+      } else {
+        course = null;
+      }
     }
   }
 }
