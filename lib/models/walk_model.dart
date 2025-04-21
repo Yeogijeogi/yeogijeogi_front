@@ -42,7 +42,7 @@ class WalkModel with ChangeNotifier {
   /// 추천 목적지 리스트
   List<Recommendation> recommendationList = [
     Recommendation(
-      location: Coordinate(longitude: 37.5863, latitude: 127.0923),
+      location: Coordinate(longitude: 37.5880, latitude: 127.0201),
       name: '안암역1',
       address: '성북구 123',
       distance: 5,
@@ -64,7 +64,7 @@ class WalkModel with ChangeNotifier {
     ),
 
     Recommendation(
-      location: Coordinate(longitude: 37.5863, latitude: 127.0923),
+      location: Coordinate(longitude: 37.5852, latitude: 127.0319),
       name: '안암역3',
       address: '성북구 789',
       distance: 15,
