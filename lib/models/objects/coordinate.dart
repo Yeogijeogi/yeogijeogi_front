@@ -1,3 +1,4 @@
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:location/location.dart';
 
 class Coordinate {
@@ -22,6 +23,10 @@ class Coordinate {
 
   Map<String, dynamic> toJson() {
     return {'longitude': longitude, 'latitude': latitude};
+  }
+
+  NLatLng toNLatLng() {
+    return NLatLng(latitude, longitude);
   }
 
   @override
