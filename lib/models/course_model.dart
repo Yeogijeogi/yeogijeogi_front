@@ -26,6 +26,11 @@ class CourseModel with ChangeNotifier {
     }
   }
 
+  /// 코스 선택
+  void selectCourseById(String id) {
+    course = courses.firstWhere((c) => c.id == id);
+  }
+
   /// 선택된 코스 삭제
   Future<void> deleteSelectedCourse() async {
     if (course != null) {

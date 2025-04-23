@@ -20,7 +20,10 @@ class CourseView extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         children: [
           // 지도
-          const NaverMap(),
+          NaverMap(
+            options: courseViewModel.options,
+            onMapReady: courseViewModel.onMapReady,
+          ),
 
           // 모달
           CourseModal(

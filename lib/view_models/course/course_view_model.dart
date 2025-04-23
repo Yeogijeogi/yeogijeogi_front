@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:location/location.dart';
 import 'package:yeogijeogi/components/common/custom_dialog.dart';
 import 'package:yeogijeogi/models/course_model.dart';
+import 'package:yeogijeogi/models/objects/course.dart';
 import 'package:yeogijeogi/utils/api.dart';
+import 'package:yeogijeogi/utils/constants.dart';
 import 'package:yeogijeogi/utils/enums/dialog_type.dart';
 
 class CourseViewModel with ChangeNotifier {
@@ -10,21 +15,86 @@ class CourseViewModel with ChangeNotifier {
   final BuildContext context;
 
   CourseViewModel({required this.courseModel, required this.context}) {
+    // 모달 드래그 리스너 추가
     draggableController.addListener(_onDrag);
   }
 
-  // 메모 텍스트 컨트롤러
+  /// 네이버 지도 초기화 옵션
+  NaverMapViewOptions options = NaverMapViewOptions(
+    contentPadding: EdgeInsets.only(bottom: 173.h),
+    initialCameraPosition: NCameraPosition(
+      target: NLatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE),
+      zoom: 15,
+    ),
+  );
+
+  /// 메모 텍스트 컨트롤러
   TextEditingController controller = TextEditingController();
 
-  // 모달 시트 컨트롤러
+  /// 모달 시트 컨트롤러
   final DraggableScrollableController draggableController =
       DraggableScrollableController();
 
-  // 모달 확장 여부 상태
+  /// 모달 확장 여부 상태
   bool isExpanded = false;
 
-  // 로딩
+  /// 로딩
   bool isLoading = false;
+
+  // 위치 정보
+  final Location _location = Location();
+
+  // 선택된 마커
+  NMarker? _marker;
+
+  void onMapReady(NaverMapController controller) async {
+    // 내 위치 표시
+    await controller.setLocationTrackingMode(NLocationTrackingMode.noFollow);
+
+    // 내 위치로 카메라 이동 (초기화)
+    final location = await _location.getLocation();
+    await controller.updateCamera(
+      NCameraUpdate.scrollAndZoomTo(
+        target: NLatLng(
+          location.latitude ?? DEFAULT_LATITUDE,
+          location.longitude ?? DEFAULT_LONGITUDE,
+        ),
+      ),
+    );
+
+    // 코스 마커 추가
+    for (Course course in courseModel.courses) {
+      final NMarker marker = course.toNMarker();
+      marker.setOnTapListener(onTapMarker);
+      controller.addOverlay(marker);
+
+      // 기본 선택된 코스의 경우 선택 처리
+      if (course == courseModel.course) {
+        onTapMarker(marker);
+      }
+    }
+  }
+
+  // 마커 탭 리스너
+  void onTapMarker(NMarker marker) async {
+    // 기존 마커 원상복귀
+    if (_marker != null) {
+      _marker!.setIcon(
+        NOverlayImage.fromAssetImage('/assets/icons/marker.png'),
+      );
+      _marker!.setAnchor(NPoint.relativeCenter);
+    }
+
+    // 선택된 마커 설정
+    courseModel.selectCourseById(marker.info.id);
+    marker.setIcon(
+      NOverlayImage.fromAssetImage('/assets/icons/marker_selected.png'),
+    );
+    marker.setAnchor(NPoint(0.5, 1));
+    _marker = marker;
+
+    notifyListeners();
+  }
 
   // 드래그 이벤트 핸들러
   void _onDrag() {
