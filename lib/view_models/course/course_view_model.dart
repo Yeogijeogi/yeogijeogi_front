@@ -28,6 +28,8 @@ class CourseViewModel with ChangeNotifier {
     ),
   );
 
+  late NaverMapController naverMapController;
+
   /// 메모 텍스트 컨트롤러
   TextEditingController controller = TextEditingController();
 
@@ -44,16 +46,17 @@ class CourseViewModel with ChangeNotifier {
   // 위치 정보
   final Location _location = Location();
 
-  // 선택된 마커
-  NMarker? _marker;
-
   void onMapReady(NaverMapController controller) async {
+    naverMapController = controller;
+
     // 내 위치 표시
-    await controller.setLocationTrackingMode(NLocationTrackingMode.noFollow);
+    await naverMapController.setLocationTrackingMode(
+      NLocationTrackingMode.noFollow,
+    );
 
     // 내 위치로 카메라 이동 (초기화)
     final location = await _location.getLocation();
-    await controller.updateCamera(
+    await naverMapController.updateCamera(
       NCameraUpdate.scrollAndZoomTo(
         target: NLatLng(
           location.latitude ?? DEFAULT_LATITUDE,
@@ -66,7 +69,8 @@ class CourseViewModel with ChangeNotifier {
     for (Course course in courseModel.courses) {
       final NMarker marker = course.toNMarker();
       marker.setOnTapListener(onTapMarker);
-      controller.addOverlay(marker);
+      naverMapController.addOverlay(marker);
+      courseModel.markers.add(marker);
 
       // 기본 선택된 코스의 경우 선택 처리
       if (course == courseModel.course) {
@@ -77,21 +81,9 @@ class CourseViewModel with ChangeNotifier {
 
   // 마커 탭 리스너
   void onTapMarker(NMarker marker) async {
-    // 기존 마커 원상복귀
-    if (_marker != null) {
-      _marker!.setIcon(
-        NOverlayImage.fromAssetImage('/assets/icons/marker.png'),
-      );
-      _marker!.setAnchor(NPoint.relativeCenter);
-    }
-
     // 선택된 마커 설정
     courseModel.selectCourseById(marker.info.id);
-    marker.setIcon(
-      NOverlayImage.fromAssetImage('/assets/icons/marker_selected.png'),
-    );
-    marker.setAnchor(NPoint(0.5, 1));
-    _marker = marker;
+    courseModel.selectMarker(marker);
 
     notifyListeners();
   }
@@ -138,7 +130,9 @@ class CourseViewModel with ChangeNotifier {
         isLoading = true;
         notifyListeners();
 
+        naverMapController.deleteOverlay(courseModel.marker!.info);
         await courseModel.deleteSelectedCourse();
+
         draggableController.reset();
 
         isLoading = false;
@@ -153,6 +147,7 @@ class CourseViewModel with ChangeNotifier {
   void dispose() {
     draggableController.removeListener(_onDrag);
     draggableController.dispose();
+    naverMapController.dispose();
     super.dispose();
   }
 }
