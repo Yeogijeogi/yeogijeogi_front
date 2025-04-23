@@ -1,3 +1,4 @@
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/utils/utils.dart';
 
@@ -68,6 +69,15 @@ class Course {
     mood = json['mood'].toDouble();
     difficulty = json['difficulty'].toDouble();
     memo = json['memo'];
+  }
+
+  NMarker toNMarker() {
+    return NMarker(
+      id: id,
+      position: location.toNLatLng(),
+      icon: NOverlayImage.fromAssetImage('/assets/icons/marker.png'),
+      anchor: NPoint.relativeCenter,
+    );
   }
 
   @override
