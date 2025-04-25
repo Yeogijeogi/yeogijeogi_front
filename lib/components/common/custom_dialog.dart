@@ -25,6 +25,10 @@ Future<void> showCustomDialog({
           child: Container(
             padding: EdgeInsets.all(20.w),
             width: double.infinity,
+            decoration: BoxDecoration(
+              color: Palette.container,
+              borderRadius: BorderRadius.circular(20.r),
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
