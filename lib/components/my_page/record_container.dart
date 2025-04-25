@@ -3,7 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 
 class RecordContainer extends StatelessWidget {
-  const RecordContainer({super.key});
+  /// 산책 거리 (km)
+  final double distance;
+
+  /// 산책 시간 (min)
+  final int time;
+
+  const RecordContainer({
+    super.key,
+    required this.distance,
+    required this.time,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +41,10 @@ class RecordContainer extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: '24',
+                        text:
+                            distance % 1 == 0
+                                ? distance.toStringAsFixed(0)
+                                : distance.toStringAsFixed(2),
                         style: Palette.largeTitle.copyWith(
                           color: Palette.primary,
                         ),
@@ -70,7 +83,7 @@ class RecordContainer extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: '452',
+                        text: time.toString(),
                         style: Palette.largeTitle.copyWith(
                           color: Palette.primary,
                         ),
