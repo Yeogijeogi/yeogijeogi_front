@@ -15,6 +15,9 @@ class CourseViewModel with ChangeNotifier {
   final BuildContext context;
 
   CourseViewModel({required this.courseModel, required this.context}) {
+    isLoading = true;
+    notifyListeners();
+
     // 모달 드래그 리스너 추가
     draggableController.addListener(_onDrag);
   }
@@ -77,6 +80,9 @@ class CourseViewModel with ChangeNotifier {
         onTapMarker(marker);
       }
     }
+
+    isLoading = false;
+    notifyListeners();
   }
 
   // 마커 탭 리스너
@@ -104,7 +110,11 @@ class CourseViewModel with ChangeNotifier {
 
   /// 앱바 뒤로가기 버튼
   void onTapBack() {
-    draggableController.reset();
+    draggableController.animateTo(
+      0.228,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   /// 모달 열렸을 때 상세 정보 가져오기
