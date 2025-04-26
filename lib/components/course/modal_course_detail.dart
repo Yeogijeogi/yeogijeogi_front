@@ -41,7 +41,6 @@ class ModalCourseDetail extends StatelessWidget {
       primary: false,
       padding: EdgeInsets.zero,
       controller: scrollController,
-      physics: isExpanded ? null : ClampingScrollPhysics(),
       children: [
         // 핸들
         if (!isExpanded)
