@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
 import 'package:yeogijeogi/components/walk/walk_end_dialog.dart';
@@ -8,6 +9,7 @@ import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/objects/walk_point.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
+import 'package:yeogijeogi/utils/constants.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 
 class WalkViewModel with ChangeNotifier {
@@ -15,8 +17,21 @@ class WalkViewModel with ChangeNotifier {
   BuildContext context;
 
   WalkViewModel({required this.walkModel, required this.context}) {
+    isLoading = true;
+    notifyListeners();
+
     startTimer();
   }
+
+  /// 네이버 지도 초기화 옵션
+  NaverMapViewOptions options = NaverMapViewOptions(
+    initialCameraPosition: NCameraPosition(
+      target: NLatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE),
+      zoom: 15,
+    ),
+  );
+
+  late NaverMapController naverMapController;
 
   // 위치 정보
   final Location _location = Location();
@@ -24,9 +39,40 @@ class WalkViewModel with ChangeNotifier {
   // 10초마다 실행되는 타이머
   Timer? _timer;
 
+  // 로딩
+  bool isLoading = false;
+
   // 타이머 실행
   void startTimer() {
     _timer = Timer.periodic(Duration(seconds: 10), (_) => addCurrentLocation());
+  }
+
+  void onMapReady(NaverMapController controller) async {
+    naverMapController = controller;
+
+    // 내 위치 표시
+    await naverMapController.setLocationTrackingMode(
+      NLocationTrackingMode.noFollow,
+    );
+
+    // 현재 내 위치로 이동
+    await moveToCurrentLocation();
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  /// 내 위치로 카메라 이동 (초기화)
+  Future<void> moveToCurrentLocation() async {
+    final location = await _location.getLocation();
+    await naverMapController.updateCamera(
+      NCameraUpdate.scrollAndZoomTo(
+        target: NLatLng(
+          location.latitude ?? DEFAULT_LATITUDE,
+          location.longitude ?? DEFAULT_LONGITUDE,
+        ),
+      ),
+    );
   }
 
   /// 현재 위치 경로에 추가
