@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
+import 'package:yeogijeogi/models/objects/course.dart';
 import 'package:yeogijeogi/models/objects/recommendation.dart';
 import 'package:yeogijeogi/models/objects/walk_point.dart';
 import 'package:yeogijeogi/utils/custom_interceptor.dart';
@@ -163,6 +164,60 @@ class API {
       );
     } catch (e) {
       debugPrint('Error in patchWalkEnd: $e');
+      throw Error();
+    }
+  }
+
+  /* COURSE API */
+
+  /// 전체 코스 정보 가져오기
+  static Future<List<Course>> getCourse() async {
+    try {
+      final response = await _getApi('/course');
+
+      if (response != null) {
+        return (response.data as List)
+            .map((course) => Course.fromJson(course))
+            .toList();
+      } else {
+        throw Error();
+      }
+    } catch (e) {
+      debugPrint('Error in getCourse: $e');
+      throw Error();
+    }
+  }
+
+  /// 코스 상세 정보 가져오기
+  static Future<Map<String, dynamic>> getCourseDetail({
+    required String walkId,
+  }) async {
+    try {
+      final response = await _getApi(
+        '/course/detail',
+        queryParameters: {'walk_id': walkId},
+      );
+
+      if (response != null) {
+        return response.data;
+      } else {
+        throw Error();
+      }
+    } catch (e) {
+      debugPrint('Error in getCourseDetail: $e');
+      throw Error();
+    }
+  }
+
+  /// 코스 삭ㅔ
+  static Future<void> deleteCourse({required String walkId}) async {
+    try {
+      await _deleteApi(
+        '/course/delete',
+        jsonData: jsonEncode({'walk_id': walkId}),
+      );
+    } catch (e) {
+      debugPrint('Error in deleteCourse: $e');
       throw Error();
     }
   }

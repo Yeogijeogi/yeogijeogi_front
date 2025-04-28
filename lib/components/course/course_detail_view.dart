@@ -5,16 +5,19 @@ import 'package:yeogijeogi/components/common/custom_text_button.dart';
 import 'package:yeogijeogi/components/walk/course_detail.dart';
 import 'package:yeogijeogi/components/walk/memo_text_field.dart';
 import 'package:yeogijeogi/components/walk/slider_container.dart';
+import 'package:yeogijeogi/models/objects/course.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 
 class CourseDetailView extends StatelessWidget {
-  final Function() onTapBack;
+  final Course course;
   final TextEditingController controller;
+  final Function() onTapBack;
   final Function() onTapDelete;
   const CourseDetailView({
     super.key,
-    required this.onTapBack,
+    required this.course,
     required this.controller,
+    required this.onTapBack,
     required this.onTapDelete,
   });
 
@@ -35,24 +38,28 @@ class CourseDetailView extends StatelessWidget {
         SizedBox(height: 24.h),
 
         CourseDetail(
-          name: '성북천',
-          address: '서울 성북구 동선동2가',
-          distance: 1.3,
+          name: course.name,
+          address: course.address,
+          distance: course.distance,
           distanceLabel: '이동 거리',
-          walk: '3km/h',
+          walk: course.speed!.toString(),
           walkLabel: '평균 속도',
-          time: 24,
+          time: course.time,
           timeLabel: '소요 시간',
         ),
         SizedBox(height: 24.h),
 
-        SliderContainer(title: '분위기가 어땠나요?', criteria: ['자연', '도시'], value: 6),
+        SliderContainer(
+          title: '분위기가 어땠나요?',
+          criteria: ['자연', '도시'],
+          value: course.mood ?? 5,
+        ),
         SizedBox(height: 24.h),
 
         SliderContainer(
           title: '산책 강도는 어땠나요?',
           criteria: ['쉬움', '적당함', '어려움'],
-          value: 2,
+          value: course.difficulty ?? 5,
         ),
         SizedBox(height: 24.h),
 

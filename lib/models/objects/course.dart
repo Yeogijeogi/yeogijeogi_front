@@ -1,8 +1,9 @@
 import 'package:yeogijeogi/models/objects/coordinate.dart';
+import 'package:yeogijeogi/utils/utils.dart';
 
 class Course {
   /// 산책 id
-  final int id;
+  final String id;
 
   /// 코스 위치
   final Coordinate location;
@@ -19,14 +20,17 @@ class Course {
   /// 산책 소요 시간 (분)
   final int time;
 
+  /// 산책 평균 속도
+  double? speed;
+
   /// 산책 코스 이미지
   String? imgUrl;
 
   /// 산책 분위기
-  int? mood;
+  double? mood;
 
   /// 산책 난이도
-  int? difficulty;
+  double? difficulty;
 
   /// 메모
   String? memo;
@@ -36,9 +40,10 @@ class Course {
     required this.location,
     required this.name,
     required this.address,
-    this.imgUrl,
-    required this.distance,
     required this.time,
+    required this.distance,
+    this.speed,
+    this.imgUrl,
     this.mood,
     this.difficulty,
     this.memo,
@@ -47,20 +52,36 @@ class Course {
   /// 코스 기본 정보, 코스 생성
   factory Course.fromJson(Map<String, dynamic> json) {
     return Course(
-      id: json['walkId'],
-      location: json['location'],
+      id: json['walk_id'],
+      location: Coordinate.fromJson(json['location']),
       name: json['name'],
       address: json['address'],
       distance: json['distance'],
       time: json['time'],
+      speed: calAvgSpeed(json['distance'], json['time']),
     );
   }
 
   /// 코스 상세 정보 저장
   void fromCourseDetailJson(Map<String, dynamic> json) {
-    imgUrl = json['imgUrl'];
-    mood = json['mood'];
-    difficulty = json['difficulty'];
+    imgUrl = json['img_url'];
+    mood = json['mood'].toDouble();
+    difficulty = json['difficulty'].toDouble();
     memo = json['memo'];
+  }
+
+  @override
+  String toString() {
+    return 'id: $id, '
+        'location: $location, '
+        'name: $name, '
+        'address: $address, '
+        'distance: $distance, '
+        'time: $time, '
+        'speed: $speed, '
+        'imgUrl: $imgUrl, '
+        'mood: $mood, '
+        'difficulty: $difficulty, '
+        'memo: $memo';
   }
 }

@@ -91,13 +91,6 @@ class WalkModel with ChangeNotifier {
     recommendationList.clear();
   }
 
-  /// 평균 속도 계산
-  void getAvgSpeed() {
-    if (time != null && time != 0 && distance != null) {
-      averageSpeed = distance! / time!;
-    }
-  }
-
   /// 추천 경로 선택
   void selectRecommendation(int index, Coordinate coordinate) async {
     // API 호출
