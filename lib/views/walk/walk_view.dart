@@ -28,6 +28,7 @@ class WalkView extends StatelessWidget {
           NaverMap(
             options: walkViewModel.options,
             onMapReady: walkViewModel.onMapReady,
+            onCameraChange: walkViewModel.onCameraChange,
           ),
 
           Column(
@@ -44,7 +45,9 @@ class WalkView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.r),
                   backgroundColor: Palette.surface,
                   child: SvgPicture.asset(
-                    'assets/icons/location.svg',
+                    walkViewModel.isLocationActive
+                        ? 'assets/icons/location_active.svg'
+                        : 'assets/icons/location.svg',
                     width: 32.w,
                     height: 32.w,
                     fit: BoxFit.scaleDown,

@@ -31,7 +31,11 @@ class WalkViewModel with ChangeNotifier {
     ),
   );
 
+  /// 네이버 지도 컨트롤러
   late NaverMapController naverMapController;
+
+  /// 위치 버튼 활성화 여부
+  bool isLocationActive = true;
 
   // 위치 정보
   final Location _location = Location();
@@ -47,13 +51,9 @@ class WalkViewModel with ChangeNotifier {
     _timer = Timer.periodic(Duration(seconds: 10), (_) => addCurrentLocation());
   }
 
+  /// 지도 로딩 완료시 호출
   void onMapReady(NaverMapController controller) async {
     naverMapController = controller;
-
-    // 내 위치 표시
-    await naverMapController.setLocationTrackingMode(
-      NLocationTrackingMode.noFollow,
-    );
 
     // 현재 내 위치로 이동
     await moveToCurrentLocation();
@@ -64,15 +64,20 @@ class WalkViewModel with ChangeNotifier {
 
   /// 내 위치로 카메라 이동 (초기화)
   Future<void> moveToCurrentLocation() async {
-    final location = await _location.getLocation();
-    await naverMapController.updateCamera(
-      NCameraUpdate.scrollAndZoomTo(
-        target: NLatLng(
-          location.latitude ?? DEFAULT_LATITUDE,
-          location.longitude ?? DEFAULT_LONGITUDE,
-        ),
-      ),
+    await naverMapController.setLocationTrackingMode(
+      NLocationTrackingMode.follow,
     );
+
+    isLocationActive = true;
+    notifyListeners();
+  }
+
+  /// 카메라 변환
+  void onCameraChange(_, _) async {
+    isLocationActive =
+        await naverMapController.getLocationTrackingMode() ==
+        NLocationTrackingMode.follow;
+    notifyListeners();
   }
 
   /// 현재 위치 경로에 추가
