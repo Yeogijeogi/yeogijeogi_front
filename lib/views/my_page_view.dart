@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:yeogijeogi/components/common/custom_ink_well.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
 import 'package:yeogijeogi/components/common/custom_text_button.dart';
 import 'package:yeogijeogi/components/my_page/ink_well_tile.dart';
@@ -21,13 +22,16 @@ class MyPageView extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('원하진님', style: Palette.title),
+          Text('${myPageViewModel.userModel.name}님', style: Palette.title),
           SizedBox(height: 8.h),
 
           Text('오늘도 열심히 산책을 하고 계시네요!', style: Palette.headline),
           SizedBox(height: 24.h),
 
-          RecordContainer(),
+          RecordContainer(
+            distance: myPageViewModel.userModel.walkDistance ?? 0,
+            time: myPageViewModel.userModel.walkTime ?? 0,
+          ),
           SizedBox(height: 24.h),
 
           Text('계정', style: Palette.headline),
@@ -45,15 +49,21 @@ class MyPageView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('닉네임', style: Palette.body),
-                Container(
-                  height: 36.h,
-                  width: 128.w,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Palette.surface,
-                    borderRadius: BorderRadius.circular(10.r),
+
+                // 닉네임 수정
+                CustomInkWell(
+                  onTap: myPageViewModel.onTapNickname,
+                  backgroundColor: Palette.surface,
+                  borderRadius: BorderRadius.circular(10.r),
+                  child: Container(
+                    height: 36.h,
+                    width: 128.w,
+                    alignment: Alignment.center,
+                    child: Text(
+                      myPageViewModel.userModel.name ?? '',
+                      style: Palette.body,
+                    ),
                   ),
-                  child: Text('원하진', style: Palette.body),
                 ),
               ],
             ),
@@ -72,80 +82,14 @@ class MyPageView extends StatelessWidget {
             ),
             child: Column(
               children: [
-                InkWellTile(title: '앱 버전', action: '1.0.0'),
+                InkWellTile(title: '앱 버전', action: myPageViewModel.appVersion),
 
-                InkWellTile(title: '문의하기', onTap: () {}),
+                InkWellTile(title: '문의하기', onTap: myPageViewModel.onTapInquire),
 
-                InkWellTile(title: '개인정보 처리방침', onTap: () {}),
-                // Container(
-                //   height: 40.h,
-                //   padding: EdgeInsets.symmetric(
-                //     horizontal: 20.w,
-                //     vertical: 8.h,
-                //   ),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Text('앱 버전', style: Palette.body),
-                //       Text(
-                //         '1.0.0',
-                //         style: Palette.body.copyWith(
-                //           color: Palette.onSurfaceVariant,
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // Container(
-                //   height: 40.h,
-                //   padding: EdgeInsets.symmetric(
-                //     horizontal: 20.w,
-                //     vertical: 8.h,
-                //   ),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Text('문의하기', style: Palette.body),
-                //       SizedBox(
-                //         width: 24.w,
-                //         height: 24.h,
-                //         child: IconButton(
-                //           onPressed: () {},
-                //           icon: Icon(
-                //             Icons.arrow_forward_ios_rounded,
-                //             size: 24.h,
-                //             color: Palette.onSurfaceVariant,
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // Container(
-                //   height: 40.h,
-                //   padding: EdgeInsets.symmetric(
-                //     horizontal: 20.w,
-                //     vertical: 8.h,
-                //   ),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Text('개인정보 처리방침', style: Palette.body),
-                //       SizedBox(
-                //         width: 24.w,
-                //         height: 24.h,
-                //         child: IconButton(
-                //           onPressed: () {},
-                //           icon: Icon(
-                //             Icons.arrow_forward_ios_rounded,
-                //             size: 24.h,
-                //             color: Palette.onSurfaceVariant,
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
+                InkWellTile(
+                  title: '개인정보 처리방침',
+                  onTap: myPageViewModel.onTapTerms,
+                ),
               ],
             ),
           ),
