@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/bottom_navbar.dart';
 import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/models/course_model.dart';
+import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:yeogijeogi/view_models/course/course_view_model.dart';
 import 'package:yeogijeogi/view_models/walk/onboarding_view_model.dart';
@@ -25,7 +26,11 @@ import 'package:yeogijeogi/views/walk/walk_view.dart';
 class AppRouter {
   static final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
 
-  static GoRouter getRouter(UserModel userModel, CourseModel courseModel) {
+  static GoRouter getRouter(
+    UserModel userModel,
+    WalkModel walkModel,
+    CourseModel courseModel,
+  ) {
     return GoRouter(
       initialLocation: '/login',
       navigatorKey: _rootKey,
@@ -110,8 +115,10 @@ class AppRouter {
                       builder:
                           (context, state) => ChangeNotifierProvider(
                             create:
-                                (context) =>
-                                    WalkStartViewModel(context: context),
+                                (context) => WalkStartViewModel(
+                                  walkModel: walkModel,
+                                  context: context,
+                                ),
                             child: const WalkStartView(),
                           ),
                       routes: [
@@ -122,8 +129,10 @@ class AppRouter {
                           builder:
                               (context, state) => ChangeNotifierProvider(
                                 create:
-                                    (context) =>
-                                        WalkViewModel(context: context),
+                                    (context) => WalkViewModel(
+                                      walkModel: walkModel,
+                                      context: context,
+                                    ),
                                 child: const WalkView(),
                               ),
                         ),
@@ -136,7 +145,10 @@ class AppRouter {
                       builder:
                           (context, state) => ChangeNotifierProvider(
                             create:
-                                (context) => SaveViewModel(context: context),
+                                (context) => SaveViewModel(
+                                  walkModel: walkModel,
+                                  context: context,
+                                ),
                             child: const SaveView(),
                           ),
                     ),
