@@ -58,7 +58,7 @@ class SaveView extends StatelessWidget {
             SliderContainer(
               title: '산책 강도는 어땠나요?',
               criteria: ['쉬움', '적당함', '어려움'],
-              value: saveViewModel.walkingLevel,
+              value: saveViewModel.difficultyLevel,
               onChanged: saveViewModel.updateWalkingLevel,
             ),
             SizedBox(height: 24.h),

@@ -1,8 +1,11 @@
-import 'dart:ffi';
-
+import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:yeogijeogi/models/objects/coordinate.dart';
+import 'package:yeogijeogi/models/objects/recommendation.dart';
+import 'package:yeogijeogi/models/objects/walk_point.dart';
 import 'package:yeogijeogi/utils/custom_interceptor.dart';
 
 class API {
@@ -17,6 +20,152 @@ class API {
       },
     ),
   );
+
+  /* USER API */
+
+  /// user 생성 POST 요청
+  /// token 반환
+  static Future<void> postCreateUser() async {
+    try {
+      await _postApi('/user');
+    } catch (e) {
+      debugPrint('Error in postCreateUser: $e');
+      throw Error();
+    }
+  }
+
+  /// user 정보 GET 요청
+  /// walk_distance와 walk_time 반환
+  static Future<Map<String, dynamic>> getUserInfo() async {
+    try {
+      final response = await _getApi('/user');
+
+      if (response.data != null) {
+        final data = response.data as Map<String, dynamic>;
+        return data;
+      } else {
+        throw Error();
+      }
+    } catch (e) {
+      debugPrint('Error in getUserInfo: $e');
+      throw Error();
+    }
+  }
+
+  /* WALK API */
+
+  /// 산책 코스 추천 api
+  // static Future<List<Recommendation>> getRecommendadtion({
+  //   required Coordinate coordinate,
+  //   required int walkTime,
+  //   required int view,
+  //   required int difficulty,
+  // }) async {
+  //   try {
+  //     final response = await _getApi(
+  //       '/walk/recommend',
+  //       queryParameters: {
+  //         'latitude': coordinate.latitude,
+  //         'longitude': coordinate.longitude,
+  //         'walk_time': walkTime,
+  //         'view': view,
+  //         'difficulty': difficulty,
+  //       },
+  //     );
+  //   } catch (e) {
+  //     debugPrint('Error in getRecommendadtion: $e');
+  //     throw Error();
+  //   }
+  // }
+
+  /// 코스 선택 후 산책 시작
+  static Future<String> postWalkStart({
+    required Coordinate coordinate,
+    required Recommendation recommendation,
+  }) async {
+    try {
+      final response = await _postApi(
+        '/walk/start',
+        jsonData: {
+          'location': coordinate.toJson(),
+          'end_name': recommendation.name,
+          'end_address': recommendation.address,
+          'img_url': recommendation.imgUrl,
+        },
+      );
+
+      if (response != null) {
+        return response.data['walk_id'];
+      } else {
+        throw Error();
+      }
+    } catch (e) {
+      debugPrint('Error in postWalkStart: $e');
+      throw Error();
+    }
+  }
+
+  /// 위치 정보 전달
+  static Future<void> postWalkLocation({
+    required String walkId,
+    required List<WalkPoint> walkPoints,
+  }) async {
+    try {
+      await _postApi(
+        '/walk/location',
+        jsonData: jsonEncode({
+          'walk_id': walkId,
+          'routes':
+              walkPoints.map((point) => point.coordinate.toJson()).toList(),
+        }),
+      );
+    } catch (e) {
+      debugPrint('Error in postWalkLocation: $e');
+      throw Error();
+    }
+  }
+
+  /// 산책 종료
+  static Future<Map<String, dynamic>> postWalkEnd(String walkId) async {
+    try {
+      final response = await _postApi(
+        '/walk/end',
+        jsonData: {'walk_id': walkId},
+      );
+
+      if (response != null) {
+        return response.data;
+      } else {
+        throw Error();
+      }
+    } catch (e) {
+      debugPrint('Error in postWalkEnd: $e');
+      throw Error();
+    }
+  }
+
+  /// 산책 업데이트
+  static Future<void> patchWalkEnd(
+    String walkId,
+    int mood,
+    int difficulty,
+    String memo,
+  ) async {
+    try {
+      await _patchApi(
+        '/walk/end',
+        jsonData: jsonEncode({
+          'walk_id': walkId,
+          'mood': mood,
+          'difficulty': difficulty,
+          'memo': memo,
+        }),
+      );
+    } catch (e) {
+      debugPrint('Error in patchWalkEnd: $e');
+      throw Error();
+    }
+  }
 
   /* BASE API (GET, POST, PATCH, DELETE) */
 
@@ -86,36 +235,5 @@ class API {
     dio.interceptors.clear();
     dio.interceptors.add(CustomInterceptor(tokenRequired: tokenRequired));
     return await dio.delete(endPoint, data: jsonData);
-  }
-
-  /* USER API */
-
-  /// user 생성 POST 요청
-  /// token 반환
-  static Future<void> postCreateUser() async {
-    try {
-      await _postApi('/user');
-    } catch (e) {
-      debugPrint('Error in postCreateUser: $e');
-      throw Error();
-    }
-  }
-
-  /// user 정보 GET 요청
-  /// walk_distance와 walk_time 반환
-  static Future<Map<String, dynamic>> getUserInfo() async {
-    try {
-      final response = await _getApi('/user');
-
-      if (response.data != null) {
-        final data = response.data as Map<String, dynamic>;
-        return data;
-      } else {
-        throw Error();
-      }
-    } catch (e) {
-      debugPrint('Error in getUserInfo: $e');
-      throw Error();
-    }
   }
 }
