@@ -22,6 +22,23 @@ class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
   /// 산책 슬라이더 값
   double walkingLevel = 0;
 
+  /// 산책 시간
+  Duration duration = Duration(hours: 0, minutes: 0);
+
+  /// durationPicker 선택 여부
+  bool showPicker = false;
+
+  /// durationPicker 클릭시 모달달
+  void togglePicker() {
+    showPicker = !showPicker;
+    notifyListeners();
+  }
+
+  void selectDurationTime(Duration value) {
+    duration = value;
+    notifyListeners();
+  }
+
   /// 설정 이동 후 복귀시 권한 확인
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {

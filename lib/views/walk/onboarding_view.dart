@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -39,15 +40,43 @@ class OnboardingView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('얼마나 걸을까요?', style: Palette.body),
-
-                Container(
-                  width: 128.w,
-                  height: 36.h,
-                  decoration: BoxDecoration(
-                    color: Palette.surface,
-                    borderRadius: BorderRadius.circular(10.r),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (context) {
+                        return SizedBox(
+                          height: 250.h,
+                          child: CupertinoTimerPicker(
+                            mode: CupertinoTimerPickerMode.hm,
+                            initialTimerDuration: onboardingViewModel.duration,
+                            onTimerDurationChanged: (Duration value) {
+                              onboardingViewModel.selectDurationTime(value);
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    width: 128.w,
+                    height: 36.h,
+                    decoration: BoxDecoration(
+                      color: Palette.surface,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "${onboardingViewModel.duration.inHours}시간 ${onboardingViewModel.duration.inMinutes.remainder(60)}분",
+                        style: Palette.body,
+                      ),
+                    ),
                   ),
-                  child: Center(child: Text('1시간 30분', style: Palette.body)),
                 ),
               ],
             ),
