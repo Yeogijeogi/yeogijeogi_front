@@ -11,6 +11,7 @@ import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/constants.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
+import 'package:yeogijeogi/utils/palette.dart';
 
 class WalkViewModel with ChangeNotifier {
   WalkModel walkModel;
@@ -19,6 +20,9 @@ class WalkViewModel with ChangeNotifier {
   WalkViewModel({required this.walkModel, required this.context}) {
     isLoading = true;
     notifyListeners();
+
+    // 시작 위치 초기화
+    addCurrentLocation();
 
     startTimer();
   }
@@ -48,7 +52,7 @@ class WalkViewModel with ChangeNotifier {
 
   // 타이머 실행
   void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 10), (_) => addCurrentLocation());
+    _timer = Timer.periodic(Duration(seconds: 1), (_) => addCurrentLocation());
   }
 
   /// 지도 로딩 완료시 호출
@@ -93,12 +97,23 @@ class WalkViewModel with ChangeNotifier {
         createdAt: DateTime.now(),
       ),
     );
+    walkModel.pathList.add(currentLocation.toNLatLng());
     debugPrint('WalkPoint added: $currentLocation');
 
     // 60초 경과 후 (walkPoint 6개) 서버 전송
     if (walkModel.walkPointList.length >= 6) {
       walkModel.uploadWalkPoints();
     }
+
+    // 경로 추가
+    await naverMapController.addOverlay(
+      NPathOverlay(
+        id: 'walk_path',
+        coords: walkModel.pathList,
+        color: Palette.secondary,
+        outlineWidth: 0,
+      ),
+    );
   }
 
   /// 산책 종료 팝업 표시
