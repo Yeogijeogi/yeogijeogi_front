@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:yeogijeogi/components/common/custom_dialog.dart';
 import 'package:yeogijeogi/components/my_page/nickname_dialog.dart';
 import 'package:yeogijeogi/models/user_model.dart';
+import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:yeogijeogi/utils/enums/dialog_type.dart';
 
@@ -68,7 +69,10 @@ class MyPageViewModel with ChangeNotifier {
     showCustomDialog(
       type: DialogType.deleteAccount,
       context: context,
-      onTapAction: context.pop,
+      onTapAction: () async {
+        await API.deleteUser();
+        context.pop();
+      },
     );
   }
 
