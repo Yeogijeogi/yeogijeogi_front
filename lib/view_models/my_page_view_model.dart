@@ -71,7 +71,7 @@ class MyPageViewModel with ChangeNotifier {
       context: context,
       onTapAction: () async {
         await API.deleteUser();
-        // await FirebaseAuth.instance.currentUser!.delete();
+        await FirebaseAuth.instance.signOut();
         if (context.mounted) {
           userModel.reset();
           context.goNamed(AppRoute.login.name);
