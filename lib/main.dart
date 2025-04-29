@@ -16,7 +16,7 @@ void main() async {
   await Firebase.initializeApp();
 
   // 네이버 지도 초기화
-  await NaverMapSdk.instance.initialize(
+  await FlutterNaverMap().init(
     clientId: dotenv.env['NAVER_CLIENT_ID'],
     onAuthFailed: (ex) => debugPrint('Error initializing Naver Map: $ex'),
   );
