@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/objects/recommendation.dart';
 import 'package:yeogijeogi/models/objects/walk_point.dart';
@@ -38,6 +39,9 @@ class WalkModel with ChangeNotifier {
   /// 최근 1분동안 지나온 경로
   /// <br /> 10초에 한 번씩 경로 저장
   List<WalkPoint> walkPointList = [];
+
+  /// 지도에 그려지는 경로
+  List<NLatLng> pathList = [];
 
   /// 추천 목적지 리스트
   List<Recommendation> recommendationList = [
@@ -89,6 +93,7 @@ class WalkModel with ChangeNotifier {
     routes = null;
     walkPointList.clear();
     recommendationList.clear();
+    pathList.clear();
   }
 
   /// 추천 경로 선택
