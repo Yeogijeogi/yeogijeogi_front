@@ -71,7 +71,12 @@ class MyPageViewModel with ChangeNotifier {
       context: context,
       onTapAction: () async {
         await API.deleteUser();
-        context.pop();
+        // await FirebaseAuth.instance.currentUser!.delete();
+        if (context.mounted) {
+          userModel.reset();
+          context.goNamed(AppRoute.login.name);
+          context.pop();
+        }
       },
     );
   }
@@ -84,7 +89,11 @@ class MyPageViewModel with ChangeNotifier {
       onTapAction: () async {
         /// 로그아웃 후 login 페이지로 이동
         await FirebaseAuth.instance.signOut();
-        if (context.mounted) context.goNamed(AppRoute.login.name);
+        if (context.mounted) {
+          userModel.reset();
+          context.goNamed(AppRoute.login.name);
+          context.pop();
+        }
       },
     );
   }
