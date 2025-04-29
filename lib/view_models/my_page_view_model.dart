@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:yeogijeogi/components/common/custom_dialog.dart';
 import 'package:yeogijeogi/components/my_page/nickname_dialog.dart';
 import 'package:yeogijeogi/models/user_model.dart';
+import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:yeogijeogi/utils/enums/dialog_type.dart';
 
@@ -68,7 +69,15 @@ class MyPageViewModel with ChangeNotifier {
     showCustomDialog(
       type: DialogType.deleteAccount,
       context: context,
-      onTapAction: context.pop,
+      onTapAction: () async {
+        await API.deleteUser();
+        await FirebaseAuth.instance.signOut();
+        if (context.mounted) {
+          userModel.reset();
+          context.goNamed(AppRoute.login.name);
+          context.pop();
+        }
+      },
     );
   }
 
@@ -80,7 +89,11 @@ class MyPageViewModel with ChangeNotifier {
       onTapAction: () async {
         /// 로그아웃 후 login 페이지로 이동
         await FirebaseAuth.instance.signOut();
-        if (context.mounted) context.goNamed(AppRoute.login.name);
+        if (context.mounted) {
+          userModel.reset();
+          context.goNamed(AppRoute.login.name);
+          context.pop();
+        }
       },
     );
   }
