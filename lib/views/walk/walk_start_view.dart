@@ -17,6 +17,7 @@ class WalkStartView extends StatelessWidget {
         context.watch<WalkStartViewModel>();
 
     return CustomScaffold(
+      isLoading: walkStartViewModel.isLoading,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

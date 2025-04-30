@@ -30,10 +30,13 @@ class CourseDetailView extends StatelessWidget {
         CustomModalAppBar(title: '산책 코스 상세 보기', onTapBack: onTapBack),
         SizedBox(height: 20.h),
 
-        Container(
-          color: Palette.primary,
+        SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.width,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20.r),
+            child: Image.network(course.imgUrl!, fit: BoxFit.cover),
+          ),
         ),
         SizedBox(height: 24.h),
 

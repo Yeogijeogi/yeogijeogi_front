@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:location/location.dart';
 import 'package:yeogijeogi/components/common/custom_dialog.dart';
 import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/models/objects/course.dart';
@@ -40,33 +39,29 @@ class CourseViewModel with ChangeNotifier {
   final DraggableScrollableController draggableController =
       DraggableScrollableController();
 
+  /// 위치 버튼 활성화 여부
+  bool isLocationActive = true;
+
   /// 모달 확장 여부 상태
   bool isExpanded = false;
 
   /// 로딩
   bool isLoading = false;
 
-  // 위치 정보
-  final Location _location = Location();
+  /// 내 위치로 카메라 이동 (초기화)
+  Future<void> moveToCurrentLocation() async {
+    await naverMapController.setLocationTrackingMode(
+      NLocationTrackingMode.follow,
+    );
+
+    isLocationActive = true;
+    notifyListeners();
+  }
 
   void onMapReady(NaverMapController controller) async {
     naverMapController = controller;
 
-    // 내 위치 표시
-    await naverMapController.setLocationTrackingMode(
-      NLocationTrackingMode.noFollow,
-    );
-
-    // 내 위치로 카메라 이동 (초기화)
-    final location = await _location.getLocation();
-    await naverMapController.updateCamera(
-      NCameraUpdate.scrollAndZoomTo(
-        target: NLatLng(
-          location.latitude ?? DEFAULT_LATITUDE,
-          location.longitude ?? DEFAULT_LONGITUDE,
-        ),
-      ),
-    );
+    await moveToCurrentLocation();
 
     // 코스 마커 추가
     for (Course course in courseModel.courses) {
@@ -124,7 +119,7 @@ class CourseViewModel with ChangeNotifier {
       notifyListeners();
 
       final detail = await API.getCourseDetail(walkId: courseModel.course!.id);
-      courseModel.course!.fromCourseDetailJson(detail);
+      await courseModel.course!.fromCourseDetailJson(detail);
 
       isLoading = false;
       notifyListeners();
