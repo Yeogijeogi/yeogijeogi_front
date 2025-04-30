@@ -17,8 +17,14 @@ class WalkStartViewModel with ChangeNotifier {
   // 위치 정보
   final Location _location = Location();
 
+  /// 로딩
+  bool isLoading = false;
+
   /// 산책 시작 버튼
   void onTapStart() async {
+    isLoading = true;
+    notifyListeners();
+
     // 현재 위치
     final LocationData location = await _location.getLocation();
 
@@ -27,6 +33,9 @@ class WalkStartViewModel with ChangeNotifier {
       controller.page!.toInt(),
       Coordinate.fromLocationData(location),
     );
+
+    isLoading = false;
+    notifyListeners();
 
     if (context.mounted) context.goNamed(AppRoute.walk.name);
   }
