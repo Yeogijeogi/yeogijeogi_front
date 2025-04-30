@@ -57,28 +57,36 @@ class API {
 
   /// 산책 코스 추천 api
   /// recommendation 리스트 반환
-  // static Future<List<Recommendation>> getRecommendadtion({
-  //   required Coordinate coordinate,
-  //   required int walkTime,
-  //   required int view,
-  //   required int difficulty,
-  // }) async {
-  //   try {
-  //     final response = await _getApi(
-  //       '/walk/recommend',
-  //       queryParameters: {
-  //         'latitude': coordinate.latitude,
-  //         'longitude': coordinate.longitude,
-  //         'walk_time': walkTime,
-  //         'view': view,
-  //         'difficulty': difficulty,
-  //       },
-  //     );
-  //   } catch (e) {
-  //     debugPrint('Error in getRecommendadtion: $e');
-  //     throw Error();
-  //   }
-  // }
+  static Future<List<Recommendation>> getRecommendadtion({
+    required Coordinate coordinate,
+    required int walkTime,
+    required int view,
+    required int difficulty,
+  }) async {
+    try {
+      final response = await _getApi(
+        '/walk/recommend',
+        queryParameters: {
+          'latitude': coordinate.latitude,
+          'longitude': coordinate.longitude,
+          'walk_time': walkTime,
+          'view': view,
+          'difficulty': difficulty,
+        },
+      );
+
+      if (response != null) {
+        return (response.data as List)
+            .map((recommendation) => Recommendation.fromJson(recommendation))
+            .toList();
+      } else {
+        throw Error();
+      }
+    } catch (e) {
+      debugPrint('Error in getRecommendadtion: $e');
+      throw Error();
+    }
+  }
 
   /// 코스 선택 후 산책 시작
   static Future<String> postWalkStart({
