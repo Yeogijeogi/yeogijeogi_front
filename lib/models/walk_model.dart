@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
@@ -42,6 +44,9 @@ class WalkModel with ChangeNotifier {
 
   /// 지도에 그려지는 경로
   List<NLatLng> pathList = [];
+
+  /// 산책 후 사진
+  File? image;
 
   /// 추천 목적지 리스트
   List<Recommendation> recommendationList = [
@@ -94,6 +99,23 @@ class WalkModel with ChangeNotifier {
     walkPointList.clear();
     recommendationList.clear();
     pathList.clear();
+    image?.delete();
+    image = null;
+
+    debugPrint('Reset WalkModel');
+  }
+
+  /// 위치 추가
+  void addLocation(Coordinate coordinate) {
+    // walkPointList 추가
+    walkPointList.add(
+      WalkPoint(walkId: id!, coordinate: coordinate, createdAt: DateTime.now()),
+    );
+
+    // pathList 추가
+    pathList.add(coordinate.toNLatLng());
+
+    debugPrint('WalkPoint added: $coordinate');
   }
 
   /// 추천 경로 선택
@@ -112,7 +134,7 @@ class WalkModel with ChangeNotifier {
   }
 
   /// 지난 경로 서버 전송
-  void uploadWalkPoints() async {
+  Future<void> uploadWalkPoints() async {
     await API.postWalkLocation(walkId: id!, walkPoints: walkPointList);
     walkPointList.clear();
   }
