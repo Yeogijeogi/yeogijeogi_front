@@ -1,12 +1,14 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
 import 'package:yeogijeogi/components/walk/walk_end_dialog.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
-import 'package:yeogijeogi/models/objects/walk_point.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/constants.dart';
@@ -17,15 +19,7 @@ class WalkViewModel with ChangeNotifier {
   WalkModel walkModel;
   BuildContext context;
 
-  WalkViewModel({required this.walkModel, required this.context}) {
-    isLoading = true;
-    notifyListeners();
-
-    // 시작 위치 초기화
-    addCurrentLocation();
-
-    startTimer();
-  }
+  WalkViewModel({required this.walkModel, required this.context});
 
   /// 네이버 지도 초기화 옵션
   NaverMapViewOptions options = NaverMapViewOptions(
@@ -48,7 +42,7 @@ class WalkViewModel with ChangeNotifier {
   Timer? _timer;
 
   // 로딩
-  bool isLoading = false;
+  bool isLoading = true;
 
   // 타이머 실행
   void startTimer() {
@@ -61,6 +55,11 @@ class WalkViewModel with ChangeNotifier {
 
     // 현재 내 위치로 이동
     await moveToCurrentLocation();
+
+    // 시작 위치 초기화
+    addCurrentLocation();
+
+    startTimer();
 
     isLoading = false;
     notifyListeners();
@@ -89,16 +88,7 @@ class WalkViewModel with ChangeNotifier {
     final Coordinate currentLocation = Coordinate.fromLocationData(
       await _location.getLocation(),
     );
-
-    walkModel.walkPointList.add(
-      WalkPoint(
-        walkId: walkModel.id!,
-        coordinate: currentLocation,
-        createdAt: DateTime.now(),
-      ),
-    );
-    walkModel.pathList.add(currentLocation.toNLatLng());
-    debugPrint('WalkPoint added: $currentLocation');
+    walkModel.addLocation(currentLocation);
 
     // 60초 경과 후 (walkPoint 6개) 서버 전송
     if (walkModel.walkPointList.length >= 6) {
@@ -125,8 +115,42 @@ class WalkViewModel with ChangeNotifier {
     );
   }
 
+  /// 산책 완료시 사진 촬영
+  Future<void> takePicture() async {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+
+    // 정사각형이 화면의 중앙에 위치하도록 하기 위해 상하 padding 계산
+    final double heightPadding = (screenHeight - screenWidth) / 2 + 40.w;
+
+    // 내 위치 마커 제거
+    await naverMapController.setLocationTrackingMode(
+      NLocationTrackingMode.none,
+    );
+
+    // 지도 위치 조정
+    final NLatLngBounds bounds = NLatLngBounds.from(walkModel.pathList);
+    final NCameraUpdate cameraUpdate = NCameraUpdate.fitBounds(
+      bounds,
+      padding: EdgeInsets.symmetric(vertical: heightPadding, horizontal: 40.w),
+    );
+    await naverMapController.updateCamera(cameraUpdate);
+
+    // 사진 촬영
+    final File image = await naverMapController.takeSnapshot(
+      showControls: false,
+    );
+    walkModel.image = image;
+  }
+
   /// 산책 저장
   void save() async {
+    isLoading = true;
+    notifyListeners();
+
+    // 팝업 제거
+    if (context.mounted) context.pop();
+
     // 타이머 종료
     _timer?.cancel();
     _timer = null;
@@ -135,18 +159,20 @@ class WalkViewModel with ChangeNotifier {
     final Coordinate currentLocation = Coordinate.fromLocationData(
       await _location.getLocation(),
     );
-    walkModel.walkPointList.add(
-      WalkPoint(
-        walkId: walkModel.id!,
-        coordinate: currentLocation,
-        createdAt: DateTime.now(),
-      ),
-    );
-    walkModel.uploadWalkPoints();
+    walkModel.addLocation(currentLocation);
+
+    // 경로 사진 촬영
+    await takePicture();
+
+    // 마지막 위치 포함 경로 서버 업로드
+    await walkModel.uploadWalkPoints();
 
     // 이 시점에는 walkId가 null이 되면 안됨
     // 산책 종료 api 호출
     await API.postWalkEnd(walkModel.id!);
+
+    isLoading = false;
+    notifyListeners();
 
     if (context.mounted) context.goNamed(AppRoute.save.name);
   }
