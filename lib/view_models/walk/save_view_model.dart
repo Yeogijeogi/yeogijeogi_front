@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
@@ -18,6 +19,9 @@ class SaveViewModel with ChangeNotifier {
 
   /// 메모 Text Controller
   TextEditingController controller = TextEditingController();
+
+  /// 로딩
+  bool isLoading = false;
 
   /// 분위기 슬라이더 값 업데이트
   void updateSceneryLevel(double value) {
@@ -44,8 +48,29 @@ class SaveViewModel with ChangeNotifier {
     }
   }
 
+  /// 이미지 firebase 업로드
+  Future<void> uploadImageToFirebase() async {
+    debugPrint('Uploading image to firebase');
+
+    final Reference storage = FirebaseStorage.instance.ref(
+      'images/${walkModel.id}.png',
+    );
+
+    if (walkModel.image != null) {
+      await storage.putFile(walkModel.image!);
+      debugPrint('Upload complete');
+    }
+  }
+
   /// 저장
   void onTapSave() async {
+    isLoading = true;
+    notifyListeners();
+
+    // 이미지 firebase 업로드
+    await uploadImageToFirebase();
+
+    // 완료 api 호출
     await API.patchWalkEnd(
       walkModel.id!,
       moodLevel.toInt(),
@@ -53,8 +78,12 @@ class SaveViewModel with ChangeNotifier {
       controller.text.trim(),
     );
 
-    walkModel.reset();
+    isLoading = false;
+    notifyListeners();
 
     if (context.mounted) context.goNamed(AppRoute.course.name);
+
+    // 모델 리셋
+    walkModel.reset();
   }
 }

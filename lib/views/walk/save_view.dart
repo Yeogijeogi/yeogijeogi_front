@@ -17,6 +17,7 @@ class SaveView extends StatelessWidget {
     final SaveViewModel saveViewModel = context.watch<SaveViewModel>();
 
     return CustomScaffold(
+      isLoading: saveViewModel.isLoading,
       canPop: false,
       body: SingleChildScrollView(
         child: Column(
@@ -32,6 +33,13 @@ class SaveView extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.r),
+                child: Image.file(
+                  saveViewModel.walkModel.image!,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             SizedBox(height: 24.h),
 
