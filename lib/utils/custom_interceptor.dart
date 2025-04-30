@@ -33,7 +33,8 @@ class CustomInterceptor extends Interceptor {
   ) async {
     // 헤더에 토큰 추가
     if (tokenRequired) {
-      String? token = 'token'; //await _getToken();
+      String? token =
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2doaCJ9.4WLmN9Hx21qkPiq9e8MYXdfUmRVKLzP2K2o3mUnmuYU'; //await _getToken();
       options.headers['Authorization'] = 'Bearer $token';
     }
 

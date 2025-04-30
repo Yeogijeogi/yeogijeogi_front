@@ -28,12 +28,13 @@ class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
   /// durationPicker 선택 여부
   bool showPicker = false;
 
-  /// durationPicker 클릭시 모달달
+  /// durationPicker 클릭시 모달
   void togglePicker() {
     showPicker = !showPicker;
     notifyListeners();
   }
 
+  /// 시간 선택 duration 변경
   void selectDurationTime(Duration value) {
     duration = value;
     notifyListeners();
@@ -65,7 +66,9 @@ class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
   }
 
   /// 코스 추천 버튼 클릭
-  void onTapCourse() {
+  void onTapCourse() async {
+    // walk.recommend api 호출
+
     context.goNamed(AppRoute.walkStart.name);
   }
 

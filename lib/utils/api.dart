@@ -56,6 +56,7 @@ class API {
   /* WALK API */
 
   /// 산책 코스 추천 api
+  /// recommendation 리스트 반환
   // static Future<List<Recommendation>> getRecommendadtion({
   //   required Coordinate coordinate,
   //   required int walkTime,

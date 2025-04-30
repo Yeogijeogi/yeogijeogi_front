@@ -4,6 +4,9 @@ class Recommendation {
   /// 목적지 경도, 위도
   final Coordinate location;
 
+  /// 출발지 이름
+  final String startName;
+
   /// 목적지 이름
   final String name;
 
@@ -27,6 +30,7 @@ class Recommendation {
 
   Recommendation({
     required this.location,
+    required this.startName,
     required this.name,
     required this.address,
     required this.distance,
@@ -39,6 +43,7 @@ class Recommendation {
   factory Recommendation.fromJson(Map<String, dynamic> json) {
     return Recommendation(
       location: json['location'],
+      startName: json['startName'],
       name: json['name'],
       address: json['address'],
       distance: json['distance'],

@@ -104,7 +104,6 @@ class OnboardingView extends StatelessWidget {
             },
           ),
           Spacer(),
-
           CustomButton(
             text: '코스 추천 받기',
             onTap: onboardingViewModel.onTapCourse,
