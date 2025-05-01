@@ -108,12 +108,14 @@ class SaveViewModel with ChangeNotifier {
         memo: walkModel.memo,
       ),
     );
-    print("dddd ${courseModel.courses.last.id}");
+    print("dddd ${courseModel.courses.length}");
+    isLoading = false;
 
+    courseModel.selectCourseById(walkModel.id!);
     notifyListeners();
 
     if (context.mounted) context.goNamed(AppRoute.course.name);
-
+    notifyListeners();
     // 모델 리셋
     walkModel.reset();
   }

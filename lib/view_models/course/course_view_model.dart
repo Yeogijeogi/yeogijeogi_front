@@ -16,6 +16,7 @@ class CourseViewModel with ChangeNotifier {
   CourseViewModel({required this.courseModel, required this.context}) {
     isLoading = true;
     notifyListeners();
+    debugPrint("courseviewmodel : ${courseModel.courses.length}");
 
     // 모달 드래그 리스너 추가
     draggableController.addListener(_onDrag);
