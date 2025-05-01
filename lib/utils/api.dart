@@ -60,17 +60,16 @@ class API {
   static Future<List<Recommendation>> getRecommendadtion({
     required Coordinate coordinate,
     required int walkTime,
-    required int view,
+    required int mood,
     required int difficulty,
   }) async {
     try {
       final response = await _getApi(
         '/walk/recommend',
         queryParameters: {
-          'latitude': coordinate.latitude,
-          'longitude': coordinate.longitude,
+          'location': coordinate,
           'walk_time': walkTime,
-          'view': view,
+          'view': mood,
           'difficulty': difficulty,
         },
       );
