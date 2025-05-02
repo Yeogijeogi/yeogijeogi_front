@@ -23,7 +23,7 @@ class Recommendation {
   final int time;
 
   /// 지도 이미지
-  final String imgUrl;
+  final String? imgUrl;
 
   /// 지도에 표시될 경로 좌표 리스트
   List<Coordinate>? routes;
@@ -36,7 +36,7 @@ class Recommendation {
     required this.distance,
     required this.walks,
     required this.time,
-    required this.imgUrl,
+    this.imgUrl,
     required this.routes,
   });
 
