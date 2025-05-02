@@ -76,7 +76,6 @@ class API {
       );
 
       if (response != null) {
-        print("response : ${response.data}");
         return (response.data as List)
             .map((recommendation) => Recommendation.fromJson(recommendation))
             .toList();
@@ -98,10 +97,10 @@ class API {
       final response = await _postApi(
         '/walk/start',
         jsonData: {
-          'location': coordinate.toJson(),
+          'start_location': coordinate.toJson(),
+          'start_name': recommendation.startName,
           'end_name': recommendation.name,
           'end_address': recommendation.address,
-          'img_url': recommendation.imgUrl,
         },
       );
 

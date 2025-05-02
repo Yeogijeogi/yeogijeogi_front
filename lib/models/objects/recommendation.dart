@@ -42,10 +42,6 @@ class Recommendation {
 
   factory Recommendation.fromJson(Map<String, dynamic> json) {
     return Recommendation(
-      // location: Coordinate(
-      //   latitude: json['location']['latitude'],
-      //   longitude: json['location']['longitude'],
-      // ),
       location: Coordinate.fromJson(json['location']),
       startName: json['start_name'],
       name: json['name'],
