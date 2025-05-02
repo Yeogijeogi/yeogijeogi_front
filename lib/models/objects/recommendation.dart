@@ -42,15 +42,22 @@ class Recommendation {
 
   factory Recommendation.fromJson(Map<String, dynamic> json) {
     return Recommendation(
-      location: json['location'],
-      startName: json['startName'],
+      // location: Coordinate(
+      //   latitude: json['location']['latitude'],
+      //   longitude: json['location']['longitude'],
+      // ),
+      location: Coordinate.fromJson(json['location']),
+      startName: json['start_name'],
       name: json['name'],
       address: json['address'],
-      distance: json['distance'],
+      distance: (json['distance'] as num).toDouble(),
       walks: json['walks'],
       time: json['time'],
       imgUrl: json['img_url'],
-      routes: json['routes'],
+      routes:
+          (json['routes'] as List)
+              .map((route) => Coordinate.fromJson(route))
+              .toList(),
     );
   }
 }

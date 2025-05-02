@@ -64,13 +64,9 @@ class API {
     required int difficulty,
   }) async {
     try {
-      print(
-        "ssss ${coordinate.latitude} ${coordinate.longitude} $walkTime $mood $difficulty",
-      );
       final response = await _getApi(
         '/walk/recommend',
         queryParameters: {
-          // 'location': coordinate,
           'latitude': coordinate.latitude,
           'longitude': coordinate.longitude,
           'walk_time': walkTime,
@@ -78,9 +74,9 @@ class API {
           'difficulty': difficulty,
         },
       );
-      print('요청 URL: ${response.requestOptions.uri}');
 
       if (response != null) {
+        print("response : ${response.data}");
         return (response.data as List)
             .map((recommendation) => Recommendation.fromJson(recommendation))
             .toList();
