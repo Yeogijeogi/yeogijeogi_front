@@ -50,14 +50,57 @@ class OnboardingView extends StatelessWidget {
                         ),
                       ),
                       builder: (context) {
+                        int selectedHour = onboardingViewModel.duration.inHours;
+                        int selectedMinute =
+                            onboardingViewModel.duration.inMinutes % 60;
+
                         return SizedBox(
-                          height: 250.h,
-                          child: CupertinoTimerPicker(
-                            mode: CupertinoTimerPickerMode.hm,
-                            initialTimerDuration: onboardingViewModel.duration,
-                            onTimerDurationChanged: (Duration value) {
-                              onboardingViewModel.selectDurationTime(value);
-                            },
+                          height: 250,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: CupertinoPicker(
+                                  scrollController: FixedExtentScrollController(
+                                    initialItem: selectedHour,
+                                  ),
+                                  itemExtent: 32,
+                                  onSelectedItemChanged: (index) {
+                                    selectedHour = index;
+                                    onboardingViewModel.selectDurationTime(
+                                      Duration(
+                                        hours: selectedHour,
+                                        minutes: selectedMinute,
+                                      ),
+                                    );
+                                  },
+                                  children: List.generate(
+                                    24,
+                                    (i) => Center(child: Text('$i 시간')),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: CupertinoPicker(
+                                  scrollController: FixedExtentScrollController(
+                                    initialItem: selectedMinute,
+                                  ),
+                                  itemExtent: 32,
+                                  onSelectedItemChanged: (index) {
+                                    selectedMinute = index;
+                                    onboardingViewModel.selectDurationTime(
+                                      Duration(
+                                        hours: selectedHour,
+                                        minutes: selectedMinute,
+                                      ),
+                                    );
+                                  },
+                                  children: List.generate(
+                                    60,
+                                    (i) => Center(child: Text('$i 분')),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         );
                       },

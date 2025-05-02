@@ -79,12 +79,18 @@ class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
     // 현재 위치
     final LocationData location = await _location.getLocation();
 
+    isLoading = true;
+    notifyListeners();
+
     walkModel.recommendationList = await API.getRecommendadtion(
       coordinate: Coordinate.fromLocationData(location),
       walkTime: duration.inMinutes,
       mood: sceneryLevel.toInt(),
       difficulty: walkingLevel.toInt(),
     );
+
+    isLoading = false;
+    notifyListeners();
 
     context.goNamed(AppRoute.walkStart.name);
   }
