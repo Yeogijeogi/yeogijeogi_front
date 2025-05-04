@@ -49,40 +49,7 @@ class WalkModel with ChangeNotifier {
   File? image;
 
   /// 추천 목적지 리스트
-  List<Recommendation> recommendationList = [
-    Recommendation(
-      location: Coordinate(longitude: 37.5880, latitude: 127.0201),
-      name: '안암역1',
-      address: '성북구 123',
-      distance: 5,
-      walks: 2000,
-      time: 60,
-      imgUrl: 'http://www.a.com',
-      routes: [Coordinate(longitude: 0, latitude: 0)],
-    ),
-
-    Recommendation(
-      location: Coordinate(longitude: 37.5863, latitude: 127.0923),
-      name: '안암역2',
-      address: '성북구 456',
-      distance: 10,
-      walks: 3000,
-      time: 60,
-      imgUrl: 'http://www.a.com',
-      routes: [Coordinate(longitude: 0, latitude: 0)],
-    ),
-
-    Recommendation(
-      location: Coordinate(longitude: 37.5852, latitude: 127.0319),
-      name: '안암역3',
-      address: '성북구 789',
-      distance: 15,
-      walks: 4000,
-      time: 60,
-      imgUrl: 'http://www.a.com',
-      routes: [Coordinate(longitude: 0, latitude: 0)],
-    ),
-  ];
+  List<Recommendation> recommendationList = [];
 
   /// 모델 초기화
   void reset() {

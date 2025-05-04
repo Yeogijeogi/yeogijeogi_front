@@ -94,7 +94,10 @@ class AppRouter {
                   builder:
                       (context, _) => ChangeNotifierProvider(
                         create:
-                            (context) => OnboardingViewModel(context: context),
+                            (context) => OnboardingViewModel(
+                              context: context,
+                              walkModel: walkModel,
+                            ),
                         child: const OnboardingView(),
                       ),
                   routes: [
