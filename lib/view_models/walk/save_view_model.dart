@@ -109,7 +109,7 @@ class SaveViewModel with ChangeNotifier {
         imgUrl: imageUrl,
         mood: moodLevel.toDouble(),
         difficulty: difficultyLevel.toDouble(),
-        memo: walkModel.memo,
+        memo: controller.text.trim(),
       ),
     );
     isLoading = false;

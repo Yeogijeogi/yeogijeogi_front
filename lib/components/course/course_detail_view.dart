@@ -11,13 +11,11 @@ import 'package:yeogijeogi/utils/palette.dart';
 
 class CourseDetailView extends StatelessWidget {
   final Course course;
-  final TextEditingController controller;
   final Function() onTapBack;
   final Function() onTapDelete;
   const CourseDetailView({
     super.key,
     required this.course,
-    required this.controller,
     required this.onTapBack,
     required this.onTapDelete,
   });
@@ -78,7 +76,7 @@ class CourseDetailView extends StatelessWidget {
         ),
         SizedBox(height: 24.h),
 
-        MemoTextField(controller: controller, readOnly: true),
+        MemoTextField(readOnly: true, initialValue: course.memo),
         SizedBox(height: 40.h),
 
         Center(

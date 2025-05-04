@@ -30,7 +30,6 @@ class CourseView extends StatelessWidget {
             draggableScrollableController: courseViewModel.draggableController,
             course: courseViewModel.courseModel.course,
             isExpanded: courseViewModel.isExpanded,
-            textEditingController: courseViewModel.controller,
             onTapBack: courseViewModel.onTapBack,
             onTapDelete: courseViewModel.onTapDelete,
           ),
