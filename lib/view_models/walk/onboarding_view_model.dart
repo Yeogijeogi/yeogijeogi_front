@@ -76,11 +76,11 @@ class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
 
   /// 코스 추천 버튼 클릭
   void onTapCourse() async {
-    // 현재 위치
-    final LocationData location = await _location.getLocation();
-
     isLoading = true;
     notifyListeners();
+
+    // 현재 위치
+    final LocationData location = await _location.getLocation();
 
     walkModel.recommendationList = await API.getRecommendadtion(
       coordinate: Coordinate.fromLocationData(location),
@@ -92,7 +92,7 @@ class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
     isLoading = false;
     notifyListeners();
 
-    context.goNamed(AppRoute.walkStart.name);
+    if (context.mounted) context.goNamed(AppRoute.walkStart.name);
   }
 
   /// 풍경 슬라이더 값 업데이트
