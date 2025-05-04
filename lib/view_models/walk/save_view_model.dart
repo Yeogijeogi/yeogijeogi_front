@@ -85,14 +85,6 @@ class SaveViewModel with ChangeNotifier {
       controller.text.trim(),
     );
 
-    isLoading = false;
-    // courseModel.getCourses();
-    // print(
-    //   "walkmodel : ${walkModel.id} ${walkModel.averageSpeed} ${walkModel.endName}",
-    // );
-    print(
-      "ddd${walkModel.id} ${walkModel.lastLocation} ${walkModel.endName} ${walkModel.distance} ${walkModel.time}",
-    );
     courseModel.courses.add(
       Course(
         id: walkModel.id!,
@@ -108,7 +100,6 @@ class SaveViewModel with ChangeNotifier {
         memo: walkModel.memo,
       ),
     );
-    print("dddd ${courseModel.courses.length}");
     isLoading = false;
 
     courseModel.selectCourseById(walkModel.id!);

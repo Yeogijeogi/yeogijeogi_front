@@ -34,8 +34,6 @@ class CourseView extends StatelessWidget {
             onTapBack: courseViewModel.onTapBack,
             onTapDelete: courseViewModel.onTapDelete,
           ),
-          // Text("${courseViewModel.courseModel.courses.length}"),
-          // Text("${courseViewModel.courseModel.course?.id}"),
         ],
       ),
     );
