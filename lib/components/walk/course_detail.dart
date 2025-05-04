@@ -91,7 +91,7 @@ class CourseDetail extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      '${distance % 1 == 0 ? distance.toStringAsFixed(0) : distance.toStringAsFixed(2)}km',
+                      '${distance % 1 == 0 ? distance.toStringAsFixed(0) : distance.toStringAsFixed(2)}m',
                       style: Palette.callout,
                     ),
                     SizedBox(height: 8.h),

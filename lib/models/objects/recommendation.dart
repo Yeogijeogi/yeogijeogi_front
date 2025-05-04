@@ -47,8 +47,8 @@ class Recommendation {
       name: json['name'],
       address: json['address'],
       distance: (json['distance'] as num).toDouble(),
-      walks: json['walks'],
-      time: json['time'],
+      walks: (json['walks'] as num).toInt(),
+      time: (json['time'] as num).toInt(),
       imgUrl: json['img_url'],
       routes:
           (json['routes'] as List)
