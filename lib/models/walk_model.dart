@@ -48,9 +48,6 @@ class WalkModel with ChangeNotifier {
   /// 산책 후 사진
   File? image;
 
-  /// 최종 location
-  Coordinate? lastLocation;
-
   /// 추천 목적지 리스트
   List<Recommendation> recommendationList = [];
 
@@ -71,7 +68,6 @@ class WalkModel with ChangeNotifier {
     pathList.clear();
     image?.delete();
     image = null;
-    lastLocation = null;
 
     debugPrint('Reset WalkModel');
   }
@@ -109,7 +105,6 @@ class WalkModel with ChangeNotifier {
 
   /// 지난 경로 서버 전송
   Future<void> uploadWalkPoints() async {
-    lastLocation = walkPointList.last.coordinate;
     await API.postWalkLocation(walkId: id!, walkPoints: walkPointList);
     walkPointList.clear();
   }
