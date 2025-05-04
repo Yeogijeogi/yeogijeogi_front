@@ -16,12 +16,16 @@ class CourseModel with ChangeNotifier {
   /// 선택된 마커
   NMarker? marker;
 
+  /// 네이버 지도 컨트롤러
+  NaverMapController? naverMapController;
+
   /// 모델 초기화
   void reset() {
     courses.clear();
     course = null;
     markers.clear();
     marker = null;
+    naverMapController = null;
   }
 
   /// 전체 코스 불러오기
@@ -73,5 +77,31 @@ class CourseModel with ChangeNotifier {
         course = null;
       }
     }
+  }
+
+  /// 지도에 마커 그리기
+  void drawMarkers() {
+    if (naverMapController != null) {
+      for (Course course in courses) {
+        final NMarker marker = course.toNMarker();
+        marker.setOnTapListener(onTapMarker);
+        naverMapController?.addOverlay(marker);
+        markers.add(marker);
+
+        // 기본 선택된 코스의 경우 선택 처리
+        if (course == course) {
+          onTapMarker(marker);
+        }
+      }
+    }
+  }
+
+  // 마커 탭 리스너
+  void onTapMarker(NMarker marker) async {
+    // 선택된 마커 설정
+    selectCourseById(marker.info.id);
+    selectMarker(marker);
+
+    notifyListeners();
   }
 }
