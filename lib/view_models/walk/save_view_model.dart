@@ -56,16 +56,26 @@ class SaveViewModel with ChangeNotifier {
   }
 
   /// 이미지 firebase 업로드
-  Future<void> uploadImageToFirebase() async {
-    debugPrint('Uploading image to firebase');
+  Future<String> uploadImageToFirebase() async {
+    try {
+      debugPrint('Uploading image to firebase');
 
-    final Reference storage = FirebaseStorage.instance.ref(
-      'images/${walkModel.id}.png',
-    );
+      final Reference storage = FirebaseStorage.instance.ref(
+        'images/${walkModel.id}.png',
+      );
 
-    if (walkModel.image != null) {
-      await storage.putFile(walkModel.image!);
-      debugPrint('Upload complete');
+      if (walkModel.image != null) {
+        await storage.putFile(walkModel.image!);
+        debugPrint('Upload complete');
+
+        return await storage.getDownloadURL();
+      } else {
+        debugPrint('Failed to upload image to firebase: Image not found');
+        throw Error();
+      }
+    } catch (e) {
+      debugPrint('Error uploading image to firebase');
+      throw Error();
     }
   }
 
@@ -75,7 +85,7 @@ class SaveViewModel with ChangeNotifier {
     notifyListeners();
 
     // 이미지 firebase 업로드
-    await uploadImageToFirebase();
+    final String imageUrl = await uploadImageToFirebase();
 
     // 완료 api 호출
     await API.patchWalkEnd(
@@ -94,7 +104,7 @@ class SaveViewModel with ChangeNotifier {
         distance: walkModel.distance!,
         time: walkModel.time!,
         speed: walkModel.averageSpeed,
-        imgUrl: null,
+        imgUrl: imageUrl,
         mood: moodLevel.toDouble(),
         difficulty: difficultyLevel.toDouble(),
         memo: walkModel.memo,
@@ -107,6 +117,7 @@ class SaveViewModel with ChangeNotifier {
 
     if (context.mounted) context.goNamed(AppRoute.course.name);
     notifyListeners();
+
     // 모델 리셋
     walkModel.reset();
   }
