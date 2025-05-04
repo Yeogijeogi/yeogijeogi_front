@@ -80,6 +80,14 @@ class CourseViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  /// 카메라 움직일 때 호출되는 함수
+  void onCameraChange(_, _) async {
+    isLocationActive =
+        await naverMapController.getLocationTrackingMode() ==
+        NLocationTrackingMode.follow;
+    notifyListeners();
+  }
+
   // 마커 탭 리스너
   void onTapMarker(NMarker marker) async {
     // 선택된 마커 설정

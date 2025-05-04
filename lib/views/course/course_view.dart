@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
 import 'package:yeogijeogi/components/course/course_modal.dart';
+import 'package:yeogijeogi/components/walk/location_button.dart';
 import 'package:yeogijeogi/view_models/course/course_view_model.dart';
 
 class CourseView extends StatelessWidget {
@@ -23,6 +25,16 @@ class CourseView extends StatelessWidget {
           NaverMap(
             options: courseViewModel.options,
             onMapReady: courseViewModel.onMapReady,
+            onCameraChange: courseViewModel.onCameraChange,
+          ),
+
+          Positioned(
+            bottom: 213.h,
+            left: 0,
+            child: LocationButton(
+              isLocationActive: courseViewModel.isLocationActive,
+              onTap: courseViewModel.moveToCurrentLocation,
+            ),
           ),
 
           // 모달
