@@ -21,6 +21,10 @@ class Coordinate {
     return Coordinate(longitude: json['longitude'], latitude: json['latitude']);
   }
 
+  factory Coordinate.fromNLatLng(NLatLng nLatLng) {
+    return Coordinate(longitude: nLatLng.longitude, latitude: nLatLng.latitude);
+  }
+
   Map<String, dynamic> toJson() {
     return {'longitude': longitude, 'latitude': latitude};
   }
