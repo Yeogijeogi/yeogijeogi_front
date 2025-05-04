@@ -53,6 +53,17 @@ class API {
     }
   }
 
+  /// user delete 요청
+  /// true 반환
+  static Future<void> deleteUser() async {
+    try {
+      await _deleteApi('/user');
+    } catch (e) {
+      debugPrint('Error in deleteUser: $e');
+      throw Error();
+    }
+  }
+
   /* WALK API */
 
   /// 산책 코스 추천 api

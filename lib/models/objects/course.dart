@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/utils/utils.dart';
@@ -64,8 +65,10 @@ class Course {
   }
 
   /// 코스 상세 정보 저장
-  void fromCourseDetailJson(Map<String, dynamic> json) {
-    imgUrl = json['img_url'];
+  Future<void> fromCourseDetailJson(Map<String, dynamic> json) async {
+    final Reference storage = FirebaseStorage.instance.ref('images/$id.png');
+    imgUrl = await storage.getDownloadURL();
+
     mood = json['mood'].toDouble();
     difficulty = json['difficulty'].toDouble();
     memo = json['memo'];
