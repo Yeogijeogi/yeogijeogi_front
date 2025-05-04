@@ -41,6 +41,7 @@ class Recommendation {
   });
 
   factory Recommendation.fromJson(Map<String, dynamic> json) {
+    print("${json['distance']} ${json['walks']} ${json['time']}");
     return Recommendation(
       location: Coordinate.fromJson(json['location']),
       startName: json['start_name'],
@@ -48,7 +49,7 @@ class Recommendation {
       address: json['address'],
       distance: (json['distance'] as num).toDouble(),
       walks: (json['walks'] as num).toInt(),
-      time: (json['time'] as num).toInt(),
+      time: json['time'],
       imgUrl: json['img_url'],
       routes:
           (json['routes'] as List)
