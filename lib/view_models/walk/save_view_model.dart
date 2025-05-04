@@ -2,10 +2,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yeogijeogi/models/course_model.dart';
+import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/objects/course.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
+import 'package:yeogijeogi/utils/utils.dart';
 
 class SaveViewModel with ChangeNotifier {
   CourseModel courseModel;
@@ -98,12 +100,12 @@ class SaveViewModel with ChangeNotifier {
     courseModel.courses.add(
       Course(
         id: walkModel.id!,
-        location: walkModel.lastLocation!,
+        location: Coordinate.fromNLatLng(walkModel.pathList.last),
         name: walkModel.endName!,
         address: walkModel.endName!,
         distance: walkModel.distance!,
         time: walkModel.time!,
-        speed: walkModel.averageSpeed,
+        speed: calAvgSpeed(walkModel.distance!, walkModel.time!),
         imgUrl: imageUrl,
         mood: moodLevel.toDouble(),
         difficulty: difficultyLevel.toDouble(),
@@ -113,10 +115,10 @@ class SaveViewModel with ChangeNotifier {
     isLoading = false;
 
     courseModel.selectCourseById(walkModel.id!);
+    courseModel.drawMarkers();
     notifyListeners();
 
     if (context.mounted) context.goNamed(AppRoute.course.name);
-    notifyListeners();
 
     // 모델 리셋
     walkModel.reset();
