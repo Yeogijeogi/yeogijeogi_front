@@ -94,7 +94,10 @@ class AppRouter {
                   builder:
                       (context, _) => ChangeNotifierProvider(
                         create:
-                            (context) => OnboardingViewModel(context: context),
+                            (context) => OnboardingViewModel(
+                              context: context,
+                              walkModel: walkModel,
+                            ),
                         child: const OnboardingView(),
                       ),
                   routes: [
@@ -147,6 +150,7 @@ class AppRouter {
                             create:
                                 (context) => SaveViewModel(
                                   walkModel: walkModel,
+                                  courseModel: courseModel,
                                   context: context,
                                 ),
                             child: const SaveView(),

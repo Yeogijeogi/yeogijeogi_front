@@ -67,28 +67,37 @@ class API {
   /* WALK API */
 
   /// 산책 코스 추천 api
-  // static Future<List<Recommendation>> getRecommendadtion({
-  //   required Coordinate coordinate,
-  //   required int walkTime,
-  //   required int view,
-  //   required int difficulty,
-  // }) async {
-  //   try {
-  //     final response = await _getApi(
-  //       '/walk/recommend',
-  //       queryParameters: {
-  //         'latitude': coordinate.latitude,
-  //         'longitude': coordinate.longitude,
-  //         'walk_time': walkTime,
-  //         'view': view,
-  //         'difficulty': difficulty,
-  //       },
-  //     );
-  //   } catch (e) {
-  //     debugPrint('Error in getRecommendadtion: $e');
-  //     throw Error();
-  //   }
-  // }
+  /// recommendation 리스트 반환
+  static Future<List<Recommendation>> getRecommendadtion({
+    required Coordinate coordinate,
+    required int walkTime,
+    required int mood,
+    required int difficulty,
+  }) async {
+    try {
+      final response = await _getApi(
+        '/walk/recommend',
+        queryParameters: {
+          'latitude': coordinate.latitude,
+          'longitude': coordinate.longitude,
+          'walk_time': walkTime,
+          'view': mood,
+          'difficulty': difficulty,
+        },
+      );
+
+      if (response != null) {
+        return (response.data as List)
+            .map((recommendation) => Recommendation.fromJson(recommendation))
+            .toList();
+      } else {
+        throw Error();
+      }
+    } catch (e) {
+      debugPrint('Error in getRecommendadtion: $e');
+      throw Error();
+    }
+  }
 
   /// 코스 선택 후 산책 시작
   static Future<String> postWalkStart({
@@ -99,10 +108,10 @@ class API {
       final response = await _postApi(
         '/walk/start',
         jsonData: {
-          'location': coordinate.toJson(),
+          'start_location': coordinate.toJson(),
+          'start_name': recommendation.startName,
           'end_name': recommendation.name,
           'end_address': recommendation.address,
-          'img_url': recommendation.imgUrl,
         },
       );
 
@@ -223,10 +232,7 @@ class API {
   /// 코스 삭ㅔ
   static Future<void> deleteCourse({required String walkId}) async {
     try {
-      await _deleteApi(
-        '/course/delete',
-        jsonData: jsonEncode({'walk_id': walkId}),
-      );
+      await _deleteApi('/course', jsonData: jsonEncode({'walk_id': walkId}));
     } catch (e) {
       debugPrint('Error in deleteCourse: $e');
       throw Error();

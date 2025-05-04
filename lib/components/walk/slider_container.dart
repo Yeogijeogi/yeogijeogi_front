@@ -57,8 +57,8 @@ class SliderContainer extends StatelessWidget {
             ),
             child: Slider(
               value: value,
-              min: 0,
-              max: 10,
+              min: -5,
+              max: 5,
               divisions: 10,
               onChanged: onChanged,
             ),
