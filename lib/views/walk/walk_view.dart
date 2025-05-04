@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/custom_button.dart';
-import 'package:yeogijeogi/components/common/custom_ink_well.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
-import 'package:yeogijeogi/utils/palette.dart';
+import 'package:yeogijeogi/components/walk/location_button.dart';
 import 'package:yeogijeogi/view_models/walk/walk_view_model.dart';
 
 class WalkView extends StatelessWidget {
@@ -36,23 +34,9 @@ class WalkView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // 내 위치 버튼
-              Container(
-                width: 40.w,
-                height: 40.w,
-                margin: EdgeInsets.only(left: 20.w),
-                child: CustomInkWell(
-                  onTap: walkViewModel.moveToCurrentLocation,
-                  borderRadius: BorderRadius.circular(20.r),
-                  backgroundColor: Palette.surface,
-                  child: SvgPicture.asset(
-                    walkViewModel.isLocationActive
-                        ? 'assets/icons/location_active.svg'
-                        : 'assets/icons/location.svg',
-                    width: 32.w,
-                    height: 32.w,
-                    fit: BoxFit.scaleDown,
-                  ),
-                ),
+              LocationButton(
+                isLocationActive: walkViewModel.isLocationActive,
+                onTap: walkViewModel.moveToCurrentLocation,
               ),
               SizedBox(height: 20.h),
 
