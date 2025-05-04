@@ -150,6 +150,7 @@ class AppRouter {
                             create:
                                 (context) => SaveViewModel(
                                   walkModel: walkModel,
+                                  courseModel: courseModel,
                                   context: context,
                                 ),
                             child: const SaveView(),

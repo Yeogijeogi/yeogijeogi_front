@@ -97,6 +97,9 @@ class WalkModel with ChangeNotifier {
     debugPrint('Walk ID : $id');
 
     routes = recommendationList[index].routes;
+    endName = recommendationList[index].name;
+    distance = recommendationList[index].distance;
+    time = recommendationList[index].time;
     recommendationList.clear();
   }
 

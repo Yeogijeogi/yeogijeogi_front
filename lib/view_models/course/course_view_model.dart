@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yeogijeogi/components/common/custom_dialog.dart';
 import 'package:yeogijeogi/models/course_model.dart';
-import 'package:yeogijeogi/models/objects/course.dart';
 import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/constants.dart';
 import 'package:yeogijeogi/utils/enums/dialog_type.dart';
@@ -14,11 +13,15 @@ class CourseViewModel with ChangeNotifier {
   final BuildContext context;
 
   CourseViewModel({required this.courseModel, required this.context}) {
-    isLoading = true;
-    notifyListeners();
-
     // 모달 드래그 리스너 추가
     draggableController.addListener(_onDrag);
+
+    // courseModel 변경 감지
+    courseModel.addListener(_onCourseModelChanged);
+  }
+
+  void _onCourseModelChanged() {
+    notifyListeners();
   }
 
   /// 네이버 지도 초기화 옵션
@@ -29,8 +32,6 @@ class CourseViewModel with ChangeNotifier {
       zoom: 15,
     ),
   );
-
-  late NaverMapController naverMapController;
 
   /// 메모 텍스트 컨트롤러
   TextEditingController controller = TextEditingController();
@@ -46,11 +47,11 @@ class CourseViewModel with ChangeNotifier {
   bool isExpanded = false;
 
   /// 로딩
-  bool isLoading = false;
+  bool isLoading = true;
 
   /// 내 위치로 카메라 이동 (초기화)
   Future<void> moveToCurrentLocation() async {
-    await naverMapController.setLocationTrackingMode(
+    await courseModel.naverMapController?.setLocationTrackingMode(
       NLocationTrackingMode.follow,
     );
 
@@ -59,33 +60,14 @@ class CourseViewModel with ChangeNotifier {
   }
 
   void onMapReady(NaverMapController controller) async {
-    naverMapController = controller;
+    courseModel.naverMapController = controller;
 
     await moveToCurrentLocation();
 
     // 코스 마커 추가
-    for (Course course in courseModel.courses) {
-      final NMarker marker = course.toNMarker();
-      marker.setOnTapListener(onTapMarker);
-      naverMapController.addOverlay(marker);
-      courseModel.markers.add(marker);
-
-      // 기본 선택된 코스의 경우 선택 처리
-      if (course == courseModel.course) {
-        onTapMarker(marker);
-      }
-    }
+    courseModel.drawMarkers();
 
     isLoading = false;
-    notifyListeners();
-  }
-
-  // 마커 탭 리스너
-  void onTapMarker(NMarker marker) async {
-    // 선택된 마커 설정
-    courseModel.selectCourseById(marker.info.id);
-    courseModel.selectMarker(marker);
-
     notifyListeners();
   }
 
@@ -114,7 +96,7 @@ class CourseViewModel with ChangeNotifier {
 
   /// 모달 열렸을 때 상세 정보 가져오기
   void onExpanded() async {
-    if (courseModel.course!.mood == null) {
+    if (courseModel.course?.mood == null) {
       isLoading = true;
       notifyListeners();
 
@@ -135,7 +117,7 @@ class CourseViewModel with ChangeNotifier {
         isLoading = true;
         notifyListeners();
 
-        naverMapController.deleteOverlay(courseModel.marker!.info);
+        courseModel.naverMapController?.deleteOverlay(courseModel.marker!.info);
         await courseModel.deleteSelectedCourse();
 
         draggableController.reset();
@@ -152,7 +134,7 @@ class CourseViewModel with ChangeNotifier {
   void dispose() {
     draggableController.removeListener(_onDrag);
     draggableController.dispose();
-    naverMapController.dispose();
+    courseModel.naverMapController?.dispose();
     super.dispose();
   }
 }
