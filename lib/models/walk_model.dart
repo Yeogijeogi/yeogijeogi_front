@@ -90,6 +90,7 @@ class WalkModel with ChangeNotifier {
 
   /// 추천 경로 추가
   void addRecommendationLocation(List<Coordinate> routes) {
+    recommendationPathList = [];
     for (final coordinate in routes) {
       recommendationPathList.add(coordinate.toNLatLng());
     }

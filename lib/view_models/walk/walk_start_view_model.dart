@@ -51,6 +51,12 @@ class WalkStartViewModel with ChangeNotifier {
 
   /// 네이버 지도 초기화 옵션
   NaverMapViewOptions options = NaverMapViewOptions(
+    zoomGesturesEnable: true,
+    scrollGesturesEnable: true,
+    tiltGesturesEnable: true,
+    rotationGesturesEnable: true,
+    minZoom: 5.0,
+    maxZoom: 18.0,
     initialCameraPosition: NCameraPosition(
       target: NLatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE),
       zoom: 15,
@@ -59,11 +65,10 @@ class WalkStartViewModel with ChangeNotifier {
 
   /// 위치 경로에 추가
   void addLocation() async {
-    walkModel.addRecommendationLocation(
-      walkModel.recommendationList[controller.page!.toInt()].routes!,
-    );
+    final path = walkModel.recommendationList[controller.page!.toInt()].routes!;
+    walkModel.addRecommendationLocation(path);
 
-    // 경로 추가
+    // 오버레이 추가
     await naverMapController.addOverlay(
       NPathOverlay(
         id: 'walk_path',
@@ -72,6 +77,27 @@ class WalkStartViewModel with ChangeNotifier {
         outlineWidth: 0,
       ),
     );
+
+    // bounds 수동 계산
+    final lats = walkModel.recommendationPathList.map((e) => e.latitude);
+    final lngs = walkModel.recommendationPathList.map((e) => e.longitude);
+
+    final minLat = lats.reduce((a, b) => a < b ? a : b);
+    final maxLat = lats.reduce((a, b) => a > b ? a : b);
+    final minLng = lngs.reduce((a, b) => a < b ? a : b);
+    final maxLng = lngs.reduce((a, b) => a > b ? a : b);
+
+    final bounds = NLatLngBounds(
+      southWest: NLatLng(minLat, minLng),
+      northEast: NLatLng(maxLat, maxLng),
+    );
+
+    // 카메라를 bounds에 맞게 이동
+    final cameraUpdate = NCameraUpdate.fitBounds(
+      bounds,
+      padding: EdgeInsets.all(50),
+    );
+    await naverMapController.updateCamera(cameraUpdate);
   }
 
   /// 지도 로딩 완료시 호출
