@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:yeogijeogi/components/walk/course_detail.dart';
 import 'package:yeogijeogi/models/objects/recommendation.dart';
-import 'package:yeogijeogi/utils/palette.dart';
 
 class CourseOverview extends StatelessWidget {
   /// 추천된 경로 리스트
   final List<Recommendation> recommendations;
+
+  final NaverMapViewOptions options;
+
+  final Function(NaverMapController) onMapReady;
+
+  final Function(NCameraUpdateReason, bool) onCameraChange;
 
   /// 페이지 컨트롤러
   final PageController controller;
@@ -15,6 +20,9 @@ class CourseOverview extends StatelessWidget {
     super.key,
     required this.recommendations,
     required this.controller,
+    required this.options,
+    required this.onMapReady,
+    required this.onCameraChange,
   });
 
   @override
@@ -32,12 +40,10 @@ class CourseOverview extends StatelessWidget {
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
-                // 지도
-                Container(
-                  decoration: BoxDecoration(
-                    color: Palette.primary,
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
+                NaverMap(
+                  options: options,
+                  onMapReady: onMapReady,
+                  onCameraChange: onCameraChange,
                 ),
 
                 // 코스 세부 정보

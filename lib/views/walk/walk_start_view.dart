@@ -28,6 +28,9 @@ class WalkStartView extends StatelessWidget {
           CourseOverview(
             recommendations: walkStartViewModel.walkModel.recommendationList,
             controller: walkStartViewModel.controller,
+            options: walkStartViewModel.options,
+            onMapReady: walkStartViewModel.onMapReady,
+            onCameraChange: walkStartViewModel.onCameraChange,
           ),
           SizedBox(height: 8.h),
 
