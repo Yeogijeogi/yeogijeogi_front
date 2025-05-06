@@ -33,7 +33,7 @@ class WalkStartViewModel with ChangeNotifier {
   );
 
   /// 로딩
-  bool isLoading = false;
+  bool isLoading = true;
 
   /// 위치 버튼 활성화 여부
   bool isLocationActive = true;
@@ -42,6 +42,7 @@ class WalkStartViewModel with ChangeNotifier {
   void onMapReady(NaverMapController controller) async {
     naverMapController = controller;
     naverMapController.setLocationTrackingMode(NLocationTrackingMode.none);
+
     // 지도 로딩 완료되면 첫 번째 추천 코스 그리기
     drawPath(0);
 
