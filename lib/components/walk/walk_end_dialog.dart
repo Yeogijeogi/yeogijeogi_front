@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yeogijeogi/components/common/custom_button.dart';
+import 'package:yeogijeogi/models/objects/walk_summary.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 
 Future<void> showWalkEndDialog({
   required BuildContext context,
+  required WalkSummary summary,
   required Function() onTapSave,
   required Function() onTapCancel,
 }) async {
@@ -24,7 +26,7 @@ Future<void> showWalkEndDialog({
 
                 // 산책 요약
                 Text(
-                  '안암역 - 성북천\n이동 거리 : 1.3km\n평균 속도 : 3km/h\n소요 시간 : 24분',
+                  '${summary.startName} - ${summary.endName}\n이동 거리 : ${summary.distance}km\n평균 속도 : ${summary.speed}km/h\n소요 시간 : ${summary.time}분',
                   textAlign: TextAlign.center,
                   style: Palette.body.copyWith(color: Palette.onSurfaceVariant),
                 ),
