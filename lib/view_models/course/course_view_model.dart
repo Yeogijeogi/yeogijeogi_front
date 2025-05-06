@@ -71,6 +71,14 @@ class CourseViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  /// 카메라 움직일 때 호출되는 함수
+  void onCameraChange(_, _) async {
+    isLocationActive =
+        await courseModel.naverMapController?.getLocationTrackingMode() ==
+        NLocationTrackingMode.follow;
+    notifyListeners();
+  }
+
   // 드래그 이벤트 핸들러
   void _onDrag() {
     final isNowExpanded = draggableController.size >= 0.95;
