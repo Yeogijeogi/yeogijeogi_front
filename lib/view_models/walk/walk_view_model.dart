@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
 import 'package:yeogijeogi/components/walk/walk_end_dialog.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
+import 'package:yeogijeogi/models/objects/walk_summary.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/constants.dart';
@@ -108,11 +109,39 @@ class WalkViewModel with ChangeNotifier {
 
   /// 산책 종료 팝업 표시
   void onTapEnd() async {
-    await showWalkEndDialog(
-      context: context,
-      onTapSave: save,
-      onTapCancel: context.pop,
+    isLoading = true;
+    notifyListeners();
+
+    _timer?.cancel();
+
+    // 마지막 위치 업로드
+    final Coordinate currentLocation = Coordinate.fromLocationData(
+      await _location.getLocation(),
     );
+    walkModel.addLocation(currentLocation);
+
+    // 요약 정보 가져오기
+    final WalkSummary sumamry = await API.getWalkEnd(walkModel.id!);
+    walkModel.summary = sumamry;
+
+    isLoading = false;
+    notifyListeners();
+
+    _timer = Timer.periodic(Duration(seconds: 1), (_) => addCurrentLocation());
+
+    if (context.mounted) {
+      await showWalkEndDialog(
+        context: context,
+        summary: sumamry,
+        onTapSave: save,
+        onTapCancel: () {
+          walkModel.summary = null;
+          isLoading = false;
+          notifyListeners();
+          context.pop();
+        },
+      );
+    }
   }
 
   /// 산책 완료시 사진 촬영
@@ -155,12 +184,6 @@ class WalkViewModel with ChangeNotifier {
     _timer?.cancel();
     _timer = null;
 
-    // 마지막 위치 업로드
-    final Coordinate currentLocation = Coordinate.fromLocationData(
-      await _location.getLocation(),
-    );
-    walkModel.addLocation(currentLocation);
-
     // 경로 사진 촬영
     await takePicture();
 
@@ -169,7 +192,11 @@ class WalkViewModel with ChangeNotifier {
 
     // 이 시점에는 walkId가 null이 되면 안됨
     // 산책 종료 api 호출
-    await API.postWalkEnd(walkModel.id!);
+    await API.postWalkEnd(
+      walkModel.id!,
+      walkModel.summary!,
+      walkModel.endAddress!,
+    );
 
     isLoading = false;
     notifyListeners();
