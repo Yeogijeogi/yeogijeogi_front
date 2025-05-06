@@ -33,9 +33,6 @@ class CourseViewModel with ChangeNotifier {
     ),
   );
 
-  /// 메모 텍스트 컨트롤러
-  TextEditingController controller = TextEditingController();
-
   /// 모달 시트 컨트롤러
   final DraggableScrollableController draggableController =
       DraggableScrollableController();

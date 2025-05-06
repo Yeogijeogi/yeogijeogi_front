@@ -14,9 +14,6 @@ class CourseModal extends StatelessWidget {
   /// 모달 확장 여부
   final bool isExpanded;
 
-  /// 메모 텍스트 컨트롤러
-  final TextEditingController textEditingController;
-
   /// 뒤로가기 버튼
   final void Function() onTapBack;
 
@@ -28,7 +25,6 @@ class CourseModal extends StatelessWidget {
     required this.draggableScrollableController,
     required this.isExpanded,
     this.course,
-    required this.textEditingController,
     required this.onTapBack,
     required this.onTapDelete,
   });
@@ -54,7 +50,6 @@ class CourseModal extends StatelessWidget {
                     course: course!,
                     isExpanded: isExpanded,
                     scrollController: scrollController,
-                    textEditingController: textEditingController,
                     onTapBack: onTapBack,
                     onTapDelete: onTapDelete,
                   )

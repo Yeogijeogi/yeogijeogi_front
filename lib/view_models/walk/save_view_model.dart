@@ -21,10 +21,10 @@ class SaveViewModel with ChangeNotifier {
   });
 
   /// 분위기 슬라이더 값
-  double moodLevel = 5;
+  double moodLevel = 0;
 
   /// 산책 슬라이더 값
-  double difficultyLevel = 5;
+  double difficultyLevel = 0;
 
   /// 메모 Text Controller
   TextEditingController controller = TextEditingController();
@@ -109,7 +109,7 @@ class SaveViewModel with ChangeNotifier {
         imgUrl: imageUrl,
         mood: moodLevel.toDouble(),
         difficulty: difficultyLevel.toDouble(),
-        memo: walkModel.memo,
+        memo: controller.text.trim(),
       ),
     );
     isLoading = false;

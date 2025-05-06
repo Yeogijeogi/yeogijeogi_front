@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:yeogijeogi/components/common/custom_modal_appbar.dart';
 import 'package:yeogijeogi/components/common/custom_text_button.dart';
 import 'package:yeogijeogi/components/walk/course_detail.dart';
@@ -10,13 +11,11 @@ import 'package:yeogijeogi/utils/palette.dart';
 
 class CourseDetailView extends StatelessWidget {
   final Course course;
-  final TextEditingController controller;
   final Function() onTapBack;
   final Function() onTapDelete;
   const CourseDetailView({
     super.key,
     required this.course,
-    required this.controller,
     required this.onTapBack,
     required this.onTapDelete,
   });
@@ -35,7 +34,18 @@ class CourseDetailView extends StatelessWidget {
           height: MediaQuery.of(context).size.width,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20.r),
-            child: Image.network(course.imgUrl!, fit: BoxFit.cover),
+            child:
+                course.imgUrl != null
+                    ? Image.network(
+                      course.imgUrl!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return SvgPicture.asset(
+                          'assets/icons/image_load_fail.svg',
+                        );
+                      },
+                    )
+                    : SizedBox(),
           ),
         ),
         SizedBox(height: 24.h),
@@ -55,18 +65,18 @@ class CourseDetailView extends StatelessWidget {
         SliderContainer(
           title: '분위기가 어땠나요?',
           criteria: ['자연', '도시'],
-          value: course.mood ?? 5,
+          value: course.mood ?? 0,
         ),
         SizedBox(height: 24.h),
 
         SliderContainer(
           title: '산책 강도는 어땠나요?',
           criteria: ['쉬움', '적당함', '어려움'],
-          value: course.difficulty ?? 5,
+          value: course.difficulty ?? 0,
         ),
         SizedBox(height: 24.h),
 
-        MemoTextField(controller: controller, readOnly: true),
+        MemoTextField(readOnly: true, initialValue: course.memo),
         SizedBox(height: 40.h),
 
         Center(
