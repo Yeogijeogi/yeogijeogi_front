@@ -7,6 +7,7 @@ import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/objects/course.dart';
 import 'package:yeogijeogi/models/objects/recommendation.dart';
 import 'package:yeogijeogi/models/objects/walk_point.dart';
+import 'package:yeogijeogi/models/objects/walk_summary.dart';
 import 'package:yeogijeogi/utils/custom_interceptor.dart';
 
 class API {
@@ -146,19 +147,43 @@ class API {
     }
   }
 
-  /// 산책 종료
-  static Future<Map<String, dynamic>> postWalkEnd(String walkId) async {
+  /// 산책 요약 불러오기
+  static Future<WalkSummary> getWalkEnd(String walkId) async {
     try {
-      final response = await _postApi(
+      final response = await _getApi(
         '/walk/end',
-        jsonData: {'walk_id': walkId},
+        queryParameters: {'walk_id': walkId},
       );
 
       if (response != null) {
-        return response.data;
+        return WalkSummary.fromJson(response.data);
       } else {
         throw Error();
       }
+    } catch (e) {
+      debugPrint('Error in getWalkEnd: $e');
+      throw Error();
+    }
+  }
+
+  /// 산책 종료
+  static Future<void> postWalkEnd(
+    String walkId,
+    WalkSummary summary,
+    String endAddress,
+  ) async {
+    try {
+      await _postApi(
+        '/walk/end',
+        jsonData: {
+          'walk_id': walkId,
+          'start_name': summary.startName,
+          'end_name': summary.endName,
+          'end_address': endAddress,
+          'distance': summary.distance,
+          'time': summary.time,
+        },
+      );
     } catch (e) {
       debugPrint('Error in postWalkEnd: $e');
       throw Error();
