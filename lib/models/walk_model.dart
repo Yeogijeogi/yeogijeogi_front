@@ -51,9 +51,6 @@ class WalkModel with ChangeNotifier {
   /// 추천 목적지 리스트
   List<Recommendation> recommendationList = [];
 
-  /// 추천 경로 리스트
-  List<NLatLng> recommendationPathList = [];
-
   /// 모델 초기화
   void reset() {
     id = null;
@@ -86,16 +83,6 @@ class WalkModel with ChangeNotifier {
     pathList.add(coordinate.toNLatLng());
 
     debugPrint('WalkPoint added: $coordinate');
-  }
-
-  /// 추천 경로 추가
-  void addRecommendationLocation(List<Coordinate> routes) {
-    recommendationPathList = [];
-    for (final coordinate in routes) {
-      recommendationPathList.add(coordinate.toNLatLng());
-    }
-
-    debugPrint('Recommendation routes added: $routes');
   }
 
   /// 추천 경로 선택
