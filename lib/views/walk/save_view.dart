@@ -44,13 +44,13 @@ class SaveView extends StatelessWidget {
             SizedBox(height: 24.h),
 
             CourseDetail(
-              name: '성북천',
-              address: '서울 성북구 동선동2가',
-              distance: 1.3,
+              name: saveViewModel.walkModel.summary!.endName,
+              address: saveViewModel.walkModel.endAddress!,
+              distance: saveViewModel.walkModel.summary!.distance,
               distanceLabel: '이동 거리',
-              walk: '3km/h',
+              walk: '${saveViewModel.walkModel.summary!.speed}km/h',
               walkLabel: '평균 속도',
-              time: 24,
+              time: saveViewModel.walkModel.summary!.time,
               timeLabel: '소요 시간',
             ),
             SizedBox(height: 24.h),
