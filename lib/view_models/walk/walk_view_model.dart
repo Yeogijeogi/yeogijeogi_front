@@ -57,6 +57,9 @@ class WalkViewModel with ChangeNotifier {
     // 현재 내 위치로 이동
     await moveToCurrentLocation();
 
+    // 경로 그리기
+    await drawPath();
+
     // 시작 위치 초기화
     addCurrentLocation();
 
@@ -64,6 +67,37 @@ class WalkViewModel with ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
+  }
+
+  /// 경로 표시
+  Future<void> drawPath() async {
+    // // 경로
+    await naverMapController.addOverlay(
+      NPathOverlay(
+        id: 'path',
+        coords: walkModel.recommendationPathList,
+        color: Palette.primary,
+        outlineWidth: 0,
+      ),
+    );
+
+    // 시작, 끝 마커
+    await naverMapController.addOverlay(
+      NMarker(
+        id: 'start',
+        position: walkModel.recommendationPathList.first,
+        icon: NOverlayImage.fromAssetImage('/assets/icons/marker_start.png'),
+        anchor: NPoint(0.5, 1),
+      ),
+    );
+    await naverMapController.addOverlay(
+      NMarker(
+        id: 'end',
+        position: walkModel.recommendationPathList.last,
+        icon: NOverlayImage.fromAssetImage('/assets/icons/marker_end.png'),
+        anchor: NPoint(0.5, 1),
+      ),
+    );
   }
 
   /// 내 위치로 카메라 이동 (초기화)
@@ -146,6 +180,17 @@ class WalkViewModel with ChangeNotifier {
 
   /// 산책 완료시 사진 촬영
   Future<void> takePicture() async {
+    // 추천 경로 관련 오버레이 제거
+    await naverMapController.deleteOverlay(
+      NOverlayInfo(type: NOverlayType.pathOverlay, id: 'path'),
+    );
+    await naverMapController.deleteOverlay(
+      NOverlayInfo(type: NOverlayType.marker, id: 'start'),
+    );
+    await naverMapController.deleteOverlay(
+      NOverlayInfo(type: NOverlayType.marker, id: 'end'),
+    );
+
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
