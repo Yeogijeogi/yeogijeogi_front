@@ -149,6 +149,7 @@ class AppRouter {
                           (context, state) => ChangeNotifierProvider(
                             create:
                                 (context) => SaveViewModel(
+                                  userModel: userModel,
                                   walkModel: walkModel,
                                   courseModel: courseModel,
                                   context: context,

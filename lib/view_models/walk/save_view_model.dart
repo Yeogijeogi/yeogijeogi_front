@@ -4,16 +4,19 @@ import 'package:go_router/go_router.dart';
 import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/objects/course.dart';
+import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 
 class SaveViewModel with ChangeNotifier {
+  UserModel userModel;
   CourseModel courseModel;
   WalkModel walkModel;
   BuildContext context;
 
   SaveViewModel({
+    required this.userModel,
     required this.walkModel,
     required this.context,
     required this.courseModel,
@@ -62,7 +65,7 @@ class SaveViewModel with ChangeNotifier {
       debugPrint('Uploading image to firebase');
 
       final Reference storage = FirebaseStorage.instance.ref(
-        'images/${walkModel.id}.png',
+        'images/${userModel.uid}/${walkModel.id}.png',
       );
 
       if (walkModel.image != null) {
