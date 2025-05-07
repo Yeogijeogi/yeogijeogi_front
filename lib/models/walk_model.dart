@@ -5,6 +5,7 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/objects/recommendation.dart';
 import 'package:yeogijeogi/models/objects/walk_point.dart';
+import 'package:yeogijeogi/models/objects/walk_summary.dart';
 import 'package:yeogijeogi/utils/api.dart';
 
 class WalkModel with ChangeNotifier {
@@ -16,6 +17,9 @@ class WalkModel with ChangeNotifier {
 
   /// 도착 주소
   String? endName;
+
+  /// 도착 주소
+  String? endAddress;
 
   /// 시간
   int? time;
@@ -51,11 +55,15 @@ class WalkModel with ChangeNotifier {
   /// 추천 목적지 리스트
   List<Recommendation> recommendationList = [];
 
+  /// 지금까지 산책한 내용 요약 정보
+  WalkSummary? summary;
+
   /// 모델 초기화
   void reset() {
     id = null;
     startName = null;
     endName = null;
+    endAddress = null;
     time = null;
     averageSpeed = null;
     distance = null;
@@ -68,6 +76,7 @@ class WalkModel with ChangeNotifier {
     pathList.clear();
     image?.delete();
     image = null;
+    summary = null;
 
     debugPrint('Reset WalkModel');
   }
@@ -98,6 +107,7 @@ class WalkModel with ChangeNotifier {
 
     routes = recommendationList[index].routes;
     endName = recommendationList[index].name;
+    endAddress = recommendationList[index].address;
     distance = recommendationList[index].distance;
     time = recommendationList[index].time;
     recommendationList.clear();
