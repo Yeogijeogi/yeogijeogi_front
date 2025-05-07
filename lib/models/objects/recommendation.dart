@@ -1,3 +1,4 @@
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 
 class Recommendation {
@@ -22,11 +23,10 @@ class Recommendation {
   /// 시간
   final int time;
 
-  /// 지도 이미지
-  final String? imgUrl;
-
   /// 지도에 표시될 경로 좌표 리스트
-  List<Coordinate>? routes;
+  final List<Coordinate> routes;
+
+  final List<NLatLng> path;
 
   Recommendation({
     required this.location,
@@ -36,12 +36,16 @@ class Recommendation {
     required this.distance,
     required this.walks,
     required this.time,
-    this.imgUrl,
     required this.routes,
+    required this.path,
   });
 
   factory Recommendation.fromJson(Map<String, dynamic> json) {
-    print("${json['distance']} ${json['walks']} ${json['time']}");
+    final routes =
+        (json['routes'] as List)
+            .map((route) => Coordinate.fromJson(route))
+            .toList();
+
     return Recommendation(
       location: Coordinate.fromJson(json['location']),
       startName: json['start_name'],
@@ -50,11 +54,8 @@ class Recommendation {
       distance: (json['distance'] as num).toDouble(),
       walks: (json['walks'] as num).toInt(),
       time: json['time'],
-      imgUrl: json['img_url'],
-      routes:
-          (json['routes'] as List)
-              .map((route) => Coordinate.fromJson(route))
-              .toList(),
+      routes: routes,
+      path: routes.map((r) => r.toNLatLng()).toList(),
     );
   }
 }

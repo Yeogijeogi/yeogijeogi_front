@@ -7,7 +7,6 @@ import 'package:yeogijeogi/models/objects/course.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
-import 'package:yeogijeogi/utils/utils.dart';
 
 class SaveViewModel with ChangeNotifier {
   CourseModel courseModel;
@@ -103,9 +102,9 @@ class SaveViewModel with ChangeNotifier {
         location: Coordinate.fromNLatLng(walkModel.pathList.last),
         name: walkModel.endName!,
         address: walkModel.endName!,
-        distance: walkModel.distance!,
-        time: walkModel.time!,
-        speed: calAvgSpeed(walkModel.distance!, walkModel.time!),
+        distance: walkModel.summary!.distance,
+        time: walkModel.summary!.time,
+        speed: walkModel.summary!.speed,
         imgUrl: imageUrl,
         mood: moodLevel.toDouble(),
         difficulty: difficultyLevel.toDouble(),

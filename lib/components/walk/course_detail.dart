@@ -53,7 +53,7 @@ class CourseDetail extends StatelessWidget {
       width: double.infinity,
       height: 113.h,
       padding: EdgeInsets.all(20.w),
-      margin: margin ? EdgeInsets.all(20.w) : null,
+      margin: margin ? EdgeInsets.symmetric(horizontal: 20.w) : null,
       decoration: BoxDecoration(
         color: Palette.container,
         borderRadius: BorderRadius.circular(20.r),
