@@ -88,7 +88,7 @@ class WalkStartViewModel with ChangeNotifier {
     final LocationData location = await _location.getLocation();
 
     // 산책 코스 선택
-    walkModel.selectRecommendation(
+    await walkModel.selectRecommendation(
       controller.page!.toInt(),
       Coordinate.fromLocationData(location),
     );
