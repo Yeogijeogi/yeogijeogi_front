@@ -46,8 +46,11 @@ class WalkModel with ChangeNotifier {
   /// <br /> 10초에 한 번씩 경로 저장
   List<WalkPoint> walkPointList = [];
 
-  /// 지도에 그려지는 경로
+  /// 지도에 그려지는 산책 중인 경로
   List<NLatLng> pathList = [];
+
+  /// 추천 받은 경로
+  List<NLatLng> recommendationPathList = [];
 
   /// 산책 후 사진
   File? image;
@@ -74,6 +77,7 @@ class WalkModel with ChangeNotifier {
     walkPointList.clear();
     recommendationList.clear();
     pathList.clear();
+    recommendationPathList.clear();
     image?.delete();
     image = null;
     summary = null;
@@ -95,7 +99,7 @@ class WalkModel with ChangeNotifier {
   }
 
   /// 추천 경로 선택
-  void selectRecommendation(int index, Coordinate coordinate) async {
+  Future<void> selectRecommendation(int index, Coordinate coordinate) async {
     // API 호출
     final String walkId = await API.postWalkStart(
       coordinate: coordinate,
@@ -110,7 +114,7 @@ class WalkModel with ChangeNotifier {
     endAddress = recommendationList[index].address;
     distance = recommendationList[index].distance;
     time = recommendationList[index].time;
-    recommendationList.clear();
+    recommendationPathList = recommendationList[index].path;
   }
 
   /// 지난 경로 서버 전송
