@@ -187,7 +187,7 @@ class WalkViewModel with ChangeNotifier {
     await naverMapController.deleteOverlay(
       NOverlayInfo(type: NOverlayType.pathOverlay, id: 'path'),
     );
-    
+
     // 시작, 끝 마커 표시
     await naverMapController.addOverlay(
       NMarker(
@@ -205,17 +205,11 @@ class WalkViewModel with ChangeNotifier {
         anchor: NPoint(0.5, 1),
       ),
     );
-    
+
     // 내 위치 마커 제거
     await naverMapController.setLocationTrackingMode(
       NLocationTrackingMode.none,
     );
-    
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
-
-    // 정사각형이 화면의 중앙에 위치하도록 하기 위해 상하 padding 계산
-    final double heightPadding = (screenHeight - screenWidth) / 2 + 40.w;
 
     if (context.mounted) {
       final double screenWidth = MediaQuery.of(context).size.width;
