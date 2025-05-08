@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
+import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/app_router.dart';
 import 'package:yeogijeogi/utils/custom_theme_data.dart';
 
@@ -35,6 +36,10 @@ Future<void> autoLogin() async {
   if (user != null) {
     // 사용자가 존재한다면 모델에 데이터 저장
     userModel.fromFirebaseUser(user);
+
+    final userInfo = await API.getUserInfo();
+    userModel.fromJson(userInfo);
+
     debugPrint('Auto login to user ${userModel.name}');
 
     // Course 정보 불러오기
