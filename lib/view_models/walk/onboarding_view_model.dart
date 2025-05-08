@@ -28,7 +28,7 @@ class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
   double walkingLevel = 0;
 
   /// 산책 시간
-  Duration duration = Duration(hours: 0, minutes: 0);
+  Duration duration = Duration(hours: 0, minutes: 30);
 
   /// durationPicker 선택 여부
   bool showPicker = false;
