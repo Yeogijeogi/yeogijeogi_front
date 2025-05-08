@@ -6,6 +6,7 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/models/course_model.dart';
+import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/app_router.dart';
 import 'package:yeogijeogi/utils/custom_theme_data.dart';
 
@@ -34,6 +35,10 @@ Future<void> autoLogin() async {
   if (user != null) {
     // 사용자가 존재한다면 모델에 데이터 저장
     userModel.fromFirebaseUser(user);
+
+    final userInfo = await API.getUserInfo();
+    userModel.fromJson(userInfo);
+
     debugPrint('Auto login to user ${userModel.name}');
   } else {
     // 사용자가 존재하지 않는다면 모델 리셋 (혹시 모를 상황 대비)
