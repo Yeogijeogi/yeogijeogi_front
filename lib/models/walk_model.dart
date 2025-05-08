@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/objects/recommendation.dart';
 import 'package:yeogijeogi/models/objects/walk_point.dart';
+import 'package:yeogijeogi/models/objects/walk_summary.dart';
+import 'package:yeogijeogi/utils/api.dart';
 
 class WalkModel with ChangeNotifier {
   /// 산책 id
@@ -12,6 +17,9 @@ class WalkModel with ChangeNotifier {
 
   /// 도착 주소
   String? endName;
+
+  /// 도착 주소
+  String? endAddress;
 
   /// 시간
   int? time;
@@ -35,30 +43,79 @@ class WalkModel with ChangeNotifier {
   List<Coordinate>? routes;
 
   /// 최근 1분동안 지나온 경로
-  List<WalkPoint>? walkPointList;
+  /// <br /> 10초에 한 번씩 경로 저장
+  List<WalkPoint> walkPointList = [];
+
+  /// 지도에 그려지는 경로
+  List<NLatLng> pathList = [];
+
+  /// 산책 후 사진
+  File? image;
 
   /// 추천 목적지 리스트
-  List<Recommendation>? recommendationList;
+  List<Recommendation> recommendationList = [];
+
+  /// 지금까지 산책한 내용 요약 정보
+  WalkSummary? summary;
 
   /// 모델 초기화
   void reset() {
     id = null;
     startName = null;
     endName = null;
+    endAddress = null;
     time = null;
     averageSpeed = null;
     distance = null;
     mood = null;
     difficulty = null;
     memo = null;
-    recommendationList = null;
     routes = null;
-    walkPointList = null;
+    walkPointList.clear();
+    recommendationList.clear();
+    pathList.clear();
+    image?.delete();
+    image = null;
+    summary = null;
+
+    debugPrint('Reset WalkModel');
   }
 
-  void getAvgSpeed() {
-    if (time != null && time != 0 && distance != null) {
-      averageSpeed = distance! / time!;
-    }
+  /// 위치 추가
+  void addLocation(Coordinate coordinate) {
+    // walkPointList 추가
+    walkPointList.add(
+      WalkPoint(walkId: id!, coordinate: coordinate, createdAt: DateTime.now()),
+    );
+
+    // pathList 추가
+    pathList.add(coordinate.toNLatLng());
+
+    debugPrint('WalkPoint added: $coordinate');
+  }
+
+  /// 추천 경로 선택
+  void selectRecommendation(int index, Coordinate coordinate) async {
+    // API 호출
+    final String walkId = await API.postWalkStart(
+      coordinate: coordinate,
+      recommendation: recommendationList[index],
+    );
+
+    id = walkId;
+    debugPrint('Walk ID : $id');
+
+    routes = recommendationList[index].routes;
+    endName = recommendationList[index].name;
+    endAddress = recommendationList[index].address;
+    distance = recommendationList[index].distance;
+    time = recommendationList[index].time;
+    recommendationList.clear();
+  }
+
+  /// 지난 경로 서버 전송
+  Future<void> uploadWalkPoints() async {
+    await API.postWalkLocation(walkId: id!, walkPoints: walkPointList);
+    walkPointList.clear();
   }
 }

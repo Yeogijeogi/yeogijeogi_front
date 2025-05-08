@@ -17,6 +17,7 @@ class WalkStartView extends StatelessWidget {
         context.watch<WalkStartViewModel>();
 
     return CustomScaffold(
+      isLoading: walkStartViewModel.isLoading,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -24,7 +25,13 @@ class WalkStartView extends StatelessWidget {
           SizedBox(height: 40.h),
 
           // 지도
-          CourseOverview(controller: walkStartViewModel.controller),
+          CourseOverview(
+            recommendations: walkStartViewModel.walkModel.recommendationList,
+            options: walkStartViewModel.options,
+            onMapReady: walkStartViewModel.onMapReady,
+            controller: walkStartViewModel.controller,
+            onPageChanged: walkStartViewModel.onPageChanged,
+          ),
           SizedBox(height: 8.h),
 
           // 지도 Page indicator

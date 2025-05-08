@@ -17,6 +17,7 @@ class SaveView extends StatelessWidget {
     final SaveViewModel saveViewModel = context.watch<SaveViewModel>();
 
     return CustomScaffold(
+      isLoading: saveViewModel.isLoading,
       canPop: false,
       body: SingleChildScrollView(
         child: Column(
@@ -32,17 +33,24 @@ class SaveView extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.r),
+                child: Image.file(
+                  saveViewModel.walkModel.image!,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             SizedBox(height: 24.h),
 
             CourseDetail(
-              name: '성북천',
-              address: '서울 성북구 동선동2가',
-              distance: 1.3,
+              name: saveViewModel.walkModel.summary!.endName,
+              address: saveViewModel.walkModel.endAddress!,
+              distance: saveViewModel.walkModel.summary!.distance,
               distanceLabel: '이동 거리',
-              walk: '3km/h',
+              walk: '${saveViewModel.walkModel.summary!.speed}km/h',
               walkLabel: '평균 속도',
-              time: 24,
+              time: saveViewModel.walkModel.summary!.time,
               timeLabel: '소요 시간',
             ),
             SizedBox(height: 24.h),
@@ -58,7 +66,7 @@ class SaveView extends StatelessWidget {
             SliderContainer(
               title: '산책 강도는 어땠나요?',
               criteria: ['쉬움', '적당함', '어려움'],
-              value: saveViewModel.walkingLevel,
+              value: saveViewModel.difficultyLevel,
               onChanged: saveViewModel.updateWalkingLevel,
             ),
             SizedBox(height: 24.h),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -39,15 +40,86 @@ class OnboardingView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('얼마나 걸을까요?', style: Palette.body),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (context) {
+                        int selectedHour = onboardingViewModel.duration.inHours;
+                        int selectedMinute =
+                            onboardingViewModel.duration.inMinutes % 60;
 
-                Container(
-                  width: 128.w,
-                  height: 36.h,
-                  decoration: BoxDecoration(
-                    color: Palette.surface,
-                    borderRadius: BorderRadius.circular(10.r),
+                        return SizedBox(
+                          height: 250,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: CupertinoPicker(
+                                  scrollController: FixedExtentScrollController(
+                                    initialItem: selectedHour,
+                                  ),
+                                  itemExtent: 32,
+                                  onSelectedItemChanged: (index) {
+                                    selectedHour = index;
+                                    onboardingViewModel.selectDurationTime(
+                                      Duration(
+                                        hours: selectedHour,
+                                        minutes: selectedMinute,
+                                      ),
+                                    );
+                                  },
+                                  children: List.generate(
+                                    24,
+                                    (i) => Center(child: Text('$i 시간')),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: CupertinoPicker(
+                                  scrollController: FixedExtentScrollController(
+                                    initialItem: selectedMinute,
+                                  ),
+                                  itemExtent: 32,
+                                  onSelectedItemChanged: (index) {
+                                    selectedMinute = index;
+                                    onboardingViewModel.selectDurationTime(
+                                      Duration(
+                                        hours: selectedHour,
+                                        minutes: selectedMinute,
+                                      ),
+                                    );
+                                  },
+                                  children: List.generate(
+                                    60,
+                                    (i) => Center(child: Text('$i 분')),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    width: 128.w,
+                    height: 36.h,
+                    decoration: BoxDecoration(
+                      color: Palette.surface,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "${onboardingViewModel.duration.inHours}시간 ${onboardingViewModel.duration.inMinutes.remainder(60)}분",
+                        style: Palette.body,
+                      ),
+                    ),
                   ),
-                  child: Center(child: Text('1시간 30분', style: Palette.body)),
                 ),
               ],
             ),
@@ -75,7 +147,6 @@ class OnboardingView extends StatelessWidget {
             },
           ),
           Spacer(),
-
           CustomButton(
             text: '코스 추천 받기',
             onTap: onboardingViewModel.onTapCourse,

@@ -6,6 +6,7 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/models/course_model.dart';
+import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/app_router.dart';
 import 'package:yeogijeogi/utils/custom_theme_data.dart';
@@ -16,7 +17,7 @@ void main() async {
   await Firebase.initializeApp();
 
   // 네이버 지도 초기화
-  await NaverMapSdk.instance.initialize(
+  await FlutterNaverMap().init(
     clientId: dotenv.env['NAVER_CLIENT_ID'],
     onAuthFailed: (ex) => debugPrint('Error initializing Naver Map: $ex'),
   );
@@ -40,6 +41,9 @@ Future<void> autoLogin() async {
     userModel.fromJson(userInfo);
 
     debugPrint('Auto login to user ${userModel.name}');
+
+    // Course 정보 불러오기
+    courseModel.getCourses();
   } else {
     // 사용자가 존재하지 않는다면 모델 리셋 (혹시 모를 상황 대비)
     userModel.reset();
@@ -48,10 +52,11 @@ Future<void> autoLogin() async {
 
 // 모델
 final UserModel userModel = UserModel();
+final WalkModel walkModel = WalkModel();
 final CourseModel courseModel = CourseModel();
 
 // 라우터
-final _router = AppRouter.getRouter(userModel, courseModel);
+final _router = AppRouter.getRouter(userModel, walkModel, courseModel);
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});

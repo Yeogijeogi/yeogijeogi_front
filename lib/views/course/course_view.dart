@@ -3,10 +3,9 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:yeogijeogi/components/common/custom_scaffold.dart';
-import 'package:yeogijeogi/components/walk/course_detail.dart';
-import 'package:yeogijeogi/utils/palette.dart';
+import 'package:yeogijeogi/components/course/course_modal.dart';
+import 'package:yeogijeogi/components/walk/location_button.dart';
 import 'package:yeogijeogi/view_models/course/course_view_model.dart';
-import 'package:yeogijeogi/components/course/course_detail_view.dart';
 
 class CourseView extends StatelessWidget {
   const CourseView({super.key});
@@ -18,82 +17,33 @@ class CourseView extends StatelessWidget {
     return CustomScaffold(
       useSafeArea: false,
       hasPadding: false,
+      isLoading: courseViewModel.isLoading,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
           // 지도
-          const NaverMap(),
+          NaverMap(
+            options: courseViewModel.options,
+            onMapReady: courseViewModel.onMapReady,
+            onCameraChange: courseViewModel.onCameraChange,
+          ),
+
+          Positioned(
+            bottom: 213.h,
+            left: 0,
+            child: LocationButton(
+              isLocationActive: courseViewModel.isLocationActive,
+              onTap: courseViewModel.moveToCurrentLocation,
+            ),
+          ),
 
           // 모달
-          DraggableScrollableSheet(
-            controller: courseViewModel.draggableController,
-            maxChildSize: 1.0,
-            initialChildSize: 0.228,
-            minChildSize: 0.228,
-            snap: true,
-            snapSizes: const [0.228, 1.0],
-            builder: (context, scrollController) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Palette.surface,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20.r),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    // 핸들
-                    if (!courseViewModel.isExpanded)
-                      Container(
-                        width: 40.w,
-                        height: 4.h,
-                        margin: EdgeInsets.only(top: 16.h, bottom: 20.h),
-                        decoration: BoxDecoration(
-                          color: Palette.onSurfaceVariant,
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                      ),
-
-                    // 내용 영역
-                    Expanded(
-                      child: ListView(
-                        padding: EdgeInsets.zero,
-                        controller: scrollController,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: 20.h,
-                              left: 20.w,
-                              right: 20.w,
-                            ),
-                            child:
-                                courseViewModel.isExpanded
-                                    ? CourseDetailView(
-                                      onTapDelete: courseViewModel.onTapDelete,
-                                      onTapBack: courseViewModel.onTapBack,
-                                      controller: courseViewModel.controller,
-                                    )
-                                    : Align(
-                                      alignment: Alignment.topCenter,
-                                      child: CourseDetail(
-                                        name: '성북천',
-                                        address: '서울 성북구 동선동2가',
-                                        distance: 1.3,
-                                        distanceLabel: '이동 거리',
-                                        walk: '3km/h',
-                                        walkLabel: '평균 속도',
-                                        time: 24,
-                                        timeLabel: '소요 시간',
-                                      ),
-                                    ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
+          CourseModal(
+            draggableScrollableController: courseViewModel.draggableController,
+            course: courseViewModel.courseModel.course,
+            isExpanded: courseViewModel.isExpanded,
+            onTapBack: courseViewModel.onTapBack,
+            onTapDelete: courseViewModel.onTapDelete,
           ),
         ],
       ),

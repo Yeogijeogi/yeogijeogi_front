@@ -3,14 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 
 class MemoTextField extends StatelessWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final bool readOnly;
+  final String? initialValue;
   final Function(String)? onChanged;
 
   const MemoTextField({
     super.key,
-    required this.controller,
+    this.controller,
     this.readOnly = false,
+    this.initialValue,
     this.onChanged,
   });
 
@@ -22,7 +24,8 @@ class MemoTextField extends StatelessWidget {
         color: Palette.container,
         borderRadius: BorderRadius.circular(20.r),
       ),
-      child: TextField(
+      child: TextFormField(
+        initialValue: initialValue,
         readOnly: readOnly,
         controller: controller,
         style: Palette.body,
