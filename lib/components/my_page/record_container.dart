@@ -49,7 +49,7 @@ class RecordContainer extends StatelessWidget {
                           color: Palette.primary,
                         ),
                       ),
-                      TextSpan(text: 'km', style: Palette.body),
+                      TextSpan(text: 'm', style: Palette.body),
                     ],
                   ),
                 ),
