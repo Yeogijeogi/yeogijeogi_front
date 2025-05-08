@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
@@ -13,7 +14,7 @@ import 'package:yeogijeogi/utils/custom_theme_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load();
+  await dotenv.load(fileName: kReleaseMode ? '.env.dev' : '.env.prod');
   await Firebase.initializeApp();
 
   // 네이버 지도 초기화
