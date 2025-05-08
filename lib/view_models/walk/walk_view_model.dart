@@ -120,6 +120,9 @@ class WalkViewModel with ChangeNotifier {
     );
     walkModel.addLocation(currentLocation);
 
+    // 마지막 위치 포함 경로 서버 업로드
+    await walkModel.uploadWalkPoints();
+
     // 요약 정보 가져오기
     final WalkSummary sumamry = await API.getWalkEnd(walkModel.id!);
     walkModel.summary = sumamry;
@@ -146,24 +149,53 @@ class WalkViewModel with ChangeNotifier {
 
   /// 산책 완료시 사진 촬영
   Future<void> takePicture() async {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
-
-    // 정사각형이 화면의 중앙에 위치하도록 하기 위해 상하 padding 계산
-    final double heightPadding = (screenHeight - screenWidth) / 2 + 40.w;
+    // 시작, 끝 마커 표시
+    await naverMapController.addOverlay(
+      NMarker(
+        id: 'start',
+        position: walkModel.pathList.first,
+        icon: NOverlayImage.fromAssetImage('/assets/icons/marker_start.png'),
+        anchor: NPoint(0.5, 1),
+      ),
+    );
+    await naverMapController.addOverlay(
+      NMarker(
+        id: 'end',
+        position: walkModel.pathList.last,
+        icon: NOverlayImage.fromAssetImage('/assets/icons/marker_end.png'),
+        anchor: NPoint(0.5, 1),
+      ),
+    );
 
     // 내 위치 마커 제거
     await naverMapController.setLocationTrackingMode(
       NLocationTrackingMode.none,
     );
 
-    // 지도 위치 조정
-    final NLatLngBounds bounds = NLatLngBounds.from(walkModel.pathList);
-    final NCameraUpdate cameraUpdate = NCameraUpdate.fitBounds(
-      bounds,
-      padding: EdgeInsets.symmetric(vertical: heightPadding, horizontal: 40.w),
+    // 내 위치 마커 제거
+    await naverMapController.setLocationTrackingMode(
+      NLocationTrackingMode.none,
     );
-    await naverMapController.updateCamera(cameraUpdate);
+
+    if (context.mounted) {
+      final double screenWidth = MediaQuery.of(context).size.width;
+      final double screenHeight = MediaQuery.of(context).size.height;
+
+      // 정사각형이 화면의 중앙에 위치하도록 하기 위해 상하 padding 계산
+      final double heightPadding = (screenHeight - screenWidth) / 2 + 40.w;
+
+      // 지도 위치 조정
+      final NLatLngBounds bounds = NLatLngBounds.from(walkModel.pathList);
+      final NCameraUpdate cameraUpdate = NCameraUpdate.fitBounds(
+        bounds,
+        padding: EdgeInsets.symmetric(
+          vertical: heightPadding,
+          horizontal: 40.w,
+        ),
+      );
+
+      await naverMapController.updateCamera(cameraUpdate);
+    }
 
     // 사진 촬영
     final File image = await naverMapController.takeSnapshot(
@@ -186,9 +218,6 @@ class WalkViewModel with ChangeNotifier {
 
     // 경로 사진 촬영
     await takePicture();
-
-    // 마지막 위치 포함 경로 서버 업로드
-    await walkModel.uploadWalkPoints();
 
     // 이 시점에는 walkId가 null이 되면 안됨
     // 산책 종료 api 호출

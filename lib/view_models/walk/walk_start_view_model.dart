@@ -64,6 +64,24 @@ class WalkStartViewModel with ChangeNotifier {
       ),
     );
 
+    // 시작, 끝 마커 표시
+    await naverMapController.addOverlay(
+      NMarker(
+        id: 'start',
+        position: path.first,
+        icon: NOverlayImage.fromAssetImage('/assets/icons/marker_start.png'),
+        anchor: NPoint(0.5, 1),
+      ),
+    );
+    await naverMapController.addOverlay(
+      NMarker(
+        id: 'end',
+        position: path.last,
+        icon: NOverlayImage.fromAssetImage('/assets/icons/marker_end.png'),
+        anchor: NPoint(0.5, 1),
+      ),
+    );
+
     // 경로 bounds
     final NLatLngBounds bounds = NLatLngBounds.from(path);
 
