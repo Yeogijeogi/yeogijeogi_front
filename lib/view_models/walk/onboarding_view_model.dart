@@ -89,10 +89,19 @@ class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
       difficulty: walkingLevel.toInt(),
     );
 
+    initValue();
     isLoading = false;
     notifyListeners();
 
     if (context.mounted) context.goNamed(AppRoute.walkStart.name);
+  }
+
+  /// 시간 및 슬라이더 초기화
+  void initValue() {
+    duration = Duration(hours: 0, minutes: 30);
+    sceneryLevel = 0;
+    walkingLevel = 0;
+    notifyListeners();
   }
 
   /// 풍경 슬라이더 값 업데이트
