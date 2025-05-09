@@ -14,7 +14,7 @@ class API {
   static final dio = Dio(
     BaseOptions(
       baseUrl: dotenv.env['SERVER_API']!,
-      connectTimeout: const Duration(milliseconds: 5000),
+      connectTimeout: const Duration(milliseconds: 30000),
       receiveTimeout: const Duration(milliseconds: 10000),
       headers: {
         'Content-Type': 'application/json',
@@ -75,27 +75,22 @@ class API {
     required int mood,
     required int difficulty,
   }) async {
-    try {
-      final response = await _getApi(
-        '/walk/recommend',
-        queryParameters: {
-          'latitude': coordinate.latitude,
-          'longitude': coordinate.longitude,
-          'walk_time': walkTime,
-          'view': mood,
-          'difficulty': difficulty,
-        },
-      );
+    final response = await _getApi(
+      '/walk/recommend',
+      queryParameters: {
+        'latitude': coordinate.latitude,
+        'longitude': coordinate.longitude,
+        'walk_time': walkTime,
+        'view': mood,
+        'difficulty': difficulty,
+      },
+    );
 
-      if (response != null) {
-        return (response.data as List)
-            .map((recommendation) => Recommendation.fromJson(recommendation))
-            .toList();
-      } else {
-        throw Error();
-      }
-    } catch (e) {
-      debugPrint('Error in getRecommendadtion: $e');
+    if (response != null) {
+      return (response.data as List)
+          .map((recommendation) => Recommendation.fromJson(recommendation))
+          .toList();
+    } else {
       throw Error();
     }
   }
@@ -237,24 +232,19 @@ class API {
   static Future<Map<String, dynamic>> getCourseDetail({
     required String walkId,
   }) async {
-    try {
-      final response = await _getApi(
-        '/course/detail',
-        queryParameters: {'walk_id': walkId},
-      );
+    final response = await _getApi(
+      '/course/detail',
+      queryParameters: {'walk_id': walkId},
+    );
 
-      if (response != null) {
-        return response.data;
-      } else {
-        throw Error();
-      }
-    } catch (e) {
-      debugPrint('Error in getCourseDetail: $e');
+    if (response != null) {
+      return response.data;
+    } else {
       throw Error();
     }
   }
 
-  /// 코스 삭ㅔ
+  /// 코스 삭제
   static Future<void> deleteCourse({required String walkId}) async {
     try {
       await _deleteApi('/course', jsonData: jsonEncode({'walk_id': walkId}));
