@@ -1,7 +1,7 @@
 /// 평균 속도 계산
 double calAvgSpeed(double? distance, int? time) {
   if (time != null && time != 0 && distance != null) {
-    return toFixedDigits(distance / time);
+    return toFixedDigits((distance / 1000) / (time / 60));
   } else {
     return 0;
   }
