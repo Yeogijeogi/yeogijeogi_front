@@ -65,8 +65,13 @@ class Course {
   }
 
   /// 코스 상세 정보 저장
-  Future<void> fromCourseDetailJson(Map<String, dynamic> json) async {
-    final Reference storage = FirebaseStorage.instance.ref('images/$id.png');
+  Future<void> fromCourseDetailJson(
+    Map<String, dynamic> json,
+    String userId,
+  ) async {
+    final Reference storage = FirebaseStorage.instance.ref(
+      'images/$userId/$id.png',
+    );
     imgUrl = await storage.getDownloadURL();
 
     mood = json['mood'].toDouble();
