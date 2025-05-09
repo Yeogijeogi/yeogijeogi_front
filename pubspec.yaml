@@ -1,7 +1,7 @@
 name: yeogijeogi
 description: "A new Flutter project."
 publish_to: 'none'
-version: 0.1.0+1
+version: 0.1.0+2
 
 environment:
   sdk: ^3.7.0
@@ -37,7 +37,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - .env
+    - .env.dev
+    - .env.prod
     - assets/icons/
     - assets/animations/
   fonts:
