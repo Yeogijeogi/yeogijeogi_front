@@ -104,8 +104,8 @@ class LoginViewModel with ChangeNotifier {
 
       if (user != null) {
         userModel.fromFirebaseUser(user);
-        final userInfo = await API.getUserInfo();
 
+        final userInfo = await API.getUserInfo();
         userModel.fromJson(userInfo);
 
         isLoading = false;
