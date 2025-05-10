@@ -143,11 +143,21 @@ class CourseViewModel with ChangeNotifier {
       onTapAction: () async {
         isLoading = true;
         notifyListeners();
+        try {
+          courseModel.naverMapController?.deleteOverlay(
+            courseModel.marker!.info,
+          );
+          await courseModel.deleteSelectedCourse();
 
-        courseModel.naverMapController?.deleteOverlay(courseModel.marker!.info);
-        await courseModel.deleteSelectedCourse();
-
-        draggableController.reset();
+          draggableController.reset();
+        } catch (e) {
+          if (context.mounted) {
+            showErrorDialog(
+              exception: CustomException.fromException(e, context),
+              context: context,
+            );
+          }
+        }
 
         isLoading = false;
         notifyListeners();
