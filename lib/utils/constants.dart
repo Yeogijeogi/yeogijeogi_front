@@ -8,6 +8,7 @@ const double DEFAULT_LATITUDE = 37.589361;
 const List<String> randomNicknames = [
   '백마탄환자',
   '트렌스팬더',
+  '으짱파커',
   '명란젓코난',
   '많이큰젝슨',
   '밥이브라운',
