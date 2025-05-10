@@ -1,12 +1,14 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:yeogijeogi/components/common/error_dialog.dart';
 import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/objects/course.dart';
 import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
+import 'package:yeogijeogi/utils/custom_exception.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 
 class SaveViewModel with ChangeNotifier {
@@ -88,41 +90,51 @@ class SaveViewModel with ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    // 이미지 firebase 업로드
-    final String imageUrl = await uploadImageToFirebase();
+    try {
+      // 이미지 firebase 업로드
+      final String imageUrl = await uploadImageToFirebase();
 
-    // 완료 api 호출
-    await API.patchWalkEnd(
-      walkModel.id!,
-      moodLevel.toInt(),
-      difficultyLevel.toInt(),
-      controller.text.trim(),
-    );
+      // 완료 api 호출
+      await API.patchWalkEnd(
+        walkModel.id!,
+        moodLevel.toInt(),
+        difficultyLevel.toInt(),
+        controller.text.trim(),
+      );
 
-    courseModel.courses.add(
-      Course(
-        id: walkModel.id!,
-        location: Coordinate.fromNLatLng(walkModel.pathList.last),
-        name: walkModel.endName!,
-        address: walkModel.endName!,
-        distance: walkModel.summary!.distance,
-        time: walkModel.summary!.time,
-        speed: walkModel.summary!.speed,
-        imgUrl: imageUrl,
-        mood: moodLevel.toDouble(),
-        difficulty: difficultyLevel.toDouble(),
-        memo: controller.text.trim(),
-      ),
-    );
+      courseModel.courses.add(
+        Course(
+          id: walkModel.id!,
+          location: Coordinate.fromNLatLng(walkModel.pathList.last),
+          name: walkModel.endName!,
+          address: walkModel.endName!,
+          distance: walkModel.summary!.distance,
+          time: walkModel.summary!.time,
+          speed: walkModel.summary!.speed,
+          imgUrl: imageUrl,
+          mood: moodLevel.toDouble(),
+          difficulty: difficultyLevel.toDouble(),
+          memo: controller.text.trim(),
+        ),
+      );
+
+      courseModel.selectCourseById(walkModel.id!);
+      courseModel.drawMarkers();
+
+      if (context.mounted) context.goNamed(AppRoute.course.name);
+
+      // 모델 리셋
+      walkModel.reset();
+    } catch (e) {
+      if (context.mounted) {
+        showErrorDialog(
+          exception: CustomException.fromException(e, context),
+          context: context,
+        );
+      }
+    }
+
     isLoading = false;
-
-    courseModel.selectCourseById(walkModel.id!);
-    courseModel.drawMarkers();
     notifyListeners();
-
-    if (context.mounted) context.goNamed(AppRoute.course.name);
-
-    // 모델 리셋
-    walkModel.reset();
   }
 }

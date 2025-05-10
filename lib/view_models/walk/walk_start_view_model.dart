@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
+import 'package:yeogijeogi/components/common/error_dialog.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
+import 'package:yeogijeogi/utils/custom_exception.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:yeogijeogi/utils/palette.dart';
@@ -105,15 +107,24 @@ class WalkStartViewModel with ChangeNotifier {
     // 현재 위치
     final LocationData location = await _location.getLocation();
 
-    // 산책 코스 선택
-    await walkModel.selectRecommendation(
-      controller.page!.toInt(),
-      Coordinate.fromLocationData(location),
-    );
+    try {
+      // 산책 코스 선택
+      await walkModel.selectRecommendation(
+        controller.page!.toInt(),
+        Coordinate.fromLocationData(location),
+      );
+
+      if (context.mounted) context.goNamed(AppRoute.walk.name);
+    } catch (e) {
+      if (context.mounted) {
+        showErrorDialog(
+          exception: CustomException.fromException(e, context),
+          context: context,
+        );
+      }
+    }
 
     isLoading = false;
     notifyListeners();
-
-    if (context.mounted) context.goNamed(AppRoute.walk.name);
   }
 }
