@@ -90,10 +90,10 @@ class SaveViewModel with ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    // 이미지 firebase 업로드
-    final String imageUrl = await uploadImageToFirebase();
-
     try {
+      // 이미지 firebase 업로드
+      final String imageUrl = await uploadImageToFirebase();
+
       // 완료 api 호출
       await API.patchWalkEnd(
         walkModel.id!,
@@ -101,6 +101,30 @@ class SaveViewModel with ChangeNotifier {
         difficultyLevel.toInt(),
         controller.text.trim(),
       );
+
+      courseModel.courses.add(
+        Course(
+          id: walkModel.id!,
+          location: Coordinate.fromNLatLng(walkModel.pathList.last),
+          name: walkModel.endName!,
+          address: walkModel.endName!,
+          distance: walkModel.summary!.distance,
+          time: walkModel.summary!.time,
+          speed: walkModel.summary!.speed,
+          imgUrl: imageUrl,
+          mood: moodLevel.toDouble(),
+          difficulty: difficultyLevel.toDouble(),
+          memo: controller.text.trim(),
+        ),
+      );
+
+      courseModel.selectCourseById(walkModel.id!);
+      courseModel.drawMarkers();
+
+      if (context.mounted) context.goNamed(AppRoute.course.name);
+
+      // 모델 리셋
+      walkModel.reset();
     } catch (e) {
       if (context.mounted) {
         showErrorDialog(
@@ -110,30 +134,7 @@ class SaveViewModel with ChangeNotifier {
       }
     }
 
-    courseModel.courses.add(
-      Course(
-        id: walkModel.id!,
-        location: Coordinate.fromNLatLng(walkModel.pathList.last),
-        name: walkModel.endName!,
-        address: walkModel.endName!,
-        distance: walkModel.summary!.distance,
-        time: walkModel.summary!.time,
-        speed: walkModel.summary!.speed,
-        imgUrl: imageUrl,
-        mood: moodLevel.toDouble(),
-        difficulty: difficultyLevel.toDouble(),
-        memo: controller.text.trim(),
-      ),
-    );
     isLoading = false;
-
-    courseModel.selectCourseById(walkModel.id!);
-    courseModel.drawMarkers();
     notifyListeners();
-
-    if (context.mounted) context.goNamed(AppRoute.course.name);
-
-    // 모델 리셋
-    walkModel.reset();
   }
 }
