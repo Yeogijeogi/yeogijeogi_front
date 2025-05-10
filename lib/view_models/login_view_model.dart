@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +8,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:yeogijeogi/components/common/error_dialog.dart';
 import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
+import 'package:yeogijeogi/utils/constants.dart';
 import 'package:yeogijeogi/utils/custom_exception.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 
@@ -121,11 +124,16 @@ class LoginViewModel with ChangeNotifier {
       // Firebase 인증
       final UserCredential userCredential = await _firebaseAuth
           .signInWithCredential(credential);
-      final User? user = userCredential.user;
+      User? user = userCredential.user;
 
       try {
         if (userCredential.additionalUserInfo!.isNewUser) {
           await API.postCreateUser();
+          
+          final int rand = Random().nextInt(randomNicknames.length);
+          final String randomNickname = randomNicknames[rand];
+          await user?.updateDisplayName(randomNickname);
+          user = _firebaseAuth.currentUser;
         }
 
         if (user != null) {
