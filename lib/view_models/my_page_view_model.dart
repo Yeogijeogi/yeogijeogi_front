@@ -6,7 +6,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:yeogijeogi/components/common/custom_dialog.dart';
 import 'package:yeogijeogi/components/common/error_dialog.dart';
 import 'package:yeogijeogi/components/my_page/nickname_dialog.dart';
+import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/models/user_model.dart';
+import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/custom_exception.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
@@ -14,9 +16,16 @@ import 'package:yeogijeogi/utils/enums/dialog_type.dart';
 
 class MyPageViewModel with ChangeNotifier {
   UserModel userModel;
+  CourseModel courseModel;
+  WalkModel walkModel;
   BuildContext context;
 
-  MyPageViewModel({required this.userModel, required this.context}) {
+  MyPageViewModel({
+    required this.userModel,
+    required this.courseModel,
+    required this.walkModel,
+    required this.context,
+  }) {
     getAppVersion();
   }
 
@@ -73,13 +82,21 @@ class MyPageViewModel with ChangeNotifier {
       context: context,
       onTapAction: () async {
         try {
+          isLoading = true;
+          notifyListeners();
+
+          context.pop();
+
           await API.deleteUser();
           await FirebaseAuth.instance.signOut();
 
           if (context.mounted) {
+            // 모델 초기화
             userModel.reset();
+            courseModel.reset();
+            walkModel.reset();
+
             context.goNamed(AppRoute.login.name);
-            context.pop();
           }
         } catch (e) {
           if (context.mounted) {
@@ -89,6 +106,9 @@ class MyPageViewModel with ChangeNotifier {
             );
           }
         }
+
+        isLoading = false;
+        notifyListeners();
       },
     );
   }
@@ -99,13 +119,26 @@ class MyPageViewModel with ChangeNotifier {
       type: DialogType.logout,
       context: context,
       onTapAction: () async {
-        /// 로그아웃 후 login 페이지로 이동
+        isLoading = true;
+        notifyListeners();
+
+        context.pop();
+
+        // 로그아웃 후 login 페이지로 이동
         await FirebaseAuth.instance.signOut();
+
+        // 모델 초기화
+        userModel.reset();
+        courseModel.reset();
+        walkModel.reset();
+
         if (context.mounted) {
           userModel.reset();
           context.goNamed(AppRoute.login.name);
-          context.pop();
         }
+
+        isLoading = false;
+        notifyListeners();
       },
     );
   }
