@@ -76,6 +76,7 @@ class AppRouter {
                       (context, _) => ChangeNotifierProvider(
                         create:
                             (context) => CourseViewModel(
+                              userModel: userModel,
                               courseModel: courseModel,
                               context: context,
                             ),

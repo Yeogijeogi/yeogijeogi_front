@@ -7,12 +7,14 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
+import 'package:yeogijeogi/components/common/error_dialog.dart';
 import 'package:yeogijeogi/components/walk/walk_end_dialog.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/objects/walk_summary.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/constants.dart';
+import 'package:yeogijeogi/utils/custom_exception.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:yeogijeogi/utils/palette.dart';
 
@@ -127,7 +129,16 @@ class WalkViewModel with ChangeNotifier {
 
     // 60초 경과 후 (walkPoint 6개) 서버 전송
     if (walkModel.walkPointList.length >= 6) {
-      walkModel.uploadWalkPoints();
+      try {
+        walkModel.uploadWalkPoints();
+      } catch (e) {
+        if (context.mounted) {
+          showErrorDialog(
+            exception: CustomException.fromException(e, context),
+            context: context,
+          );
+        }
+      }
     }
 
     // 경로 추가
@@ -154,31 +165,43 @@ class WalkViewModel with ChangeNotifier {
     );
     walkModel.addLocation(currentLocation);
 
-    // 마지막 위치 포함 경로 서버 업로드
-    await walkModel.uploadWalkPoints();
+    try {
+      // 마지막 위치 포함 경로 서버 업로드
+      await walkModel.uploadWalkPoints();
 
-    // 요약 정보 가져오기
-    final WalkSummary sumamry = await API.getWalkEnd(walkModel.id!);
-    walkModel.summary = sumamry;
+      // 요약 정보 가져오기
+      final WalkSummary sumamry = await API.getWalkEnd(walkModel.id!);
+      walkModel.summary = sumamry;
 
-    isLoading = false;
-    notifyListeners();
+      isLoading = false;
+      notifyListeners();
+
+      if (context.mounted) {
+        await showWalkEndDialog(
+          context: context,
+          summary: sumamry,
+          onTapSave: save,
+          onTapCancel: () {
+            walkModel.summary = null;
+            isLoading = false;
+            notifyListeners();
+            context.pop();
+          },
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        showErrorDialog(
+          exception: CustomException.fromException(e, context),
+          context: context,
+        );
+      }
+    }
 
     _timer = Timer.periodic(Duration(seconds: 1), (_) => addCurrentLocation());
 
-    if (context.mounted) {
-      await showWalkEndDialog(
-        context: context,
-        summary: sumamry,
-        onTapSave: save,
-        onTapCancel: () {
-          walkModel.summary = null;
-          isLoading = false;
-          notifyListeners();
-          context.pop();
-        },
-      );
-    }
+    isLoading = false;
+    notifyListeners();
   }
 
   /// 산책 완료시 사진 촬영

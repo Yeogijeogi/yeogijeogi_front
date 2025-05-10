@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yeogijeogi/components/common/custom_dialog.dart';
+import 'package:yeogijeogi/components/common/error_dialog.dart';
 import 'package:yeogijeogi/components/my_page/nickname_dialog.dart';
 import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
+import 'package:yeogijeogi/utils/custom_exception.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:yeogijeogi/utils/enums/dialog_type.dart';
 
@@ -70,12 +72,22 @@ class MyPageViewModel with ChangeNotifier {
       type: DialogType.deleteAccount,
       context: context,
       onTapAction: () async {
-        await API.deleteUser();
-        await FirebaseAuth.instance.signOut();
-        if (context.mounted) {
-          userModel.reset();
-          context.goNamed(AppRoute.login.name);
-          context.pop();
+        try {
+          await API.deleteUser();
+          await FirebaseAuth.instance.signOut();
+
+          if (context.mounted) {
+            userModel.reset();
+            context.goNamed(AppRoute.login.name);
+            context.pop();
+          }
+        } catch (e) {
+          if (context.mounted) {
+            showErrorDialog(
+              exception: CustomException.fromException(e, context),
+              context: context,
+            );
+          }
         }
       },
     );

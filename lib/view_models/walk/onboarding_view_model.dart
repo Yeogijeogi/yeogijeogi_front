@@ -3,9 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart' as perm_handler;
 import 'package:yeogijeogi/components/common/custom_dialog.dart';
+import 'package:yeogijeogi/components/common/error_dialog.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
+import 'package:yeogijeogi/utils/custom_exception.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:yeogijeogi/utils/enums/dialog_type.dart';
 
@@ -82,18 +84,27 @@ class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
     // 현재 위치
     final LocationData location = await _location.getLocation();
 
-    walkModel.recommendationList = await API.getRecommendadtion(
-      coordinate: Coordinate.fromLocationData(location),
-      walkTime: duration.inMinutes,
-      mood: sceneryLevel.toInt(),
-      difficulty: walkingLevel.toInt(),
-    );
+    try {
+      walkModel.recommendationList = await API.getRecommendadtion(
+        coordinate: Coordinate.fromLocationData(location),
+        walkTime: duration.inMinutes,
+        mood: sceneryLevel.toInt(),
+        difficulty: walkingLevel.toInt(),
+      );
+
+      if (context.mounted) context.goNamed(AppRoute.walkStart.name);
+    } catch (e) {
+      if (context.mounted) {
+        showErrorDialog(
+          exception: CustomException.fromException(e, context),
+          context: context,
+        );
+      }
+    }
 
     initValue();
     isLoading = false;
     notifyListeners();
-
-    if (context.mounted) context.goNamed(AppRoute.walkStart.name);
   }
 
   /// 시간 및 슬라이더 초기화

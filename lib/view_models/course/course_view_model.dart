@@ -3,16 +3,24 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yeogijeogi/components/common/custom_dialog.dart';
+import 'package:yeogijeogi/components/common/error_dialog.dart';
 import 'package:yeogijeogi/models/course_model.dart';
+import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/constants.dart';
+import 'package:yeogijeogi/utils/custom_exception.dart';
 import 'package:yeogijeogi/utils/enums/dialog_type.dart';
 
 class CourseViewModel with ChangeNotifier {
+  final UserModel userModel;
   final CourseModel courseModel;
   final BuildContext context;
 
-  CourseViewModel({required this.courseModel, required this.context}) {
+  CourseViewModel({
+    required this.userModel,
+    required this.courseModel,
+    required this.context,
+  }) {
     // 모달 드래그 리스너 추가
     draggableController.addListener(_onDrag);
 
@@ -105,8 +113,22 @@ class CourseViewModel with ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
-      final detail = await API.getCourseDetail(walkId: courseModel.course!.id);
-      await courseModel.course!.fromCourseDetailJson(detail);
+      try {
+        final Map<String, dynamic> detail = await API.getCourseDetail(
+          walkId: courseModel.course!.id,
+        );
+        await courseModel.course!.fromCourseDetailJson(
+          detail,
+          userModel.uid ?? '',
+        );
+      } catch (e) {
+        if (context.mounted) {
+          showErrorDialog(
+            exception: CustomException.fromException(e, context),
+            context: context,
+          );
+        }
+      }
 
       isLoading = false;
       notifyListeners();
@@ -121,11 +143,21 @@ class CourseViewModel with ChangeNotifier {
       onTapAction: () async {
         isLoading = true;
         notifyListeners();
+        try {
+          courseModel.naverMapController?.deleteOverlay(
+            courseModel.marker!.info,
+          );
+          await courseModel.deleteSelectedCourse();
 
-        courseModel.naverMapController?.deleteOverlay(courseModel.marker!.info);
-        await courseModel.deleteSelectedCourse();
-
-        draggableController.reset();
+          draggableController.reset();
+        } catch (e) {
+          if (context.mounted) {
+            showErrorDialog(
+              exception: CustomException.fromException(e, context),
+              context: context,
+            );
+          }
+        }
 
         isLoading = false;
         notifyListeners();
