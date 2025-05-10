@@ -168,46 +168,40 @@ class WalkViewModel with ChangeNotifier {
     try {
       // 마지막 위치 포함 경로 서버 업로드
       await walkModel.uploadWalkPoints();
-    } catch (e) {
-      if (context.mounted) {
-        showErrorDialog(
-          exception: CustomException.fromException(e, context),
-          context: context,
-        );
-      }
-    }
-    late final WalkSummary sumamry;
-    try {
-      // 요약 정보 가져오기
-      sumamry = await API.getWalkEnd(walkModel.id!);
-      walkModel.summary = sumamry;
-    } catch (e) {
-      if (context.mounted) {
-        showErrorDialog(
-          exception: CustomException.fromException(e, context),
-          context: context,
-        );
-      }
-    }
 
-    isLoading = false;
-    notifyListeners();
+      // 요약 정보 가져오기
+      final WalkSummary sumamry = await API.getWalkEnd(walkModel.id!);
+      walkModel.summary = sumamry;
+
+      isLoading = false;
+      notifyListeners();
+
+      if (context.mounted) {
+        await showWalkEndDialog(
+          context: context,
+          summary: sumamry,
+          onTapSave: save,
+          onTapCancel: () {
+            walkModel.summary = null;
+            isLoading = false;
+            notifyListeners();
+            context.pop();
+          },
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        showErrorDialog(
+          exception: CustomException.fromException(e, context),
+          context: context,
+        );
+      }
+    }
 
     _timer = Timer.periodic(Duration(seconds: 1), (_) => addCurrentLocation());
 
-    if (context.mounted) {
-      await showWalkEndDialog(
-        context: context,
-        summary: sumamry,
-        onTapSave: save,
-        onTapCancel: () {
-          walkModel.summary = null;
-          isLoading = false;
-          notifyListeners();
-          context.pop();
-        },
-      );
-    }
+    isLoading = false;
+    notifyListeners();
   }
 
   /// 산책 완료시 사진 촬영
