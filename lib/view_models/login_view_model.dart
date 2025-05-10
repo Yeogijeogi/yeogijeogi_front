@@ -51,6 +51,19 @@ class LoginViewModel with ChangeNotifier {
         if (userCredential.additionalUserInfo!.isNewUser) {
           await API.postCreateUser();
         }
+
+        if (user != null) {
+          userModel.fromFirebaseUser(user);
+
+          final userInfo = await API.getUserInfo();
+          userModel.fromJson(userInfo);
+
+          isLoading = false;
+          notifyListeners();
+
+          // 홈 화면 이동
+          if (context.mounted) context.goNamed(AppRoute.onboarding.name);
+        }
       } catch (e) {
         if (context.mounted) {
           showErrorDialog(
@@ -59,24 +72,25 @@ class LoginViewModel with ChangeNotifier {
           );
         }
       }
-
-      if (user != null) {
-        userModel.fromFirebaseUser(user);
-
-        final userInfo = await API.getUserInfo();
-        userModel.fromJson(userInfo);
-
-        isLoading = false;
-        notifyListeners();
-
-        // 홈 화면 이동
-        if (context.mounted) context.goNamed(AppRoute.onboarding.name);
-      }
     } on FirebaseAuthException catch (e) {
       // https://pub.dev/documentation/firebase_auth/latest/firebase_auth/FirebaseAuth/signInWithCredential.html
       debugPrint('FirebaseAuthException in _googleLogin: ${e.code}');
+
+      if (context.mounted) {
+        showErrorDialog(
+          exception: CustomException.fromException(e, context),
+          context: context,
+        );
+      }
     } catch (e) {
       debugPrint('Error in _googleLogin: $e');
+
+      if (context.mounted) {
+        showErrorDialog(
+          exception: CustomException.fromException(e, context),
+          context: context,
+        );
+      }
     }
 
     isLoading = false;
@@ -108,9 +122,23 @@ class LoginViewModel with ChangeNotifier {
       final UserCredential userCredential = await _firebaseAuth
           .signInWithCredential(credential);
       final User? user = userCredential.user;
+
       try {
         if (userCredential.additionalUserInfo!.isNewUser) {
           await API.postCreateUser();
+        }
+
+        if (user != null) {
+          userModel.fromFirebaseUser(user);
+
+          final userInfo = await API.getUserInfo();
+          userModel.fromJson(userInfo);
+
+          isLoading = false;
+          notifyListeners();
+
+          // 홈 화면 이동
+          if (context.mounted) context.goNamed(AppRoute.onboarding.name);
         }
       } catch (e) {
         if (context.mounted) {
@@ -120,23 +148,22 @@ class LoginViewModel with ChangeNotifier {
           );
         }
       }
-
-      if (user != null) {
-        userModel.fromFirebaseUser(user);
-
-        final userInfo = await API.getUserInfo();
-        userModel.fromJson(userInfo);
-
-        isLoading = false;
-        notifyListeners();
-
-        // 홈 화면 이동
-        if (context.mounted) context.goNamed(AppRoute.onboarding.name);
-      }
     } on FirebaseAuthException catch (e) {
       debugPrint('FirebaseAuthException in _appleLogin: ${e.code}');
+      if (context.mounted) {
+        showErrorDialog(
+          exception: CustomException.fromException(e, context),
+          context: context,
+        );
+      }
     } catch (e) {
       debugPrint('Error in _appleLogin: $e');
+      if (context.mounted) {
+        showErrorDialog(
+          exception: CustomException.fromException(e, context),
+          context: context,
+        );
+      }
     }
 
     isLoading = false;
