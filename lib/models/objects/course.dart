@@ -16,7 +16,7 @@ class Course {
   /// 산책 종료 지점 주소
   final String address;
 
-  /// 산책 거리 (km)
+  /// 산책 거리 (m)
   final double distance;
 
   /// 산책 소요 시간 (분)
