@@ -55,8 +55,11 @@ class AppRouter {
           builder:
               (context, _) => ChangeNotifierProvider(
                 create:
-                    (context) =>
-                        LoginViewModel(userModel: userModel, context: context),
+                    (context) => LoginViewModel(
+                      userModel: userModel,
+                      courseModel: courseModel,
+                      context: context,
+                    ),
                 child: const LoginView(),
               ),
         ),
@@ -174,6 +177,8 @@ class AppRouter {
                         create:
                             (context) => MyPageViewModel(
                               userModel: userModel,
+                              courseModel: courseModel,
+                              walkModel: walkModel,
                               context: context,
                             ),
                         child: const MyPageView(),

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:yeogijeogi/components/common/error_dialog.dart';
+import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
 import 'package:yeogijeogi/utils/constants.dart';
@@ -14,9 +15,14 @@ import 'package:yeogijeogi/utils/enums/app_routes.dart';
 
 class LoginViewModel with ChangeNotifier {
   UserModel userModel;
+  CourseModel courseModel;
   BuildContext context;
 
-  LoginViewModel({required this.userModel, required this.context});
+  LoginViewModel({
+    required this.userModel,
+    required this.courseModel,
+    required this.context,
+  });
 
   /// Firebase
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -60,6 +66,9 @@ class LoginViewModel with ChangeNotifier {
 
           final userInfo = await API.getUserInfo();
           userModel.fromJson(userInfo);
+
+          // Course 정보 불러오기
+          courseModel.getCourses();
 
           isLoading = false;
           notifyListeners();
@@ -129,7 +138,7 @@ class LoginViewModel with ChangeNotifier {
       try {
         if (userCredential.additionalUserInfo!.isNewUser) {
           await API.postCreateUser();
-          
+
           final int rand = Random().nextInt(randomNicknames.length);
           final String randomNickname = randomNicknames[rand];
           await user?.updateDisplayName(randomNickname);
@@ -141,6 +150,9 @@ class LoginViewModel with ChangeNotifier {
 
           final userInfo = await API.getUserInfo();
           userModel.fromJson(userInfo);
+
+          // Course 정보 불러오기
+          courseModel.getCourses();
 
           isLoading = false;
           notifyListeners();
