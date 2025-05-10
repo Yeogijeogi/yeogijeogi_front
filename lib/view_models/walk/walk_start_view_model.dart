@@ -106,12 +106,15 @@ class WalkStartViewModel with ChangeNotifier {
 
     // 현재 위치
     final LocationData location = await _location.getLocation();
+
     try {
       // 산책 코스 선택
       await walkModel.selectRecommendation(
         controller.page!.toInt(),
         Coordinate.fromLocationData(location),
       );
+
+      if (context.mounted) context.goNamed(AppRoute.walk.name);
     } catch (e) {
       if (context.mounted) {
         showErrorDialog(
@@ -120,9 +123,8 @@ class WalkStartViewModel with ChangeNotifier {
         );
       }
     }
+
     isLoading = false;
     notifyListeners();
-
-    if (context.mounted) context.goNamed(AppRoute.walk.name);
   }
 }
