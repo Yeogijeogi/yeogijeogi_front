@@ -18,6 +18,8 @@ class MyPageViewModel with ChangeNotifier {
 
   MyPageViewModel({required this.userModel, required this.context}) {
     getAppVersion();
+
+    userModel.addListener(notifyListeners);
   }
 
   /// 앱 버전
