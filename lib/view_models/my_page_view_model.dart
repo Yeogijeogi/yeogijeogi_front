@@ -75,6 +75,12 @@ class MyPageViewModel with ChangeNotifier {
         try {
           await API.deleteUser();
           await FirebaseAuth.instance.signOut();
+
+          if (context.mounted) {
+            userModel.reset();
+            context.goNamed(AppRoute.login.name);
+            context.pop();
+          }
         } catch (e) {
           if (context.mounted) {
             showErrorDialog(
@@ -82,12 +88,6 @@ class MyPageViewModel with ChangeNotifier {
               context: context,
             );
           }
-        }
-
-        if (context.mounted) {
-          userModel.reset();
-          context.goNamed(AppRoute.login.name);
-          context.pop();
         }
       },
     );
