@@ -14,7 +14,7 @@ import 'package:yeogijeogi/utils/custom_theme_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: kReleaseMode ? '.env.dev' : '.env.prod');
+  await dotenv.load(fileName: kReleaseMode ? '.env.prod' : '.env.dev');
   await Firebase.initializeApp();
 
   // 네이버 지도 초기화
