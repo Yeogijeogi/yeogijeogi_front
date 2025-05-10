@@ -100,24 +100,19 @@ class API {
     required Coordinate coordinate,
     required Recommendation recommendation,
   }) async {
-    try {
-      final response = await _postApi(
-        '/walk/start',
-        jsonData: {
-          'start_location': coordinate.toJson(),
-          'start_name': recommendation.startName,
-          'end_name': recommendation.name,
-          'end_address': recommendation.address,
-        },
-      );
+    final response = await _postApi(
+      '/walk/start',
+      jsonData: {
+        'start_location': coordinate.toJson(),
+        'start_name': recommendation.startName,
+        'end_name': recommendation.name,
+        'end_address': recommendation.address,
+      },
+    );
 
-      if (response != null) {
-        return response.data['walk_id'];
-      } else {
-        throw Error();
-      }
-    } catch (e) {
-      debugPrint('Error in postWalkStart: $e');
+    if (response != null) {
+      return response.data['walk_id'];
+    } else {
       throw Error();
     }
   }
@@ -127,36 +122,25 @@ class API {
     required String walkId,
     required List<WalkPoint> walkPoints,
   }) async {
-    try {
-      await _postApi(
-        '/walk/location',
-        jsonData: jsonEncode({
-          'walk_id': walkId,
-          'routes':
-              walkPoints.map((point) => point.coordinate.toJson()).toList(),
-        }),
-      );
-    } catch (e) {
-      debugPrint('Error in postWalkLocation: $e');
-      throw Error();
-    }
+    await _postApi(
+      '/walk/location',
+      jsonData: jsonEncode({
+        'walk_id': walkId,
+        'routes': walkPoints.map((point) => point.coordinate.toJson()).toList(),
+      }),
+    );
   }
 
   /// 산책 요약 불러오기
   static Future<WalkSummary> getWalkEnd(String walkId) async {
-    try {
-      final response = await _getApi(
-        '/walk/end',
-        queryParameters: {'walk_id': walkId},
-      );
+    final response = await _getApi(
+      '/walk/end',
+      queryParameters: {'walk_id': walkId},
+    );
 
-      if (response != null) {
-        return WalkSummary.fromJson(response.data);
-      } else {
-        throw Error();
-      }
-    } catch (e) {
-      debugPrint('Error in getWalkEnd: $e');
+    if (response != null) {
+      return WalkSummary.fromJson(response.data);
+    } else {
       throw Error();
     }
   }
@@ -167,22 +151,17 @@ class API {
     WalkSummary summary,
     String endAddress,
   ) async {
-    try {
-      await _postApi(
-        '/walk/end',
-        jsonData: {
-          'walk_id': walkId,
-          'start_name': summary.startName,
-          'end_name': summary.endName,
-          'end_address': endAddress,
-          'distance': summary.distance,
-          'time': summary.time,
-        },
-      );
-    } catch (e) {
-      debugPrint('Error in postWalkEnd: $e');
-      throw Error();
-    }
+    await _postApi(
+      '/walk/end',
+      jsonData: {
+        'walk_id': walkId,
+        'start_name': summary.startName,
+        'end_name': summary.endName,
+        'end_address': endAddress,
+        'distance': summary.distance,
+        'time': summary.time,
+      },
+    );
   }
 
   /// 산책 업데이트
@@ -192,20 +171,15 @@ class API {
     int difficulty,
     String memo,
   ) async {
-    try {
-      await _patchApi(
-        '/walk/end',
-        jsonData: jsonEncode({
-          'walk_id': walkId,
-          'mood': mood,
-          'difficulty': difficulty,
-          'memo': memo,
-        }),
-      );
-    } catch (e) {
-      debugPrint('Error in patchWalkEnd: $e');
-      throw Error();
-    }
+    await _patchApi(
+      '/walk/end',
+      jsonData: jsonEncode({
+        'walk_id': walkId,
+        'mood': mood,
+        'difficulty': difficulty,
+        'memo': memo,
+      }),
+    );
   }
 
   /* COURSE API */

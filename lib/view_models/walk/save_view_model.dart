@@ -1,12 +1,14 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:yeogijeogi/components/common/error_dialog.dart';
 import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/objects/course.dart';
 import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
+import 'package:yeogijeogi/utils/custom_exception.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 
 class SaveViewModel with ChangeNotifier {
@@ -91,13 +93,22 @@ class SaveViewModel with ChangeNotifier {
     // 이미지 firebase 업로드
     final String imageUrl = await uploadImageToFirebase();
 
-    // 완료 api 호출
-    await API.patchWalkEnd(
-      walkModel.id!,
-      moodLevel.toInt(),
-      difficultyLevel.toInt(),
-      controller.text.trim(),
-    );
+    try {
+      // 완료 api 호출
+      await API.patchWalkEnd(
+        walkModel.id!,
+        moodLevel.toInt(),
+        difficultyLevel.toInt(),
+        controller.text.trim(),
+      );
+    } catch (e) {
+      if (context.mounted) {
+        showErrorDialog(
+          exception: CustomException.fromException(e, context),
+          context: context,
+        );
+      }
+    }
 
     courseModel.courses.add(
       Course(
