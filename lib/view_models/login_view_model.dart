@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:yeogijeogi/components/common/error_dialog.dart';
 import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/utils/api.dart';
+import 'package:yeogijeogi/utils/custom_exception.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 
 class LoginViewModel with ChangeNotifier {
@@ -45,8 +47,17 @@ class LoginViewModel with ChangeNotifier {
           .signInWithCredential(credential);
       final User? user = userCredential.user;
 
-      if (userCredential.additionalUserInfo!.isNewUser) {
-        await API.postCreateUser();
+      try {
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          await API.postCreateUser();
+        }
+      } catch (e) {
+        if (context.mounted) {
+          showErrorDialog(
+            exception: CustomException.fromException(e, context),
+            context: context,
+          );
+        }
       }
 
       if (user != null) {
@@ -97,9 +108,17 @@ class LoginViewModel with ChangeNotifier {
       final UserCredential userCredential = await _firebaseAuth
           .signInWithCredential(credential);
       final User? user = userCredential.user;
-
-      if (userCredential.additionalUserInfo!.isNewUser) {
-        await API.postCreateUser();
+      try {
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          await API.postCreateUser();
+        }
+      } catch (e) {
+        if (context.mounted) {
+          showErrorDialog(
+            exception: CustomException.fromException(e, context),
+            context: context,
+          );
+        }
       }
 
       if (user != null) {

@@ -28,12 +28,7 @@ class API {
   /// user 생성 POST 요청
   /// token 반환
   static Future<void> postCreateUser() async {
-    try {
-      await _postApi('/user');
-    } catch (e) {
-      debugPrint('Error in postCreateUser: $e');
-      throw Error();
-    }
+    await _postApi('/user');
   }
 
   /// user 정보 GET 요청
@@ -57,12 +52,7 @@ class API {
   /// user delete 요청
   /// true 반환
   static Future<void> deleteUser() async {
-    try {
-      await _deleteApi('/user');
-    } catch (e) {
-      debugPrint('Error in deleteUser: $e');
-      throw Error();
-    }
+    await _deleteApi('/user');
   }
 
   /* WALK API */
