@@ -9,7 +9,7 @@ class UserModel with ChangeNotifier {
   /// 이름
   String? name;
 
-  /// 지금까지 산책한 총 거리 (km)
+  /// 지금까지 산책한 총 거리 (m)
   double? walkDistance;
 
   /// 지금까지 산책한 총 시간 (분)
@@ -33,9 +33,22 @@ class UserModel with ChangeNotifier {
     loginType = LoginType.fromProvider(user.providerData[0].providerId);
   }
 
+  /// 서버에서 받아오는 사용자 데이터 저장
   void fromJson(Map<String, dynamic> json) {
     walkDistance = json['walk_distance'];
     walkTime = json['walk_time'];
+  }
+
+  /// 거리 업데이트
+  void updateWalkDistance(double distance) {
+    walkDistance = (walkDistance ?? 0) + distance;
+    notifyListeners();
+  }
+
+  /// 시간 업데이트
+  void updateWalkTime(int time) {
+    walkTime = (walkTime ?? 0) + time;
+    notifyListeners();
   }
 
   @override

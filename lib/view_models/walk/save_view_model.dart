@@ -121,6 +121,10 @@ class SaveViewModel with ChangeNotifier {
       courseModel.selectCourseById(walkModel.id!);
       courseModel.drawMarkers();
 
+      // 거리, 시간 업데이트
+      userModel.updateWalkDistance(walkModel.summary!.distance);
+      userModel.updateWalkTime(walkModel.summary!.time);
+
       if (context.mounted) context.goNamed(AppRoute.course.name);
 
       // 모델 리셋

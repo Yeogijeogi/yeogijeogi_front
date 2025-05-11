@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:yeogijeogi/components/common/error_dialog.dart';
 import 'package:yeogijeogi/models/objects/course.dart';
 import 'package:yeogijeogi/utils/api.dart';
+import 'package:yeogijeogi/utils/custom_exception.dart';
 
 class CourseModel with ChangeNotifier {
   /// 사용자가 산책한 코스 리스트
@@ -60,23 +62,42 @@ class CourseModel with ChangeNotifier {
   }
 
   /// 선택된 코스 삭제
-  Future<void> deleteSelectedCourse() async {
+  Future<(double distance, int time)?> deleteSelectedCourse(
+    BuildContext context,
+  ) async {
     if (course != null) {
-      // 서버에서 삭제
-      await API.deleteCourse(walkId: course!.id);
+      try {
+        // 거리, 시간 임시 저장
+        final double distance = course!.distance;
+        final int time = course!.time;
 
-      // 모델에서 삭제 후 선택된 코스 업데이트
-      courses.remove(course);
-      markers.remove(marker);
+        // 서버에서 삭제
+        await API.deleteCourse(walkId: course!.id);
 
-      if (courses.isNotEmpty) {
-        course = courses[0];
-        marker = markers[0];
-        selectMarker(marker!);
-      } else {
-        course = null;
+        // 모델에서 삭제 후 선택된 코스 업데이트
+        courses.remove(course);
+        markers.remove(marker);
+
+        if (courses.isNotEmpty) {
+          course = courses[0];
+          marker = markers[0];
+          selectMarker(marker!);
+        } else {
+          course = null;
+        }
+
+        return (distance, time);
+      } catch (e) {
+        if (context.mounted) {
+          await showErrorDialog(
+            exception: CustomException.fromException(e, context),
+            context: context,
+          );
+        }
       }
     }
+
+    return null;
   }
 
   /// 지도에 마커 그리기
