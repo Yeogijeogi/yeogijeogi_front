@@ -92,7 +92,19 @@ class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
         difficulty: walkingLevel.toInt(),
       );
 
-      if (context.mounted) context.goNamed(AppRoute.walkStart.name);
+      // 추천 받은 경로가 없으면 팝업 표시
+      if (walkModel.recommendationList.isEmpty) {
+        if (context.mounted) {
+          await showCustomDialog(
+            type: DialogType.recommendation,
+            context: context,
+            onTapAction: context.pop,
+            showCancel: false,
+          );
+        }
+      } else {
+        if (context.mounted) context.goNamed(AppRoute.walkStart.name);
+      }
     } catch (e) {
       if (context.mounted) {
         showErrorDialog(
