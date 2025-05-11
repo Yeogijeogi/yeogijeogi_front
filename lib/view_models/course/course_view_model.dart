@@ -39,6 +39,7 @@ class CourseViewModel with ChangeNotifier {
       target: NLatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE),
       zoom: 15,
     ),
+    logoAlign: NLogoAlign.rightBottom,
   );
 
   /// 모달 시트 컨트롤러

@@ -28,8 +28,9 @@ class CourseView extends StatelessWidget {
             onCameraChange: courseViewModel.onCameraChange,
           ),
 
+          // 위치 버튼
           Positioned(
-            bottom: 213.h,
+            bottom: 193.h,
             left: 0,
             child: LocationButton(
               isLocationActive: courseViewModel.isLocationActive,
