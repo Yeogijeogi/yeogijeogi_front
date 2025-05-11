@@ -46,8 +46,8 @@ void onStart(ServiceInstance service) async {
     if (service is AndroidServiceInstance) {
       if (await service.isForegroundService()) {
         service.setForegroundNotificationInfo(
-          title: "SCRIPT ACADEMY",
-          content: "content",
+          title: "여기저기",
+          content: "백그라운드 실행 중",
         );
       }
     }

@@ -127,10 +127,15 @@ class WalkViewModel with ChangeNotifier {
     );
     walkModel.addLocation(currentLocation);
 
-    // 60초 경과 후 (walkPoint 6개) 서버 전송
+    debugPrint(
+      "WalkPoint added: longitude: ${currentLocation.longitude}, latitude: ${currentLocation.latitude}",
+    );
+
+    // 60초 경과 후 서버 전송
     if (walkModel.walkPointList.length >= 6) {
       try {
-        walkModel.uploadWalkPoints();
+        await walkModel.uploadWalkPoints();
+        debugPrint("Walk points uploaded");
       } catch (e) {
         if (context.mounted) {
           showErrorDialog(
@@ -141,15 +146,23 @@ class WalkViewModel with ChangeNotifier {
       }
     }
 
-    // 경로 추가
-    await naverMapController.addOverlay(
-      NPathOverlay(
-        id: 'walk_path',
-        coords: walkModel.pathList,
-        color: Palette.secondary,
-        outlineWidth: 0,
-      ),
-    );
+    // 지도 조작은 포그라운드에서만 수행
+    if (WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) {
+      try {
+        await naverMapController.addOverlay(
+          NPathOverlay(
+            id: 'walk_path',
+            coords: walkModel.pathList,
+            color: Palette.secondary,
+            outlineWidth: 0,
+          ),
+        );
+      } catch (e) {
+        debugPrint("지도 오버레이 추가 실패: $e");
+      }
+    } else {
+      debugPrint("지도 오버레이 생략 (백그라운드 상태)");
+    }
   }
 
   /// 산책 종료 팝업 표시
@@ -198,7 +211,7 @@ class WalkViewModel with ChangeNotifier {
       }
     }
 
-    _timer = Timer.periodic(Duration(seconds: 1), (_) => addCurrentLocation());
+    _timer = Timer.periodic(Duration(seconds: 3), (_) => addCurrentLocation());
 
     isLoading = false;
     notifyListeners();

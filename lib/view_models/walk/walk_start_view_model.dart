@@ -10,6 +10,7 @@ import 'package:yeogijeogi/utils/custom_exception.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:yeogijeogi/utils/palette.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WalkStartViewModel with ChangeNotifier {
   WalkModel walkModel;
@@ -51,6 +52,11 @@ class WalkStartViewModel with ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
+  }
+
+  void saveLastRoute() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('last_route', AppRoute.walkStart.name);
   }
 
   /// 코스 경로 그리기
@@ -104,6 +110,7 @@ class WalkStartViewModel with ChangeNotifier {
   void onTapStart() async {
     isLoading = true;
     notifyListeners();
+    saveLastRoute();
 
     FlutterBackgroundService().invoke('setAsBackground');
 
