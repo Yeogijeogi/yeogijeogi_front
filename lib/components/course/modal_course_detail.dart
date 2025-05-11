@@ -69,7 +69,7 @@ class ModalCourseDetail extends StatelessWidget {
                       address: course.address,
                       distance: course.distance,
                       distanceLabel: '이동 거리',
-                      walk: '${course.speed}',
+                      walk: '${course.speed}km/h',
                       walkLabel: '평균 속도',
                       time: course.time,
                       timeLabel: '소요 시간',
