@@ -12,35 +12,12 @@ class WalkModel with ChangeNotifier {
   /// 산책 id
   String? id;
 
-  /// 시작 주소
-  String? startName;
+  /* 추천 */
+  /// 추천 목적지 리스트
+  List<Recommendation> recommendationList = [];
 
-  /// 도착 주소
-  String? endName;
-
-  /// 도착 주소
-  String? endAddress;
-
-  /// 시간
-  int? time;
-
-  /// 평균 속도
-  double? averageSpeed;
-
-  /// 거리
-  double? distance;
-
-  /// 분위기
-  int? mood;
-
-  /// 산책 강도
-  int? difficulty;
-
-  /// 메모
-  String? memo;
-
-  /// 경로 좌표 리스트
-  List<Coordinate>? routes;
+  /// 선택된 추천 목적지
+  Recommendation? recommendation;
 
   /// 최근 1분동안 지나온 경로
   /// <br /> 10초에 한 번씩 경로 저장
@@ -49,40 +26,45 @@ class WalkModel with ChangeNotifier {
   /// 지도에 그려지는 산책 중인 경로
   List<NLatLng> pathList = [];
 
-  /// 추천 받은 경로
-  List<NLatLng> recommendationPathList = [];
+  /// 지금까지 산책한 내용 요약 정보
+  WalkSummary? summary;
 
+  /* 저장 */
   /// 산책 후 사진
   File? image;
 
-  /// 추천 목적지 리스트
-  List<Recommendation> recommendationList = [];
+  /* 온보딩 */
+  /// 풍경 슬라이더 값
+  double sceneryLevel = 0;
 
-  /// 지금까지 산책한 내용 요약 정보
-  WalkSummary? summary;
+  /// 산책 슬라이더 값
+  double walkingLevel = 0;
+
+  /// 산책 시간
+  Duration duration = Duration(hours: 0, minutes: 30);
 
   /// 모델 초기화
   void reset() {
     id = null;
-    startName = null;
-    endName = null;
-    endAddress = null;
-    time = null;
-    averageSpeed = null;
-    distance = null;
-    mood = null;
-    difficulty = null;
-    memo = null;
-    routes = null;
-    walkPointList.clear();
     recommendationList.clear();
+    recommendation = null;
+    walkPointList.clear();
     pathList.clear();
-    recommendationPathList.clear();
+    summary = null;
     image?.delete();
     image = null;
-    summary = null;
+    sceneryLevel = 0;
+    walkingLevel = 0;
+    duration = Duration(hours: 0, minutes: 30);
 
     debugPrint('Reset WalkModel');
+  }
+
+  /// 온보딩 데이터 초기화
+  void resetOnboardingData() {
+    duration = Duration(hours: 0, minutes: 30);
+    sceneryLevel = 0;
+    walkingLevel = 0;
   }
 
   /// 위치 추가
@@ -109,12 +91,7 @@ class WalkModel with ChangeNotifier {
     id = walkId;
     debugPrint('Walk ID : $id');
 
-    routes = recommendationList[index].routes;
-    endName = recommendationList[index].name;
-    endAddress = recommendationList[index].address;
-    distance = recommendationList[index].distance;
-    time = recommendationList[index].time;
-    recommendationPathList = recommendationList[index].path;
+    recommendation = recommendationList[index];
   }
 
   /// 지난 경로 서버 전송

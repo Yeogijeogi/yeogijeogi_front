@@ -77,7 +77,7 @@ class WalkViewModel with ChangeNotifier {
     await naverMapController.addOverlay(
       NPathOverlay(
         id: 'path',
-        coords: walkModel.recommendationPathList,
+        coords: walkModel.recommendation!.path,
         color: Palette.primary,
         outlineWidth: 0,
       ),
@@ -87,7 +87,7 @@ class WalkViewModel with ChangeNotifier {
     await naverMapController.addOverlay(
       NMarker(
         id: 'start',
-        position: walkModel.recommendationPathList.first,
+        position: walkModel.recommendation!.path.first,
         icon: NOverlayImage.fromAssetImage('/assets/icons/marker_start.png'),
         anchor: NPoint(0.5, 1),
       ),
@@ -95,7 +95,7 @@ class WalkViewModel with ChangeNotifier {
     await naverMapController.addOverlay(
       NMarker(
         id: 'end',
-        position: walkModel.recommendationPathList.last,
+        position: walkModel.recommendation!.path.last,
         icon: NOverlayImage.fromAssetImage('/assets/icons/marker_end.png'),
         anchor: NPoint(0.5, 1),
       ),
@@ -281,7 +281,7 @@ class WalkViewModel with ChangeNotifier {
     await API.postWalkEnd(
       walkModel.id!,
       walkModel.summary!,
-      walkModel.endAddress!,
+      walkModel.recommendation!.address,
     );
 
     isLoading = false;

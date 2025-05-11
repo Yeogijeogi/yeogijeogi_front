@@ -106,8 +106,8 @@ class SaveViewModel with ChangeNotifier {
         Course(
           id: walkModel.id!,
           location: Coordinate.fromNLatLng(walkModel.pathList.last),
-          name: walkModel.endName!,
-          address: walkModel.endName!,
+          name: walkModel.recommendation!.name,
+          address: walkModel.recommendation!.address,
           distance: walkModel.summary!.distance,
           time: walkModel.summary!.time,
           speed: walkModel.summary!.speed,

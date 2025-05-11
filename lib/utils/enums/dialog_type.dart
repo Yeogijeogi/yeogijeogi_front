@@ -11,6 +11,11 @@ enum DialogType {
     title: '위치 권한을 허용해주세요.',
     body: '앱을 사용하기 위해서는 위치 권한이 필요합니다.',
     action: '설정',
+  ),
+  recommendation(
+    title: '추천 경로를 불러오지 못했어요.',
+    body: '다시 한 번 경로를 찾아 보세요.',
+    action: '확인',
   );
 
   /// 제목 텍스트
