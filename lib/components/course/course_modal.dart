@@ -56,7 +56,7 @@ class CourseModal extends StatelessWidget {
                   : Column(
                     children: [
                       SizedBox(height: 78.h),
-                      Text('아직 저장한 코스가 없어요.', style: Palette.headline),
+                      Text('아직 산책한 코스가 없어요.', style: Palette.headline),
                       SizedBox(height: 78.h),
                     ],
                   ),
