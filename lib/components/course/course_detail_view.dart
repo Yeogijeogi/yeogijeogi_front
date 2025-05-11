@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:yeogijeogi/components/common/custom_modal_appbar.dart';
 import 'package:yeogijeogi/components/common/custom_text_button.dart';
+import 'package:yeogijeogi/components/common/loading_screen.dart';
 import 'package:yeogijeogi/components/walk/course_detail.dart';
 import 'package:yeogijeogi/components/walk/memo_text_field.dart';
 import 'package:yeogijeogi/components/walk/slider_container.dart';
@@ -39,6 +40,10 @@ class CourseDetailView extends StatelessWidget {
                     ? Image.network(
                       course.imgUrl!,
                       fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return LoadingScreen();
+                      },
                       errorBuilder: (context, error, stackTrace) {
                         return SvgPicture.asset(
                           'assets/icons/image_load_fail.svg',
