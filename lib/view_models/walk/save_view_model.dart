@@ -1,5 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yeogijeogi/components/common/error_dialog.dart';
 import 'package:yeogijeogi/models/course_model.dart';
@@ -35,6 +36,8 @@ class SaveViewModel with ChangeNotifier {
 
   /// 로딩
   bool isLoading = false;
+
+  final service = FlutterBackgroundService();
 
   /// 분위기 슬라이더 값 업데이트
   void updateSceneryLevel(double value) {
@@ -136,6 +139,11 @@ class SaveViewModel with ChangeNotifier {
           context: context,
         );
       }
+    }
+    bool isRunning = await service.isRunning();
+    if (isRunning) {
+      service.invoke("stopService");
+      debugPrint("stop service");
     }
 
     isLoading = false;

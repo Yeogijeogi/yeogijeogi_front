@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:yeogijeogi/back_services.dart';
 import 'package:yeogijeogi/models/user_model.dart';
 import 'package:yeogijeogi/models/course_model.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
@@ -14,6 +16,13 @@ import 'package:yeogijeogi/utils/custom_theme_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Permission.notification.isDenied.then((value) {
+    if (value) {
+      debugPrint("백그라운드");
+      Permission.notification.request();
+    }
+  });
+  await initalizeService();
   await dotenv.load(fileName: kReleaseMode ? '.env.prod' : '.env.dev');
   await Firebase.initializeApp();
 

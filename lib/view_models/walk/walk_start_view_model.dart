@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
@@ -103,6 +104,8 @@ class WalkStartViewModel with ChangeNotifier {
   void onTapStart() async {
     isLoading = true;
     notifyListeners();
+
+    FlutterBackgroundService().invoke('setAsBackground');
 
     // 현재 위치
     final LocationData location = await _location.getLocation();
