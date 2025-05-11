@@ -38,7 +38,7 @@ class WalkStartView extends StatelessWidget {
           Center(
             child: SmoothPageIndicator(
               controller: walkStartViewModel.controller,
-              count: 3,
+              count: walkStartViewModel.walkModel.recommendationList.length,
               effect: SlideEffect(
                 dotWidth: 8.w,
                 dotHeight: 8.w,

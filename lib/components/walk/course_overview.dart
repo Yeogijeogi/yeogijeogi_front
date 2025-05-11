@@ -44,7 +44,7 @@ class CourseOverview extends StatelessWidget {
             height: 113.h,
             child: PageView.builder(
               controller: controller,
-              itemCount: 3,
+              itemCount: recommendations.length,
               physics: const BouncingScrollPhysics(
                 decelerationRate: ScrollDecelerationRate.fast,
               ),
