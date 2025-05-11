@@ -45,7 +45,7 @@ class SaveView extends StatelessWidget {
 
             CourseDetail(
               name: saveViewModel.walkModel.summary!.endName,
-              address: saveViewModel.walkModel.endAddress!,
+              address: saveViewModel.walkModel.recommendation!.address,
               distance: saveViewModel.walkModel.summary!.distance,
               distanceLabel: '이동 거리',
               walk: '${saveViewModel.walkModel.summary!.speed}km/h',

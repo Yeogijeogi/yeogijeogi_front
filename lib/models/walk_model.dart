@@ -12,24 +12,6 @@ class WalkModel with ChangeNotifier {
   /// 산책 id
   String? id;
 
-  /// 시작 주소
-  String? startName;
-
-  /// 도착 주소
-  String? endName;
-
-  /// 도착 주소
-  String? endAddress;
-
-  /// 시간
-  int? time;
-
-  /// 평균 속도
-  double? averageSpeed;
-
-  /// 거리
-  double? distance;
-
   /// 분위기
   int? mood;
 
@@ -39,9 +21,6 @@ class WalkModel with ChangeNotifier {
   /// 메모
   String? memo;
 
-  /// 경로 좌표 리스트
-  List<Coordinate>? routes;
-
   /// 최근 1분동안 지나온 경로
   /// <br /> 10초에 한 번씩 경로 저장
   List<WalkPoint> walkPointList = [];
@@ -49,14 +28,14 @@ class WalkModel with ChangeNotifier {
   /// 지도에 그려지는 산책 중인 경로
   List<NLatLng> pathList = [];
 
-  /// 추천 받은 경로
-  List<NLatLng> recommendationPathList = [];
-
   /// 산책 후 사진
   File? image;
 
   /// 추천 목적지 리스트
   List<Recommendation> recommendationList = [];
+
+  /// 선택된 추천 목적지
+  Recommendation? recommendation;
 
   /// 지금까지 산책한 내용 요약 정보
   WalkSummary? summary;
@@ -64,22 +43,23 @@ class WalkModel with ChangeNotifier {
   /// 모델 초기화
   void reset() {
     id = null;
-    startName = null;
-    endName = null;
-    endAddress = null;
-    time = null;
-    averageSpeed = null;
-    distance = null;
+    // startName = null;
+    // endName = null;
+    // endAddress = null;
+    // time = null;
+    // averageSpeed = null;
+    // distance = null;
     mood = null;
     difficulty = null;
     memo = null;
-    routes = null;
+    // routes = null;
     walkPointList.clear();
-    recommendationList.clear();
     pathList.clear();
-    recommendationPathList.clear();
+    // recommendationPathList.clear();
     image?.delete();
     image = null;
+    recommendationList.clear();
+    recommendation = null;
     summary = null;
 
     debugPrint('Reset WalkModel');
@@ -109,12 +89,14 @@ class WalkModel with ChangeNotifier {
     id = walkId;
     debugPrint('Walk ID : $id');
 
-    routes = recommendationList[index].routes;
-    endName = recommendationList[index].name;
-    endAddress = recommendationList[index].address;
-    distance = recommendationList[index].distance;
-    time = recommendationList[index].time;
-    recommendationPathList = recommendationList[index].path;
+    recommendation = recommendationList[index];
+
+    // routes = recommendationList[index].routes;
+    // endName = recommendationList[index].name;
+    // endAddress = recommendationList[index].address;
+    // distance = recommendationList[index].distance;
+    // time = recommendationList[index].time;
+    // recommendationPathList = recommendationList[index].path;
   }
 
   /// 지난 경로 서버 전송
