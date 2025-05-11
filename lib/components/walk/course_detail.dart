@@ -120,7 +120,7 @@ class CourseDetail extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    Text('$walk km/s', style: Palette.callout),
+                    Text(walk, style: Palette.callout),
                     SizedBox(height: 8.h),
 
                     Text(
