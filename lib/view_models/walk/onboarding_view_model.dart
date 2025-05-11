@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart' as perm_handler;
 import 'package:yeogijeogi/components/common/custom_dialog.dart';
-import 'package:yeogijeogi/components/common/error_dialog.dart';
-import 'package:yeogijeogi/models/objects/coordinate.dart';
 import 'package:yeogijeogi/models/walk_model.dart';
-import 'package:yeogijeogi/utils/api.dart';
-import 'package:yeogijeogi/utils/custom_exception.dart';
 import 'package:yeogijeogi/utils/enums/app_routes.dart';
 import 'package:yeogijeogi/utils/enums/dialog_type.dart';
 
 class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
-  BuildContext context;
   WalkModel walkModel;
+  BuildContext context;
 
-  OnboardingViewModel({required this.context, required this.walkModel}) {
+  OnboardingViewModel({required this.walkModel, required this.context}) {
     WidgetsBinding.instance.addObserver(this);
     checkPermission();
   }
@@ -34,9 +29,6 @@ class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
 
   /// durationPicker 선택 여부
   bool showPicker = false;
-
-  /// 위치 정보
-  final Location _location = Location();
 
   /// durationPicker 클릭시 모달
   void togglePicker() {
@@ -77,54 +69,20 @@ class OnboardingViewModel with ChangeNotifier, WidgetsBindingObserver {
   }
 
   /// 코스 추천 버튼 클릭
-  void onTapCourse() async {
-    isLoading = true;
-    notifyListeners();
+  void onTapCourse() {
+    // WalkModel에 데이터 복사
+    walkModel.sceneryLevel = sceneryLevel;
+    walkModel.walkingLevel = walkingLevel;
+    walkModel.duration = duration;
 
-    // 현재 위치
-    final LocationData location = await _location.getLocation();
-
-    try {
-      walkModel.recommendationList = await API.getRecommendadtion(
-        coordinate: Coordinate.fromLocationData(location),
-        walkTime: duration.inMinutes,
-        mood: sceneryLevel.toInt(),
-        difficulty: walkingLevel.toInt(),
-      );
-
-      // 추천 받은 경로가 없으면 팝업 표시
-      if (walkModel.recommendationList.isEmpty) {
-        if (context.mounted) {
-          await showCustomDialog(
-            type: DialogType.recommendation,
-            context: context,
-            onTapAction: context.pop,
-            showCancel: false,
-          );
-        }
-      } else {
-        if (context.mounted) context.goNamed(AppRoute.walkStart.name);
-      }
-    } catch (e) {
-      if (context.mounted) {
-        showErrorDialog(
-          exception: CustomException.fromException(e, context),
-          context: context,
-        );
-      }
-    }
-
-    initValue();
-    isLoading = false;
-    notifyListeners();
-  }
-
-  /// 시간 및 슬라이더 초기화
-  void initValue() {
+    // 데이터 초기화
     duration = Duration(hours: 0, minutes: 30);
     sceneryLevel = 0;
     walkingLevel = 0;
     notifyListeners();
+
+    // 로딩 화면 이동
+    context.goNamed(AppRoute.loading.name);
   }
 
   /// 풍경 슬라이더 값 업데이트

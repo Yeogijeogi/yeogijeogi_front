@@ -112,7 +112,10 @@ class AppRouter {
                       builder:
                           (context, _) => ChangeNotifierProvider(
                             create:
-                                (context) => LoadingViewModel(context: context),
+                                (context) => LoadingViewModel(
+                                  walkModel: walkModel,
+                                  context: context,
+                                ),
                             child: const LoadingView(),
                           ),
                     ),
