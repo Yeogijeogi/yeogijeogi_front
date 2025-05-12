@@ -22,7 +22,13 @@ class LoginView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // 로고
-          Expanded(child: SvgPicture.asset('assets/icons/appicon.svg')),
+          Expanded(
+            child: SvgPicture.asset(
+              'assets/icons/appicon.svg',
+              width: 256.w,
+              height: 256.w,
+            ),
+          ),
 
           // 구글 로그인
           LoginButton(
