@@ -30,6 +30,8 @@ class WalkViewModel with ChangeNotifier {
       target: NLatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE),
       zoom: 15,
     ),
+    contentPadding: EdgeInsets.only(bottom: 90),
+    logoAlign: NLogoAlign.rightBottom,
   );
 
   /// 네이버 지도 컨트롤러
@@ -165,6 +167,8 @@ class WalkViewModel with ChangeNotifier {
     );
     walkModel.addLocation(currentLocation);
 
+    _timer = Timer.periodic(Duration(seconds: 1), (_) => addCurrentLocation());
+
     try {
       // 마지막 위치 포함 경로 서버 업로드
       await walkModel.uploadWalkPoints();
@@ -197,8 +201,6 @@ class WalkViewModel with ChangeNotifier {
         );
       }
     }
-
-    _timer = Timer.periodic(Duration(seconds: 1), (_) => addCurrentLocation());
 
     isLoading = false;
     notifyListeners();

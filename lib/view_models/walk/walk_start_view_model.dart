@@ -32,6 +32,7 @@ class WalkStartViewModel with ChangeNotifier {
     rotationGesturesEnable: false,
     stopGesturesEnable: false,
     contentPadding: EdgeInsets.only(bottom: 133),
+    logoAlign: NLogoAlign.rightBottom,
   );
 
   /// 로딩
