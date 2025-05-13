@@ -35,6 +35,7 @@ class CustomInterceptor extends Interceptor {
     if (tokenRequired) {
       String? token = await _getToken();
       options.headers['Authorization'] = 'Bearer $token';
+      debugPrint("tokenddd: $token", wrapWidth: 999999);
     }
 
     super.onRequest(options, handler);

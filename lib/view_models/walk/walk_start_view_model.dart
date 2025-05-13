@@ -44,6 +44,9 @@ class WalkStartViewModel with ChangeNotifier {
 
   /// 지도 로딩 완료시 호출
   void onMapReady(NaverMapController controller) async {
+    if (WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed)
+      return;
+
     naverMapController = controller;
     naverMapController.setLocationTrackingMode(NLocationTrackingMode.none);
 
@@ -61,6 +64,9 @@ class WalkStartViewModel with ChangeNotifier {
 
   /// 코스 경로 그리기
   void drawPath(int index) async {
+    if (WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed)
+      return;
+
     final path = walkModel.recommendationList[index].path;
 
     // 오버레이 추가

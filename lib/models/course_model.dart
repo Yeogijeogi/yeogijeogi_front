@@ -102,18 +102,24 @@ class CourseModel with ChangeNotifier {
 
   /// 지도에 마커 그리기
   void drawMarkers() {
-    if (naverMapController != null) {
+    if (naverMapController != null &&
+        WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) {
       for (Course course in courses) {
         final NMarker marker = course.toNMarker();
         marker.setOnTapListener(onTapMarker);
-        naverMapController?.addOverlay(marker);
+        try {
+          naverMapController!.addOverlay(marker);
+        } catch (e) {
+          debugPrint("지도 마커 추가 실패: $e");
+        }
         markers.add(marker);
 
-        // 기본 선택된 코스의 경우 선택 처리
         if (course == course) {
           onTapMarker(marker);
         }
       }
+    } else {
+      debugPrint("지도가 백그라운드 상태이므로 마커를 추가하지 않음");
     }
   }
 

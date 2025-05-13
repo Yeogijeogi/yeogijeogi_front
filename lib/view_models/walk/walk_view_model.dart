@@ -49,11 +49,14 @@ class WalkViewModel with ChangeNotifier {
 
   // 타이머 실행
   void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (_) => addCurrentLocation());
+    _timer = Timer.periodic(Duration(seconds: 3), (_) => addCurrentLocation());
   }
 
   /// 지도 로딩 완료시 호출
   void onMapReady(NaverMapController controller) async {
+    if (WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed)
+      return;
+
     naverMapController = controller;
 
     // 현재 내 위치로 이동
@@ -73,6 +76,9 @@ class WalkViewModel with ChangeNotifier {
 
   /// 경로 표시
   Future<void> drawPath() async {
+    if (WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed)
+      return;
+
     // // 경로
     await naverMapController.addOverlay(
       NPathOverlay(
@@ -104,6 +110,9 @@ class WalkViewModel with ChangeNotifier {
 
   /// 내 위치로 카메라 이동 (초기화)
   Future<void> moveToCurrentLocation() async {
+    if (WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed)
+      return;
+
     await naverMapController.setLocationTrackingMode(
       NLocationTrackingMode.follow,
     );
@@ -114,6 +123,9 @@ class WalkViewModel with ChangeNotifier {
 
   /// 카메라 변환
   void onCameraChange(_, _) async {
+    if (WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed)
+      return;
+
     isLocationActive =
         await naverMapController.getLocationTrackingMode() ==
         NLocationTrackingMode.follow;
@@ -122,6 +134,8 @@ class WalkViewModel with ChangeNotifier {
 
   /// 현재 위치 경로에 추가
   void addCurrentLocation() async {
+    if (WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed)
+      return;
     final Coordinate currentLocation = Coordinate.fromLocationData(
       await _location.getLocation(),
     );
@@ -219,6 +233,9 @@ class WalkViewModel with ChangeNotifier {
 
   /// 산책 완료시 사진 촬영
   Future<void> takePicture() async {
+    if (WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed)
+      return;
+
     // 추천 경로 관련 오버레이 제거
     await naverMapController.deleteOverlay(
       NOverlayInfo(type: NOverlayType.pathOverlay, id: 'path'),
