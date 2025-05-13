@@ -57,6 +57,7 @@ class LoadingViewModel with ChangeNotifier {
         showErrorDialog(
           exception: CustomException.fromException(e, context),
           context: context,
+          action: () => context.goNamed(AppRoute.onboarding.name),
         );
       }
     }
