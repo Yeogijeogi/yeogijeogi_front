@@ -90,7 +90,7 @@ class WalkViewModel with ChangeNotifier {
       NMarker(
         id: 'start',
         position: walkModel.recommendation!.path.first,
-        icon: NOverlayImage.fromAssetImage('/assets/icons/marker_start.png'),
+        icon: NOverlayImage.fromAssetImage('assets/icons/marker_start.png'),
         anchor: NPoint(0.5, 1),
       ),
     );
@@ -98,7 +98,7 @@ class WalkViewModel with ChangeNotifier {
       NMarker(
         id: 'end',
         position: walkModel.recommendation!.path.last,
-        icon: NOverlayImage.fromAssetImage('/assets/icons/marker_end.png'),
+        icon: NOverlayImage.fromAssetImage('assets/icons/marker_end.png'),
         anchor: NPoint(0.5, 1),
       ),
     );
@@ -218,7 +218,7 @@ class WalkViewModel with ChangeNotifier {
       NMarker(
         id: 'start',
         position: walkModel.pathList.first,
-        icon: NOverlayImage.fromAssetImage('/assets/icons/marker_start.png'),
+        icon: NOverlayImage.fromAssetImage('assets/icons/marker_start.png'),
         anchor: NPoint(0.5, 1),
       ),
     );
@@ -226,7 +226,7 @@ class WalkViewModel with ChangeNotifier {
       NMarker(
         id: 'end',
         position: walkModel.pathList.last,
-        icon: NOverlayImage.fromAssetImage('/assets/icons/marker_end.png'),
+        icon: NOverlayImage.fromAssetImage('assets/icons/marker_end.png'),
         anchor: NPoint(0.5, 1),
       ),
     );
