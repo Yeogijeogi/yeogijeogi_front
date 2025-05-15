@@ -51,7 +51,7 @@ class WalkViewModel with ChangeNotifier {
 
   // 타이머 실행
   void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (_) => addCurrentLocation());
+    _timer = Timer.periodic(Duration(seconds: 6), (_) => addCurrentLocation());
   }
 
   /// 지도 로딩 완료시 호출
@@ -167,7 +167,7 @@ class WalkViewModel with ChangeNotifier {
     );
     walkModel.addLocation(currentLocation);
 
-    _timer = Timer.periodic(Duration(seconds: 1), (_) => addCurrentLocation());
+    _timer = Timer.periodic(Duration(seconds: 6), (_) => addCurrentLocation());
 
     try {
       // 마지막 위치 포함 경로 서버 업로드
