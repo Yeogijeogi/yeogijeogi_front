@@ -83,7 +83,7 @@ class Course {
     return NMarker(
       id: id,
       position: location.toNLatLng(),
-      icon: NOverlayImage.fromAssetImage('/assets/icons/marker.png'),
+      icon: NOverlayImage.fromAssetImage('assets/icons/marker.png'),
       anchor: NPoint.relativeCenter,
     );
   }
