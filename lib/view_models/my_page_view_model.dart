@@ -63,7 +63,7 @@ class MyPageViewModel with ChangeNotifier {
   void onTapInquire() {
     launchUrl(
       Uri.parse(
-        'https://wonhajin.notion.site/1c8bbe0d6aaa8095a9b3e89b4461547c',
+        'https://yeogijeogi.notion.site/1f4bbe0d6aaa8011acbae1b979fd761a',
       ),
     );
   }
@@ -72,7 +72,7 @@ class MyPageViewModel with ChangeNotifier {
   void onTapTerms() {
     launchUrl(
       Uri.parse(
-        'https://wonhajin.notion.site/1c9bbe0d6aaa8056bd15e05c25b70499',
+        'https://yeogijeogi.notion.site/1c9bbe0d6aaa8056bd15e05c25b70499',
       ),
     );
   }
