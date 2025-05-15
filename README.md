@@ -1,6 +1,8 @@
 # 여기저기 (Yeogijeogi)
 ## 프로젝트 개요
-<img width="100%" src="https://github.com/user-attachments/assets/73d03433-8f01-489e-a654-116b18716ffe" />
+[![YouTube Video](https://github.com/user-attachments/assets/73d03433-8f01-489e-a654-116b18716ffe)](https://youtube.com/shorts/2hDeea1pXlA?si=ONvvar2uBpzh0V91)
+
+(이미지를 클릭하면 유튜브 시연 양상으로 연결됩니다)
 
 ### 프로젝트 배경 및 문제 정의
 현대 사회에서 많은 사람들이 건강을 유지하고 스트레스를 해소하기 위해 산책을 즐깁니다. 산책은 특별한 장비나 비용 없이 누구나 쉽게 실천할 수 있는 신체 활동이며, 신체적 건강뿐만 아니라 정신적 웰빙에도 긍정적인 영향을 미칩니다. 그러나 실제로 산책을 계획할 때 **적절한 산책로를 찾기 어려운 문제**가 존재합니다.
