@@ -72,7 +72,7 @@ class WalkStartViewModel with ChangeNotifier {
       NMarker(
         id: 'start',
         position: path.first,
-        icon: NOverlayImage.fromAssetImage('/assets/icons/marker_start.png'),
+        icon: NOverlayImage.fromAssetImage('assets/icons/marker_start.png'),
         anchor: NPoint(0.5, 1),
       ),
     );
@@ -80,7 +80,7 @@ class WalkStartViewModel with ChangeNotifier {
       NMarker(
         id: 'end',
         position: path.last,
-        icon: NOverlayImage.fromAssetImage('/assets/icons/marker_end.png'),
+        icon: NOverlayImage.fromAssetImage('assets/icons/marker_end.png'),
         anchor: NPoint(0.5, 1),
       ),
     );

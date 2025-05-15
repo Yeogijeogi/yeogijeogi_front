@@ -45,7 +45,7 @@ class CourseModel with ChangeNotifier {
   void selectCourseById(String id) {
     // 기존 마커 원상복귀
     if (marker != null) {
-      marker!.setIcon(NOverlayImage.fromAssetImage('/assets/icons/marker.png'));
+      marker!.setIcon(NOverlayImage.fromAssetImage('assets/icons/marker.png'));
       marker!.setAnchor(NPoint.relativeCenter);
     }
 
@@ -56,7 +56,7 @@ class CourseModel with ChangeNotifier {
   void selectMarker(NMarker marker) {
     this.marker = marker;
     marker.setIcon(
-      NOverlayImage.fromAssetImage('/assets/icons/marker_selected.png'),
+      NOverlayImage.fromAssetImage('assets/icons/marker_selected.png'),
     );
     marker.setAnchor(NPoint(0.5, 1));
   }
